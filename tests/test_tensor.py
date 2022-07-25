@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import pytest
-from feynwrite.fields import Tensor, TensorProduct
+from feynwrite.tensor import Tensor, TensorProduct
 
 
 def test_tensor_indices():

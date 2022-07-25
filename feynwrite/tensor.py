@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Fucntions for representing fields and Lagrangian interactions."""
+"""Functions for representing fields and Lagrangian interactions."""
 
 from typing import List
 from dataclasses import dataclass
