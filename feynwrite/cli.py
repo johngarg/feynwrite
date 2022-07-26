@@ -1,6 +1,5 @@
 import click
 
-
 help_message = [
     "Print FeynRules file for the multiplets in the Granada dictionary.",
     "Names for the multiplets are as in https://arxiv.org/abs/1711.10391 but without backslashes.",

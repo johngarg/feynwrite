@@ -11,7 +11,10 @@ def test_tensor_indices():
 
     assert isinstance(A, Tensor)
     assert isinstance(prod, TensorProduct)
-    assert prod.free_indices == set(["i", "k"])
+    assert prod.free_indices == ["i", "k"]
+
+    assert A.label == A.latex
+    assert A.is_field
 
     with pytest.raises(AssertionError):
         (A * A).free_indices

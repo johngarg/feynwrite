@@ -5,29 +5,54 @@ objects.
 
 """
 
-from feynwrite.tensor import Tensor, TensorProduct, eps, delta
+from fractions import Fraction
+from tensor import Scalar, Fermion
 
 
-def L(spin, isospin, generation):
+def L(s0, i0, g0):
     label = "L"
-    tensor = Tensor(label=label, indices=[spin, isospin, generation])
+    tensor = Fermion(label=label, indices=[s0, i0, g0], hypercharge=Fraction("-1/2"))
+    tensor.is_sm = True
     return tensor
 
 
-def Q(spin, colour, isospin, generation):
+def Q(s0, c0, i0, g0):
     label = "Q"
-    tensor = Tensor(label=label, indices=[spin, colour, isospin, generation])
+    tensor = Fermion(label=label, indices=[s0, c0, i0, g0], hypercharge=Fraction("1/6"))
+    tensor.is_sm = True
     return tensor
 
 
-def H(isospin):
+def H(i0):
     label = "H"
-    tensor = Tensor(label=label, indices=[isospin])
+    tensor = Scalar(label=label, indices=[i0], hypercharge=Fraction("1/2"))
+    tensor.is_sm = True
     return tensor
 
 
-def eb(isospin):
-    label = "eb"
-    tensor = Tensor(label=label, indices=[isospin])
-    tensor.latex = r"\bar{e}"
+def eR(s0):
+    label = "eR"
+    tensor = Fermion(label=label, indices=[s0], chirality="R", hypercharge=-1)
+    tensor.is_sm = True
+    tensor.latex = r"e_{R}"
+    return tensor
+
+
+def dR(s0, c0):
+    label = "dR"
+    tensor = Fermion(
+        label=label, indices=[s0, c0], chirality="R", hypercharge=Fraction("-1/3")
+    )
+    tensor.is_sm = True
+    tensor.latex = r"d_{R}"
+    return tensor
+
+
+def uR(s0, c0):
+    label = "uR"
+    tensor = Fermion(
+        label=label, indices=[s0, c0], chirality="R", hypercharge=Fraction("2/3")
+    )
+    tensor.is_sm = True
+    tensor.latex = r"u_{R}"
     return tensor
