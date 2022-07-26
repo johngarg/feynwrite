@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Defines EXOTICS dict of multiplets in Granada dictionary."""
+"""Defines dictionary of multiplets in Granada dictionary."""
 
 # Depends on: tensor.py, sm.py
 
