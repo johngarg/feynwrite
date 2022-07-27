@@ -3,6 +3,18 @@
 from typing import List
 from collections import defaultdict
 
+# Conventional index heads
+INDICES = {
+    "lorentz": "mu",
+    "colour_fundamental": "c",
+    "colour_adjoint": "C",
+    "spinor": "s",
+    "isospin_fundamental": "i",
+    "isospin_adjoint": "I",
+    "isospin_4": "Q",
+    "generation": "g",
+}
+
 
 def index_generator(label: str):
     max_number_indices = 20
@@ -38,4 +50,13 @@ def sort_index_labels(index_labels: List[str]) -> List[str]:
             continue
         index_dict[i[0]].append(i)
     # Order in SM model file
-    return [*index_dict["s"], *index_dict["i"], *index_dict["g"], *index_dict["c"]]
+    return [
+        *index_dict[INDICES["lorentz"]],
+        *index_dict[INDICES["spinor"]],
+        *index_dict[INDICES["isospin_4"]],
+        *index_dict[INDICES["isospin_adjoint"]],
+        *index_dict[INDICES["isospin_fundamental"]],
+        *index_dict[INDICES["generation"]],
+        *index_dict[INDICES["colour_adjoint"]],
+        *index_dict[INDICES["colour_fundamental"]],
+    ]

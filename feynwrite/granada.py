@@ -39,11 +39,11 @@ def varphi(i) -> Scalar:
     return tensor
 
 
-# def Xi(I) -> Tensor:
-#     label = "Xi"
-#     latex = r"\Xi"
-#     tensor = Tensor(label, [I], latex=latex)
-#     return tensor
+def Xi(I) -> Scalar:
+    label = "Xi"
+    latex = r"\Xi"
+    tensor = Scalar(label, [I], latex=latex)
+    return tensor
 
 
 # def Xi1(i0, i1) -> Tensor:
@@ -164,6 +164,11 @@ yS1_term = (
     yS1 * S1().C * L("s0", "i0", "g0").bar * L("s0", "i1", "g1").CC * eps("i0", "i1")
 )
 TERMS.append(yS1_term)
+
+# yS2
+yS2 = Coupling("yS2", "-g0 -g1", is_complex=True)
+yS2_term = yS2 * S2().C * eR("s0", "g0").bar * eR("s0", "g1").CC
+TERMS.append(yS2_term)
 
 # yvarphie
 yvarphie = Coupling("yvarphie", "-g0 -g1", is_complex=True)

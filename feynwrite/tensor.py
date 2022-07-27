@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from copy import deepcopy
 
 from feynwrite.utils import (
-    index_generator,
+    INDICES,
     raise_lower_index,
     wolfram_block,
     sort_index_labels,
@@ -74,7 +74,7 @@ class Tensor:
         # Raise/lower indices, except for generation
         reversed_indices = []
         for i in self.indices:
-            if i[0] == "g":
+            if i[0] == INDICES["generation"]:
                 reversed_indices.append(i)
             else:
                 reversed_indices.append(raise_lower_index(i))
@@ -109,11 +109,14 @@ class Field(Tensor):
 
     def irrep(self) -> Dict[str, List[int]]:
         """Infer the SM irrep based on the indices of the field."""
-        index_dict = {"c": [0, 0], "i": [0, 0]}
+        index_dict = {
+            INDICES["colour_fundamental"]: [0, 0],
+            INDICES["isospin_fundamental"]: [0, 0],
+        }
         for i in self.indices:
             is_lower = i[0] == "-"
             key = i if not is_lower else i[1:]
-            if key[0] in {"g", "s"}:
+            if key[0] in {INDICES["generation"], INDICES["spinor"]}:
                 continue
             entry = 1 if is_lower else 0
             index_dict[key[0]][entry] += 1
@@ -129,21 +132,23 @@ class Field(Tensor):
         irrep = self.irrep()
         indices = []
         # Isospin options
-        if sum(irrep["i"]) == 1:
+        ii = INDICES["isospin_fundamental"]
+        if sum(irrep[ii]) == 1:
             indices.append("Index[SU2D]")
-        elif sum(irrep["i"]) == 2:
+        elif sum(irrep[ii]) == 2:
             indices.append("Index[SU2W]")
-        elif sum(irrep["i"]) == 3:
+        elif sum(irrep[ii]) == 3:
             # TODO Fill this in properly
             indices.append("Index[SU24]")
 
         # Colour options
-        if irrep["c"] == [1, 1]:
+        cc = INDICES["colour_fundamental"]
+        if irrep[cc] == [1, 1]:
             # TODO Fill this in properly
             indices.append("Index[ColourAdjoint]")
-        elif sum(irrep["c"]) == 1:
+        elif sum(irrep[cc]) == 1:
             indices.append("Index[Colour]")
-        elif sum(irrep["c"]) == 2:
+        elif sum(irrep[cc]) == 2:
             indices.append("Index[Colour]")
             indices.append("Index[Colour]")
 
@@ -151,7 +156,7 @@ class Field(Tensor):
             f"{spin_label}[{count}] == ",
             f"{{ ClassName -> {self.label}",
             f"  , Mass -> M{self.label}",
-            f"  , Width -> W{self.label}",
+            f"  , Width -> 0",
             f"  , SelfConjugate -> {self.is_self_conj}",
             f"  , QuantumNumbers -> {{Y -> {self.hypercharge}}}",
             f"  , Indices -> {{{', '.join(indices)}}}" if indices else "",
@@ -312,7 +317,8 @@ class TensorProduct:
 
         # Keep track of labels for Lagrangian term and indices for module
         for t in self.tensors:
-            labels += t.label
+            if isinstance(t, Coupling):
+                labels += t.label
             for i in t.index_labels:
                 indices.add(i)
 
@@ -344,16 +350,15 @@ class TensorProduct:
         coupling = couplings[0]
         non_trivial_indices = [c for c in coupling.indices if c]
         coupling_indices = ["Index[Generation]"] * len(non_trivial_indices)
-        term_label = self.latex()
         lines = [
             f"{coupling.label} == ",
-            "{ ParameterType -> External",
+            "{ ParameterType -> Internal",
             f"  , ComplexParameter -> {coupling.is_complex}",
             f"  , Indices -> {{{', '.join(coupling_indices)}}}"
             if coupling_indices
             else "",
             "  , InteractionOrder -> {NP, 1}",
-            f'  , Description -> "Coupling {coupling.latex} of {term_label} interaction"',
+            f'  , Description -> "Coupling {coupling.label} of {self.__repr__()} interaction"',
             "}",
         ]
         coupling = "\n".join(line for line in lines if line)
@@ -365,7 +370,7 @@ class TensorProduct:
 
             lines = [
                 f"M{f.label} == ",
-                "{ ParameterType -> External",
+                "{ ParameterType -> Internal",
                 f'  , Description -> "{f.label} mass"',
                 "}",
             ]
