@@ -60,3 +60,23 @@ def sort_index_labels(index_labels: List[str]) -> List[str]:
         *index_dict[INDICES["colour_adjoint"]],
         *index_dict[INDICES["colour_fundamental"]],
     ]
+
+
+def wolfram_index_map(idx: str):
+    correspondance = {
+        "isospin_4": "SU24",
+        "isospin_adjoint": "SU2W",
+        "isospin_fundamental": "SU2D",
+        "generation": "Generation",
+        "colour_adjoint": "Gluon",
+        "colour_fundamental": "Colour",
+    }
+
+    if idx[0] == "-":
+        idx = idx[1:]
+
+    for k, v in INDICES.items():
+        if v == idx[0]:
+            return f"Index[{correspondance[k]}]"
+
+    raise Exception(f"Unrecognised index {idx}")

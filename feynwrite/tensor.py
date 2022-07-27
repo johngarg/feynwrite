@@ -12,6 +12,7 @@ from feynwrite.utils import (
     raise_lower_index,
     wolfram_block,
     sort_index_labels,
+    wolfram_index_map,
 )
 
 
@@ -107,50 +108,13 @@ class Field(Tensor):
         self.is_self_conj = is_self_conj
         self.wolfram_term_name: str = ""
 
-    def irrep(self) -> Dict[str, List[int]]:
-        """Infer the SM irrep based on the indices of the field."""
-        index_dict = {
-            INDICES["colour_fundamental"]: [0, 0],
-            INDICES["isospin_fundamental"]: [0, 0],
-        }
-        for i in self.indices:
-            is_lower = i[0] == "-"
-            key = i if not is_lower else i[1:]
-            if key[0] in {INDICES["generation"], INDICES["spinor"]}:
-                continue
-            entry = 1 if is_lower else 0
-            index_dict[key[0]][entry] += 1
-
-        return dict(index_dict)
-
     def feynrules_class_entry(self, count: int) -> List[str]:
         assert not self.is_sm
 
         count += 1
         spin_label = str(type(self)).split(".")[-1][0]
 
-        irrep = self.irrep()
-        indices = []
-        # Isospin options
-        ii = INDICES["isospin_fundamental"]
-        if sum(irrep[ii]) == 1:
-            indices.append("Index[SU2D]")
-        elif sum(irrep[ii]) == 2:
-            indices.append("Index[SU2W]")
-        elif sum(irrep[ii]) == 3:
-            # TODO Fill this in properly
-            indices.append("Index[SU24]")
-
-        # Colour options
-        cc = INDICES["colour_fundamental"]
-        if irrep[cc] == [1, 1]:
-            # TODO Fill this in properly
-            indices.append("Index[ColourAdjoint]")
-        elif sum(irrep[cc]) == 1:
-            indices.append("Index[Colour]")
-        elif sum(irrep[cc]) == 2:
-            indices.append("Index[Colour]")
-            indices.append("Index[Colour]")
+        indices = [wolfram_index_map(idx) for idx in self.indices]
 
         lines = [
             f"{spin_label}[{count}] == ",
