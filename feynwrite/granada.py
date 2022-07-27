@@ -12,6 +12,7 @@ TERMS = []
 
 
 def S() -> Scalar:
+    """(1,1,0)"""
     label = "S"
     latex = r"\mathcal{S}"
     tensor = Scalar(label, [], latex=latex, hypercharge=0)
@@ -19,6 +20,7 @@ def S() -> Scalar:
 
 
 def S1() -> Scalar:
+    """(1,1,1)"""
     label = "S1"
     latex = r"\mathcal{S}_{1}"
     tensor = Scalar(label, [], latex=latex, hypercharge=1)
@@ -26,6 +28,7 @@ def S1() -> Scalar:
 
 
 def S2() -> Scalar:
+    """(1,1,2)"""
     label = "S2"
     latex = r"\mathcal{S}_{2}"
     tensor = Scalar(label, [], latex=latex, hypercharge=2)
@@ -33,6 +36,7 @@ def S2() -> Scalar:
 
 
 def varphi(i) -> Scalar:
+    """(1,2,1/2)"""
     label = "varphi"
     latex = r"\varphi"
     tensor = Scalar(label, [i], latex=latex, hypercharge=Fraction("1/2"))
@@ -40,6 +44,7 @@ def varphi(i) -> Scalar:
 
 
 def Xi(I) -> Scalar:
+    """(1,3,0)"""
     label = "Xi"
     latex = r"\Xi"
     tensor = Scalar(label, [I], latex=latex)

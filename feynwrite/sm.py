@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-"""Defines the SM fields and Lagrangian in terms of Tensor and TensorProduct
-objects.
+"""Defines the SM fields in terms of Tensor objects.
 
 """
 

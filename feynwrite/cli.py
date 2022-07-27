@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+"""Function called for the command-line interface."""
+
 import click
 
 from feynwrite.model import Model
@@ -11,9 +15,8 @@ help_message = [
 
 
 @click.command(help=" ".join(help_message))
-# @click.option("--as-cowboy", "-c", is_flag=True, help="Greet as a cowboy.")
 @click.argument("multiplets", required=False, nargs=-1)
-def main(multiplets):
+def main(multiplets) -> None:
     """Automate the production of FeynRules files."""
 
     # For a naked call, print help
@@ -32,14 +35,18 @@ def main(multiplets):
             )
         model_labels.append(multiplet)
 
+    # Connect exotic field labels by "_" for name of model
     model_label = "_".join(model_labels)
 
     # Collect the Lagrangian
     lagrangian = []
     for term in TERMS:
         exotic_labels = [exotic.label for exotic in term.exotics]
-        all_present = all([multiplet in exotic_labels for multiplet in multiplets])
-        if all_present:
+        # We only want to include those terms that don't contain other exotics
+        for exotic_label in exotic_labels:
+            if exotic_label not in multiplets:
+                break
+        else:
             lagrangian.append(term)
 
     model = Model(model_label, terms=lagrangian)

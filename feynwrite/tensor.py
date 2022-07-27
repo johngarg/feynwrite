@@ -54,6 +54,7 @@ class Tensor:
 
     @property
     def index_labels(self) -> List[str]:
+        """Return a list of indices without negative signs for lowered indices."""
         labels = []
         for i in self.indices:
             if not i:
@@ -66,13 +67,17 @@ class Tensor:
         return sort_index_labels(labels)
 
     def wolfram(self) -> str:
+        """Return Wolfram-language form of object."""
         if not self.index_labels:
             return self.label
         return f"{self.label}[{','.join(self.index_labels)}]"
 
     @property
     def C(self) -> "Tensor":
-        # Raise/lower indices, except for generation
+        """The hermitian conjugate of the tensor: reverses all indices except for
+        generation.
+
+        """
         reversed_indices = []
         for i in self.indices:
             if i[0] == INDICES["generation"]:
@@ -87,6 +92,8 @@ class Tensor:
 
 
 class Coupling(Tensor):
+    """Tensor representing a coupling contant."""
+
     def __init__(self, *args, is_complex: bool = True, **kwargs):
         super(Coupling, self).__init__(*args, **kwargs)
         self.is_field = False
@@ -94,6 +101,13 @@ class Coupling(Tensor):
 
 
 class Field(Tensor):
+    """Tensor representing a Field. An intermediate class wrapping common methods
+    and properties of `Scalar`, `Fermion` and `Vector`.
+
+    Fields must receive a hypercharge.
+
+    """
+
     def __init__(
         self,
         *args,
@@ -109,6 +123,10 @@ class Field(Tensor):
         self.wolfram_term_name: str = ""
 
     def feynrules_class_entry(self, count: int) -> List[str]:
+        """Return the Wolfram-language code represented the `M$ClassesDescription` of
+        the FeynRules file. This should only be called on an exotic field.
+
+        """
         assert not self.is_sm
 
         count += 1
@@ -132,6 +150,14 @@ class Field(Tensor):
 
 
 class Fermion(Field):
+    """Class representing a (0,1/2) or (1/2,0) fermion. This is specified by
+    `chirality`.
+
+    `is_charge_conj` and `is_dirac_adjoint` are toggled by `.CC` and `.bar`,
+    respectively.
+
+    """
+
     def __init__(
         self,
         *args,
@@ -148,7 +174,8 @@ class Fermion(Field):
         self.is_charge_conj = is_charge_conj
         self.is_dirac_adjoint = is_dirac_adjoint
 
-    def flip_chirality(self):
+    def flip_chirality(self) -> None:
+        """Flip the chirality of the fermion by side-effect."""
         if self.chirality == "R":
             self.chirality = "L"
         else:
@@ -165,6 +192,7 @@ class Fermion(Field):
 
     @property
     def bar(self) -> "Fermion":
+        """The same as the method `.C` in practice, but toggles `is_dirac_adjoint`."""
         dirac_adjoint = self.C
         dirac_adjoint.is_dirac_adjoint = not self.is_dirac_adjoint
         return dirac_adjoint
@@ -209,18 +237,32 @@ class Scalar(Field):
         return output
 
     def feynrules_free_terms(self) -> str:
+        """Returns a string representing the free-field Lagrangian for the scalar."""
+
+        # TODO Adapt constant factors here for `is_self_conj` case
+
+        assert not self.is_sm
+
         indices = self.index_labels + ["mu"]
+
+        # We always want the kinetic term to look like (D S)^dag (D S), but
+        # would look like (D S) (D S)^dag if S where already `conj`ed. Fix this
+        # here by hand
         if self.is_conj:
             dagger = self.wolfram()
             no_dagger = self.C.wolfram()
         else:
             dagger = self.C.wolfram()
             no_dagger = self.wolfram()
+
         kinetic = f"DC[{dagger}, mu] DC[{no_dagger}, mu]"
         mass = f"M{self.label}^2 {dagger} {no_dagger}"
         expr = f"{kinetic} - {mass}"
+
+        # Keep track of name for model file
         wolfram_term_name = f"LFree{self.label}"
         self.wolfram_term_name = wolfram_term_name
+
         return f"{wolfram_term_name} :=\n" + wolfram_block(
             indices, expr, repl="/.gotoBFM"
         )
@@ -232,6 +274,12 @@ def Vector(Tensor):
 
 @dataclass
 class TensorProduct:
+    """Class representing a product of tensors. It's use is mostly specialised to
+    the case of representing a term in the Lagrangian, i.e. a single coupling
+    constant and fields.
+
+    """
+
     def __init__(self, *tensors):
         self.tensors = tensors
         # Filled in when `wolfram` method is called
@@ -239,6 +287,7 @@ class TensorProduct:
 
     @property
     def free_indices(self) -> List[str]:
+        """Returns the uncontracted indices of the product."""
         # Separate upper and lower indices
         upper, lower = [], []
         for tensor in self.tensors:
@@ -261,6 +310,7 @@ class TensorProduct:
 
     @property
     def is_complex(self) -> bool:
+        """Just check whether the coupling constant is complex."""
         couplings = self.couplings
         assert len(couplings) == 1
         return couplings[0].is_complex
@@ -281,18 +331,21 @@ class TensorProduct:
 
         # Keep track of labels for Lagrangian term and indices for module
         for t in self.tensors:
+            # Label Lagrangian terms by the couplings constants
             if isinstance(t, Coupling):
                 labels += t.label
             for i in t.index_labels:
                 indices.add(i)
 
             wolfram_ = t.wolfram()
+            # For fermion chains, don't add an extra space when exporting
             if wolfram_[-1] != ".":
                 wolfram_ = wolfram_ + " "
             output += wolfram_
 
         wolfram_term_name = f"L{labels}"
         self.wolfram_term_name = wolfram_term_name
+
         return f"{wolfram_term_name} :=\n" + wolfram_block(indices, output.strip())
 
     @property
@@ -308,16 +361,18 @@ class TensorProduct:
         return [f for f in self.fields if not f.is_sm]
 
     def feynrules_param_entries(self) -> List[str]:
-        # Couplings
+        """Returns a list of strings representing the `M$Parameters` entries in the FeynRules file."""
         couplings = self.couplings
         assert len(couplings) == 1
         coupling = couplings[0]
+        # The only coupling indices should be generation indices
         non_trivial_indices = [c for c in coupling.indices if c]
-        coupling_indices = ["Index[Generation]"] * len(non_trivial_indices)
+        coupling_indices = [wolfram_index_map("g")] * len(non_trivial_indices)
         lines = [
             f"{coupling.label} == ",
             "{ ParameterType -> Internal",
             f"  , ComplexParameter -> {coupling.is_complex}",
+            # Don't include `Indices` entry if there are no indices!
             f"  , Indices -> {{{', '.join(coupling_indices)}}}"
             if coupling_indices
             else "",
@@ -325,13 +380,12 @@ class TensorProduct:
             f'  , Description -> "Coupling {coupling.label} of {self.__repr__()} interaction"',
             "}",
         ]
+        # Filter out empty strings
         coupling = "\n".join(line for line in lines if line)
 
         # Masses
         masses = []
         for f in self.exotics:
-            is_fermion = isinstance(f, Fermion)
-
             lines = [
                 f"M{f.label} == ",
                 "{ ParameterType -> Internal",
@@ -342,7 +396,8 @@ class TensorProduct:
 
         return [coupling, *masses]
 
-    def sum_hypercharges(self) -> Fraction:
+    def sum_hypercharges(self) -> Union[Fraction, int]:
+        """Returns the sum of the hypercharges of the term."""
         tally = 0
         for f in self.fields:
             tally += f.hypercharge
@@ -375,5 +430,27 @@ def delta(i: str, j: str):
     label = "Delta"
     tensor = Tensor(label=label, indices=[i, j])
     tensor.latex = r"\delta"
+    tensor.is_field = False
+    return tensor
+
+
+def sigma(I: str, i: str, j: str):
+    """Pauli matrices"""
+    assert j[0] == "-" and i[0] != "-"
+
+    label = "2*Ta"
+    tensor = Tensor(label=label, indices=[I, i, j])
+    tensor.latex = r"\sigma"
+    tensor.is_field = False
+    return tensor
+
+
+def lambda_(A: str, a: str, b: str):
+    """Gell-Mann matrices"""
+    assert b[0] == "-" and a[0] != "-"
+
+    label = "2*T"
+    tensor = Tensor(label=label, indices=[A, a, b])
+    tensor.latex = r"\lambda"
     tensor.is_field = False
     return tensor

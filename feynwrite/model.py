@@ -1,20 +1,30 @@
 #!/usr/bin/env python3
 
-"""File that contains functions for generating the Mathematica code that will
-enter the FeynRules output.
+"""File that contains the Model class for generating the Mathematica code that
+will enter the FeynRules output.
 
 """
 
 # Depends on: tensor.py
 
 from typing import List, Set
-from feynwrite.tensor import TensorProduct, Field, Coupling
 from dataclasses import dataclass
 from datetime import datetime
+
+from feynwrite.tensor import TensorProduct, Field, Coupling
 
 
 @dataclass
 class Model:
+    """A model contains a list of `TensorProduct` objects representing terms in the
+    interaction Lagrangian. Models should have a `name` that is written to the
+    FeynRules file.
+
+    The main role of the class is to provide the `export` method, which prints
+    the FeynRules file associated with the model.
+
+    """
+
     def __init__(self, name: str, terms: List[TensorProduct]):
         self.name = name
         self.terms = terms
@@ -35,6 +45,7 @@ class Model:
 
     @property
     def fields(self) -> List[Field]:
+        """Return a list of fields present in the model without duplicates."""
         seen = set()
         output = []
         for term in self.terms:
@@ -47,9 +58,11 @@ class Model:
 
     @property
     def exotics(self) -> List[Field]:
+        """Return a list of exotic fields present in the model without duplicates."""
         return [f for f in self.fields if not f.is_sm]
 
     def export(self) -> str:
+        """Returns a string representing the FeynRules file for the model."""
         params = set()
         for term in self.terms:
             for param in term.feynrules_param_entries():
