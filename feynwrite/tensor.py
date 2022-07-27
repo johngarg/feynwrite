@@ -7,7 +7,12 @@ from typing import List, Union, Dict
 from dataclasses import dataclass
 from copy import deepcopy
 
-from utils import index_generator, raise_lower_index, wolfram_module, sort_index_labels
+from feynwrite.utils import (
+    index_generator,
+    raise_lower_index,
+    wolfram_block,
+    sort_index_labels,
+)
 
 
 @dataclass
@@ -48,7 +53,15 @@ class Tensor:
 
     @property
     def index_labels(self) -> List[str]:
-        labels = [i if i[0] != "-" else i[1:] for i in self.indices]
+        labels = []
+        for i in self.indices:
+            if not i:
+                continue
+            if i[0] == "-":
+                labels.append(i[1:])
+            else:
+                labels.append(i)
+
         return sort_index_labels(labels)
 
     def wolfram(self) -> str:
@@ -68,7 +81,7 @@ class Tensor:
 
         conj = deepcopy(self)
         conj.indices = reversed_indices
-        conj.is_conj = True
+        conj.is_conj = not self.is_conj
         return conj
 
 
@@ -92,6 +105,7 @@ class Field(Tensor):
         self.is_sm = is_sm
         self.hypercharge = hypercharge
         self.is_self_conj = is_self_conj
+        self.wolfram_term_name: str = ""
 
     def irrep(self) -> Dict[str, List[int]]:
         """Infer the SM irrep based on the indices of the field."""
@@ -105,6 +119,47 @@ class Field(Tensor):
             index_dict[key[0]][entry] += 1
 
         return dict(index_dict)
+
+    def feynrules_class_entry(self, count: int) -> List[str]:
+        assert not self.is_sm
+
+        count += 1
+        spin_label = str(type(self)).split(".")[-1][0]
+
+        irrep = self.irrep()
+        indices = []
+        # Isospin options
+        if sum(irrep["i"]) == 1:
+            indices.append("Index[SU2D]")
+        elif sum(irrep["i"]) == 2:
+            indices.append("Index[SU2W]")
+        elif sum(irrep["i"]) == 3:
+            # TODO Fill this in properly
+            indices.append("Index[SU24]")
+
+        # Colour options
+        if irrep["c"] == [1, 1]:
+            # TODO Fill this in properly
+            indices.append("Index[ColourAdjoint]")
+        elif sum(irrep["c"]) == 1:
+            indices.append("Index[Colour]")
+        elif sum(irrep["c"]) == 2:
+            indices.append("Index[Colour]")
+            indices.append("Index[Colour]")
+
+        lines = [
+            f"{spin_label}[{count}] == ",
+            f"{{ ClassName -> {self.label}",
+            f"  , Mass -> M{self.label}",
+            f"  , Width -> W{self.label}",
+            f"  , SelfConjugate -> {self.is_self_conj}",
+            f"  , QuantumNumbers -> {{Y -> {self.hypercharge}}}",
+            f"  , Indices -> {{{', '.join(indices)}}}" if indices else "",
+            '  , FullName -> "heavy"',
+            "}",
+        ]
+
+        return "\n".join(line for line in lines if line)
 
 
 class Fermion(Field):
@@ -134,7 +189,7 @@ class Fermion(Field):
     def CC(self) -> "Fermion":
         """Lowers only the gauge indices"""
         conj = self.C
-        conj.is_charge_conj = True
+        conj.is_charge_conj = not self.is_charge_conj
         conj.flip_chirality()
         conj.indices[0] = raise_lower_index(conj.indices[0])
         return conj
@@ -142,7 +197,7 @@ class Fermion(Field):
     @property
     def bar(self) -> "Fermion":
         dirac_adjoint = self.C
-        dirac_adjoint.is_dirac_adjoint = True
+        dirac_adjoint.is_dirac_adjoint = not self.is_dirac_adjoint
         return dirac_adjoint
 
     def wolfram(self) -> str:
@@ -185,11 +240,21 @@ class Scalar(Field):
         return output
 
     def feynrules_free_terms(self) -> str:
-        indices = self.indices + ["mu"]
-        kinetic = f"DC[{self.C.wolfram()}, mu] DC[{self.wolfram()}, mu]"
-        mass = f"M{self.label}^2 {self.C.wolfram()} {self.wolfram()}"
+        indices = self.index_labels + ["mu"]
+        if self.is_conj:
+            dagger = self.wolfram()
+            no_dagger = self.C.wolfram()
+        else:
+            dagger = self.C.wolfram()
+            no_dagger = self.wolfram()
+        kinetic = f"DC[{dagger}, mu] DC[{no_dagger}, mu]"
+        mass = f"M{self.label}^2 {dagger} {no_dagger}"
         expr = f"{kinetic} - {mass}"
-        return f"LFree{self.label} :=\n" + wolfram_module(indices, expr)
+        wolfram_term_name = f"LFree{self.label}"
+        self.wolfram_term_name = wolfram_term_name
+        return f"{wolfram_term_name} :=\n" + wolfram_block(
+            indices, expr, repl="/.gotoBFM"
+        )
 
 
 def Vector(Tensor):
@@ -200,6 +265,8 @@ def Vector(Tensor):
 class TensorProduct:
     def __init__(self, *tensors):
         self.tensors = tensors
+        # Filled in when `wolfram` method is called
+        self.wolfram_term_name: str = ""
 
     @property
     def free_indices(self) -> List[str]:
@@ -207,6 +274,8 @@ class TensorProduct:
         upper, lower = [], []
         for tensor in self.tensors:
             for index in tensor.indices:
+                if not index:
+                    continue
                 if index[0] == "-":
                     lower.append(index[1:])
                 else:
@@ -220,6 +289,12 @@ class TensorProduct:
         upper, lower = set(upper), set(lower)
 
         return sorted(upper.symmetric_difference(lower))
+
+    @property
+    def is_complex(self) -> bool:
+        couplings = self.couplings
+        assert len(couplings) == 1
+        return couplings[0].is_complex
 
     def __mul__(self, other):
         return self.__class__(*self.tensors, *other.tensors)
@@ -246,7 +321,9 @@ class TensorProduct:
                 wolfram_ = wolfram_ + " "
             output += wolfram_
 
-        return f"L{labels} :=\n" + wolfram_module(indices, output.strip())
+        wolfram_term_name = f"L{labels}"
+        self.wolfram_term_name = wolfram_term_name
+        return f"{wolfram_term_name} :=\n" + wolfram_block(indices, output.strip())
 
     @property
     def couplings(self):
@@ -256,12 +333,17 @@ class TensorProduct:
     def fields(self):
         return [t for t in self.tensors if t.is_field]
 
+    @property
+    def exotics(self):
+        return [f for f in self.fields if not f.is_sm]
+
     def feynrules_param_entries(self) -> List[str]:
         # Couplings
         couplings = self.couplings
         assert len(couplings) == 1
         coupling = couplings[0]
-        coupling_indices = ["Index[Generation]"] * len(coupling.indices)
+        non_trivial_indices = [c for c in coupling.indices if c]
+        coupling_indices = ["Index[Generation]"] * len(non_trivial_indices)
         term_label = self.latex()
         lines = [
             f"{coupling.label} == ",
@@ -278,10 +360,7 @@ class TensorProduct:
 
         # Masses
         masses = []
-        for f in self.fields:
-            if f.is_sm:
-                continue
-
+        for f in self.exotics:
             is_fermion = isinstance(f, Fermion)
 
             lines = [
@@ -293,49 +372,6 @@ class TensorProduct:
             masses.append("\n".join(lines))
 
         return [coupling, *masses]
-
-    def feynrules_class_entries(self, count: int) -> List[str]:
-        for f in self.fields:
-            if f.is_sm:
-                continue
-
-            count += 1
-            spin_label = str(type(f)).split(".")[-1][0]
-
-            irrep = f.irrep()
-            indices = []
-            # Isospin options
-            if sum(irrep["i"]) == 1:
-                indices.append("Index[SU2D]")
-            elif sum(irrep["i"]) == 2:
-                indices.append("Index[SU2W]")
-            elif sum(irrep["i"]) == 3:
-                # TODO Fill this in properly
-                indices.append("Index[SU24]")
-
-            # Colour options
-            if irrep["c"] == [1, 1]:
-                # TODO Fill this in properly
-                indices.append("Index[ColourAdjoint]")
-            elif sum(irrep["c"]) == 1:
-                indices.append("Index[Colour]")
-            elif sum(irrep["c"]) == 2:
-                indices.append("Index[Colour]")
-                indices.append("Index[Colour]")
-
-            lines = [
-                f"{spin_label}[{count}] == ",
-                f"{{ ClassName -> {f.label}",
-                f"  , Mass -> M{f.label}",
-                f"  , Width -> W{f.label}",
-                f"  , SelfConjugate -> {f.is_self_conj}",
-                f"  , QuantumNumbers -> {{Y -> {f.hypercharge}}}",
-                f"  , Indices -> {{{', '.join(indices)}}}" if indices else "",
-                '  , FullName -> "heavy"',
-                "}",
-            ]
-
-        return "\n".join((line for line in lines if line))
 
     def sum_hypercharges(self) -> Fraction:
         tally = 0

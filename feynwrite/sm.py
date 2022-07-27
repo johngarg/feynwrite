@@ -6,52 +6,53 @@ objects.
 """
 
 from fractions import Fraction
-from tensor import Scalar, Fermion
+from feynwrite.tensor import Scalar, Fermion
 
 
-def L(s0, i0, g0):
-    label = "L"
-    tensor = Fermion(label=label, indices=[s0, i0, g0], hypercharge=Fraction("-1/2"))
+def L(s, i, g):
+    label = "LL"
+    tensor = Fermion(label=label, indices=[s, i, g], hypercharge=Fraction("-1/2"))
     tensor.is_sm = True
     return tensor
 
 
-def Q(s0, c0, i0, g0):
-    label = "Q"
-    tensor = Fermion(label=label, indices=[s0, c0, i0, g0], hypercharge=Fraction("1/6"))
+def Q(s, c, i, g):
+    label = "QL"
+    tensor = Fermion(label=label, indices=[s, c, i, g], hypercharge=Fraction("1/6"))
     tensor.is_sm = True
     return tensor
 
 
-def H(i0):
-    label = "H"
-    tensor = Scalar(label=label, indices=[i0], hypercharge=Fraction("1/2"))
+def H(i):
+    # TODO Fix this, as exotic in Granada dictionary with the same name
+    label = "Phi"
+    tensor = Scalar(label=label, indices=[i], hypercharge=Fraction("1/2"))
     tensor.is_sm = True
     return tensor
 
 
-def eR(s0):
-    label = "eR"
-    tensor = Fermion(label=label, indices=[s0], chirality="R", hypercharge=-1)
+def eR(s, g):
+    label = "LR"
+    tensor = Fermion(label=label, indices=[s, g], chirality="R", hypercharge=-1)
     tensor.is_sm = True
     tensor.latex = r"e_{R}"
     return tensor
 
 
-def dR(s0, c0):
-    label = "dR"
+def dR(s, c, g):
+    label = "DR"
     tensor = Fermion(
-        label=label, indices=[s0, c0], chirality="R", hypercharge=Fraction("-1/3")
+        label=label, indices=[s, c, g], chirality="R", hypercharge=Fraction("-1/3")
     )
     tensor.is_sm = True
     tensor.latex = r"d_{R}"
     return tensor
 
 
-def uR(s0, c0):
-    label = "uR"
+def uR(s, c, g):
+    label = "UR"
     tensor = Fermion(
-        label=label, indices=[s0, c0], chirality="R", hypercharge=Fraction("2/3")
+        label=label, indices=[s, c, g], chirality="R", hypercharge=Fraction("2/3")
     )
     tensor.is_sm = True
     tensor.latex = r"u_{R}"
