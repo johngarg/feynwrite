@@ -1,6 +1,11 @@
 # Extra
 *.pyc
 .DS_Store
+*_MM/
+*.fr
+*.red
+*.symm
+*.gauge
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
