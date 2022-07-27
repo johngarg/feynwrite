@@ -10,7 +10,7 @@ def runner():
 
 
 def test_cli_with_arg(runner):
-    result = runner.invoke(cli.main, ["John"])
-    assert result.exit_code == 0
-    assert not result.exception
-    assert result.output.strip() == "Hello, John."
+    result = runner.invoke(cli.main, ["Q"])
+    assert result.exception
+    assert result.exit_code != 0
+    # assert result.output.strip() == "Hello, John."
