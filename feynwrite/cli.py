@@ -26,7 +26,7 @@ def main(multiplets) -> None:
         return
 
     # Check that multiplets are valid
-    valid_multiplets = {"S", "S1", "S2", "varphi"}
+    valid_multiplets = {"S", "S1", "S2", "varphi", "Xi"}
     model_labels = []
     for multiplet in multiplets:
         if multiplet not in valid_multiplets:

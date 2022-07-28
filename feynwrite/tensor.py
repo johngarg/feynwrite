@@ -74,13 +74,21 @@ class Tensor:
 
     @property
     def C(self) -> "Tensor":
-        """The hermitian conjugate of the tensor: reverses all indices except for
-        generation.
+        """The hermitian conjugate of the tensor: reverses all fundamental indices.
 
         """
+
+        # Don't reverse the generation and adjoint indices
+        dont_reverse = {
+            "generation",
+            "isospin_adjoint",
+            "colour_adjoint",
+        }
+        dont_reverse = [INDICES[x] for x in dont_reverse]
+
         reversed_indices = []
         for i in self.indices:
-            if i[0] == INDICES["generation"]:
+            if i[0] in dont_reverse:
                 reversed_indices.append(i)
             else:
                 reversed_indices.append(raise_lower_index(i))
@@ -94,10 +102,16 @@ class Tensor:
 class Coupling(Tensor):
     """Tensor representing a coupling contant."""
 
-    def __init__(self, *args, is_complex: bool = True, **kwargs):
+    def __init__(self, *args, is_complex: bool = True, factor: str = "", **kwargs):
         super(Coupling, self).__init__(*args, **kwargs)
         self.is_field = False
         self.is_complex = is_complex
+        # Constant factors that are absorbed in our code compared to the Granada
+        # dictionary. Upon export `coupling -> coupling * coupling.factor`.
+        self.factor = factor
+
+    def wolfram(self) -> str:
+        return super(Coupling, self).wolfram() + " " + self.factor
 
 
 class Field(Tensor):
@@ -121,6 +135,12 @@ class Field(Tensor):
         self.hypercharge = hypercharge
         self.is_self_conj = is_self_conj
         self.wolfram_term_name: str = ""
+
+    @property
+    def C(self) -> Tensor:
+        if self.is_self_conj:
+            return self
+        return super(Field, self).C
 
     def feynrules_class_entry(self, count: int) -> List[str]:
         """Return the Wolfram-language code represented the `M$ClassesDescription` of
@@ -252,11 +272,18 @@ class Scalar(Field):
             dagger = self.wolfram()
             no_dagger = self.C.wolfram()
         else:
+            # Real scalar will also enter this branch
             dagger = self.C.wolfram()
             no_dagger = self.wolfram()
 
         kinetic = f"DC[{dagger}, mu] DC[{no_dagger}, mu]"
         mass = f"M{self.label}^2 {dagger} {no_dagger}"
+
+        # Adjust factors for real scalars
+        if self.is_self_conj:
+            kinetic = "1/2 " + kinetic
+            mass = "1/2 " + mass
+
         expr = f"{kinetic} - {mass}"
 
         # Keep track of name for model file

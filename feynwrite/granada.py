@@ -5,7 +5,7 @@
 # Depends on: tensor.py, sm.py
 
 from fractions import Fraction
-from feynwrite.tensor import Coupling, Scalar, eps, delta
+from feynwrite.tensor import Coupling, Scalar, eps, delta, sigma
 from feynwrite.sm import L, Q, H, eR, dR, uR
 
 TERMS = []
@@ -47,7 +47,7 @@ def Xi(I) -> Scalar:
     """(1,3,0)"""
     label = "Xi"
     latex = r"\Xi"
-    tensor = Scalar(label, [I], latex=latex)
+    tensor = Scalar(label, [I], latex=latex, hypercharge=0)
     return tensor
 
 
@@ -199,6 +199,29 @@ yvarphiu_term = (
 TERMS.append(yvarphiu_term)
 
 # lambdavarphi
-lambdavarphi = Coupling("lambdavarphi", "", is_complex=True)
+lambdavarphi = Coupling("lambdavarphi", [], is_complex=True)
 lambdavarphi_term = lambdavarphi * varphi("i0").C * H("i0") * H("i1").C * H("i1")
 TERMS.append(lambdavarphi_term)
+
+# kappaXi
+kappaXi = Coupling("kappaXi", [], is_complex=False)
+kappaXi_term = kappaXi * H("i0").C * Xi("-I0") * sigma("I0", "i0", "-i1") * H("i1")
+TERMS.append(kappaXi_term)
+
+# lambdaXi
+lambdaXi = Coupling("lambdaXi", [], is_complex=False, factor="1 / 2")
+lambdaXi_term = lambdaXi * Xi("-I0").C * Xi("I0") * H("i0").C * H("i0")
+TERMS.append(lambdaXi_term)
+
+# lambdaXiP
+lambdaXiP = Coupling("lambdaXiP", [], is_complex=False, factor="I / (2 Sqrt[2])")
+lambdaXiP_term = (
+    lambdaXiP
+    * Xi("I0").C
+    * Xi("I1")
+    * H("i0").C
+    * sigma("I2", "i0", "-i1")
+    * H("i1")
+    * eps("-I0", "-I1", "-I2")
+)
+TERMS.append(lambdaXiP_term)
