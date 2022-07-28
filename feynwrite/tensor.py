@@ -124,7 +124,11 @@ class Field(Tensor):
     """Tensor representing a Field. An intermediate class wrapping common methods
     and properties of `Scalar`, `Fermion` and `Vector`.
 
-    Fields must receive a hypercharge.
+    Fields must receive a hypercharge. This is always the hypercharge of the
+    field as defined, conjugating the field will not reverse the hypercharge by
+    default. This behaviour is made by choice, so that upon export the
+    hypercharge of the field is never ambiguous. The hypercharge is reversed by
+    hand only when checking whether a `TensorProduct` object is a singlet.
 
     """
 
