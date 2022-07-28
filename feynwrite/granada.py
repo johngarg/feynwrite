@@ -16,6 +16,7 @@ def S() -> Scalar:
     label = "S"
     latex = r"\mathcal{S}"
     tensor = Scalar(label, [], latex=latex, hypercharge=0)
+    tensor.is_self_conj = True
     return tensor
 
 
@@ -48,14 +49,15 @@ def Xi(I) -> Scalar:
     label = "Xi"
     latex = r"\Xi"
     tensor = Scalar(label, [I], latex=latex, hypercharge=0)
+    tensor.is_self_conj = True
     return tensor
 
 
-# def Xi1(i0, i1) -> Tensor:
-#     label = "Xi1"
-#     latex = r"\Xi_{1}"
-#     tensor = Tensor(label, [i0, i1], latex=latex)
-#     return tensor
+def Xi1(I) -> Scalar:
+    label = "Xi1"
+    latex = r"\Xi_{1}"
+    tensor = Scalar(label, [I], latex=latex, hypercharge=1)
+    return tensor
 
 
 # def Theta1(i0, i1, i3) -> Tensor:
@@ -209,19 +211,48 @@ kappaXi_term = kappaXi * H("i0").C * Xi("-I0") * sigma("I0", "i0", "-i1") * H("i
 TERMS.append(kappaXi_term)
 
 # lambdaXi
-lambdaXi = Coupling("lambdaXi", [], is_complex=False, factor="1 / 2")
-lambdaXi_term = lambdaXi * Xi("-I0").C * Xi("I0") * H("i0").C * H("i0")
+lambdaXi = Coupling("lambdaXi", [], is_complex=False)
+lambdaXi_term = lambdaXi * Xi("-I0") * Xi("I0") * H("i0").C * H("i0")
 TERMS.append(lambdaXi_term)
 
-# lambdaXiP
-lambdaXiP = Coupling("lambdaXiP", [], is_complex=False, factor="I / (2 Sqrt[2])")
-lambdaXiP_term = (
-    lambdaXiP
-    * Xi("I0").C
-    * Xi("I1")
+# lambdaXi1
+lambdaXi1 = Coupling("lambdaXi1", [], is_complex=False, factor="1/2")
+lambdaXi1_term = lambdaXi1 * Xi1("-I0").C * Xi1("I0") * H("i0").C * H("i0")
+TERMS.append(lambdaXi1_term)
+
+# lambdaXi1P
+lambdaXi1P = Coupling("lambdaXi1P", [], is_complex=False, factor="I/(2*Sqrt[2])")
+lambdaXi1P_term = (
+    lambdaXi1P
+    * Xi1("I0").C
+    * Xi1("I1")
     * H("i0").C
     * sigma("I2", "i0", "-i1")
     * H("i1")
     * eps("-I0", "-I1", "-I2")
 )
-TERMS.append(lambdaXiP_term)
+TERMS.append(lambdaXi1P_term)
+
+# yXi1
+yXi1 = Coupling("yXi1", "-g0 -g1", is_complex=True)
+yXi1_term = (
+    yXi1
+    * Xi1("-I0").C
+    * L("s0", "i0", "g0").bar
+    * L("s0", "i2", "g1").CC
+    * sigma("I0", "i0", "-i1")
+    * eps("i1", "i2")
+)
+TERMS.append(yXi1_term)
+
+# kappaXi1
+kappaXi1 = Coupling("kappaXi1", [], is_complex=True)
+kappaXi1_term = (
+    kappaXi1
+    * Xi1("-I0").C
+    * H("i0")
+    * eps("-i0", "-i1")
+    * sigma("I0", "i1", "-i2")
+    * H("i2")
+)
+TERMS.append(kappaXi1_term)

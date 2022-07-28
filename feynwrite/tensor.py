@@ -35,6 +35,11 @@ class Tensor:
             indices = indices.split(" ")
         self.indices = indices
 
+        # If initialised with an empty string, make sure self.indices is the
+        # empty list
+        if not indices:
+            self.indices = []
+
         self.latex = latex
         # By default, make latex label the same as string label
         if not latex:
@@ -88,7 +93,8 @@ class Tensor:
 
         reversed_indices = []
         for i in self.indices:
-            if i[0] in dont_reverse:
+            index_type = i[1] if i[0] == "-" else i[0]
+            if index_type in dont_reverse:
                 reversed_indices.append(i)
             else:
                 reversed_indices.append(raise_lower_index(i))
@@ -140,7 +146,10 @@ class Field(Tensor):
     def C(self) -> Tensor:
         if self.is_self_conj:
             return self
-        return super(Field, self).C
+        # Tensor conjugation method
+        conj = super(Field, self).C
+
+        return conj
 
     def feynrules_class_entry(self, count: int) -> List[str]:
         """Return the Wolfram-language code represented the `M$ClassesDescription` of
@@ -258,9 +267,6 @@ class Scalar(Field):
 
     def feynrules_free_terms(self) -> str:
         """Returns a string representing the free-field Lagrangian for the scalar."""
-
-        # TODO Adapt constant factors here for `is_self_conj` case
-
         assert not self.is_sm
 
         indices = self.index_labels + ["mu"]
@@ -427,7 +433,8 @@ class TensorProduct:
         """Returns the sum of the hypercharges of the term."""
         tally = 0
         for f in self.fields:
-            tally += f.hypercharge
+            y = f.hypercharge * (-1 if f.is_conj else 1)
+            tally += y
         return tally
 
 

@@ -28,3 +28,9 @@ def test_conj():
     assert F.is_self_conj
     assert F == F.C
     assert not F.C.is_conj
+
+    Adj = Field("C", ["I0"], hypercharge=1, is_self_conj=False)
+    assert Adj.C.indices == ["I0"]
+
+    AdjP = Field("CP", ["-I0"], hypercharge=1, is_self_conj=False)
+    assert AdjP.C.indices == ["-I0"]
