@@ -2,6 +2,15 @@
 
 Automate the production of FeynRules files.
 
+Currently the library defines a simple domain-specific language related to
+writing down terms in the Lagrangian, which are then exported to the FeynRules
+format. This provides a number of advantages:
+- Reduces boilerplate code often present in FeynRules model files
+- Allows various checks to be done that guarantee the validity of the exported file
+- Defines an extensible and (arguably) simpler input for the terms
+- Allows the `.symm` and `.gauge` files required by `matchmakereft` to be produced automatically for a given model
+- Sets the stage for automating the definition of these terms
+
 
 # Installation
 
@@ -17,5 +26,8 @@ Simply run:
 
 To use it:
 
-    $ feynwrite --help
+    $ feynwrite [MULTIPLET]...
+    
+For help:
 
+    $ feynwrite --help
