@@ -173,7 +173,9 @@ class Field(Tensor):
             f"  , Mass -> M{self.label}",
             f"  , Width -> 0",
             f"  , SelfConjugate -> {self.is_self_conj}",
-            f"  , QuantumNumbers -> {{Y -> {self.hypercharge}}}",
+            f"  , QuantumNumbers -> {{Y -> {self.hypercharge}}}"
+            if not self.is_self_conj
+            else "",
             f"  , Indices -> {{{', '.join(indices)}}}" if indices else "",
             '  , FullName -> "heavy"',
             "}",
