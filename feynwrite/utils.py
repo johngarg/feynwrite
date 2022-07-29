@@ -50,12 +50,14 @@ def sort_index_labels(index_labels: List[str]) -> List[str]:
     return [
         *index_dict[INDICES["lorentz"]],
         *index_dict[INDICES["spinor"]],
-        *index_dict[INDICES["isospin_4"]],
         *index_dict[INDICES["isospin_adjoint"]],
         *index_dict[INDICES["isospin_fundamental"]],
         *index_dict[INDICES["generation"]],
         *index_dict[INDICES["colour_adjoint"]],
         *index_dict[INDICES["colour_fundamental"]],
+        # FIXME C2224 wants isospin_4 index at the end, so fix this way. If we
+        # introduce a 4-plet with colour, this may break.
+        *index_dict[INDICES["isospin_4"]],
     ]
 
 
