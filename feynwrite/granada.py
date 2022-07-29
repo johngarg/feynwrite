@@ -5,7 +5,7 @@
 # Depends on: tensor.py, sm.py
 
 from fractions import Fraction
-from feynwrite.tensor import Coupling, Scalar, eps, delta, sigma
+from feynwrite.tensor import Coupling, Scalar, eps, delta, sigma, c2224
 from feynwrite.sm import L, Q, H, eR, dR, uR
 
 TERMS = []
@@ -60,18 +60,18 @@ def Xi1(I) -> Scalar:
     return tensor
 
 
-# def Theta1(i0, i1, i3) -> Tensor:
-#     label = "Theta1"
-#     latex = r"\Theta_{1}"
-#     tensor = Tensor(label, [i0, i1, i3], latex=latex)
-#     return tensor
+def Theta1(Q) -> Scalar:
+    label = "Theta1"
+    latex = r"\Theta_{1}"
+    tensor = Scalar(label, [Q], latex=latex, hypercharge=Fraction("1/2"))
+    return tensor
 
 
-# def Theta3(i0, i1, i3) -> Tensor:
-#     label = "Theta3"
-#     latex = r"\Theta_{3}"
-#     tensor = Tensor(label, [i0, i1, i3], latex=latex)
-#     return tensor
+def Theta3(Q) -> Scalar:
+    label = "Theta3"
+    latex = r"\Theta_{3}"
+    tensor = Scalar(label, [Q], latex=latex, hypercharge=Fraction("3/2"))
+    return tensor
 
 
 # def omega1(c0) -> Tensor:
@@ -151,48 +151,59 @@ def Xi1(I) -> Scalar:
 #     return tensor
 
 # kappaS
-kappaS = Coupling("kappaS", [], is_complex=False)
-kappaS_term = kappaS * S() * H("i0").C * H("i0")
+kappaS_term = Coupling("kappaS", [], is_complex=False) * S() * H("i0").C * H("i0")
 TERMS.append(kappaS_term)
 
 # lambdaS
-lambdaS = Coupling("lambdaS", [], is_complex=False)
-lambdaS_term = lambdaS * S() * S() * H("i0").C * H("i0")
+lambdaS_term = (
+    Coupling("lambdaS", [], is_complex=False) * S() * S() * H("i0").C * H("i0")
+)
 TERMS.append(lambdaS_term)
 
 # kappaS3
-kappaS3 = Coupling("kappaS3", [], is_complex=False)
-kappaS3_term = kappaS3 * S() * S() * S()
+kappaS3_term = Coupling("kappaS3", [], is_complex=False) * S() * S() * S()
 TERMS.append(kappaS3_term)
 
 # yS1
-yS1 = Coupling("yS1", "-g0 -g1", is_complex=True)
 yS1_term = (
-    yS1 * S1().C * L("s0", "i0", "g0").bar * L("s0", "i1", "g1").CC * eps("i0", "i1")
+    Coupling("yS1", "-g0 -g1", is_complex=True)
+    * S1().C
+    * L("s0", "i0", "g0").bar
+    * L("s0", "i1", "g1").CC
+    * eps("i0", "i1")
 )
 TERMS.append(yS1_term)
 
 # yS2
-yS2 = Coupling("yS2", "-g0 -g1", is_complex=True)
-yS2_term = yS2 * S2().C * eR("s0", "g0").bar * eR("s0", "g1").CC
+yS2_term = (
+    Coupling("yS2", "-g0 -g1", is_complex=True)
+    * S2().C
+    * eR("s0", "g0").bar
+    * eR("s0", "g1").CC
+)
 TERMS.append(yS2_term)
 
 # yvarphie
-yvarphie = Coupling("yvarphie", "-g0 -g1", is_complex=True)
-yvarphie_term = yvarphie * varphi("i0").C * eR("s0", "g0").bar * L("s0", "i0", "g1")
+yvarphie_term = (
+    Coupling("yvarphie", "-g0 -g1", is_complex=True)
+    * varphi("i0").C
+    * eR("s0", "g0").bar
+    * L("s0", "i0", "g1")
+)
 TERMS.append(yvarphie_term)
 
 # yvarphid
-yvarphid = Coupling("yvarphid", "-g0 -g1", is_complex=True)
 yvarphid_term = (
-    yvarphid * varphi("i0").C * dR("s0", "c0", "g0").bar * Q("s0", "c0", "i0", "g1")
+    Coupling("yvarphid", "-g0 -g1", is_complex=True)
+    * varphi("i0").C
+    * dR("s0", "c0", "g0").bar
+    * Q("s0", "c0", "i0", "g1")
 )
 TERMS.append(yvarphid_term)
 
 # yvarphiu
-yvarphiu = Coupling("yvarphiu", "-g0 -g1", is_complex=True)
 yvarphiu_term = (
-    yvarphiu
+    Coupling("yvarphiu", "-g0 -g1", is_complex=True)
     * varphi("i0").C
     * Q("s0", "c0", "i1", "g0").bar
     * uR("s0", "c0", "g1")
@@ -201,29 +212,50 @@ yvarphiu_term = (
 TERMS.append(yvarphiu_term)
 
 # lambdavarphi
-lambdavarphi = Coupling("lambdavarphi", [], is_complex=True)
-lambdavarphi_term = lambdavarphi * varphi("i0").C * H("i0") * H("i1").C * H("i1")
+lambdavarphi_term = (
+    Coupling("lambdavarphi", [], is_complex=True)
+    * varphi("i0").C
+    * H("i0")
+    * H("i1").C
+    * H("i1")
+)
 TERMS.append(lambdavarphi_term)
 
 # kappaXi
-kappaXi = Coupling("kappaXi", [], is_complex=False)
-kappaXi_term = kappaXi * H("i0").C * Xi("-I0") * sigma("I0", "i0", "-i1") * H("i1")
+kappaXi_term = (
+    Coupling("kappaXi", [], is_complex=False)
+    * H("i0").C
+    * Xi("-I0")
+    * sigma("I0", "i0", "-i1")
+    * H("i1")
+)
 TERMS.append(kappaXi_term)
 
 # lambdaXi
-lambdaXi = Coupling("lambdaXi", [], is_complex=False)
-lambdaXi_term = lambdaXi * Xi("-I0") * Xi("I0") * H("i0").C * H("i0")
+lambdaXi_term = (
+    Coupling("lambdaXi", [], is_complex=False)
+    * Xi("-I0")
+    * Xi("I0")
+    * H("i0").C
+    * H("i0")
+)
 TERMS.append(lambdaXi_term)
 
 # lambdaXi1
-lambdaXi1 = Coupling("lambdaXi1", [], is_complex=False, factor="1/2")
-lambdaXi1_term = lambdaXi1 * Xi1("-I0").C * Xi1("I0") * H("i0").C * H("i0")
+lambdaXi1_term = (
+    Coupling("lambdaXi1", [], is_complex=False, factor="1/4")
+    * Xi1("-I0").C
+    * sigma("I0", "i0", "-i1")
+    * Xi1("-I1")
+    * sigma("I1", "i1", "-i0")
+    * H("i2").C
+    * H("i2")
+)
 TERMS.append(lambdaXi1_term)
 
 # lambdaXi1P
-lambdaXi1P = Coupling("lambdaXi1P", [], is_complex=False, factor="I/(2*Sqrt[2])")
 lambdaXi1P_term = (
-    lambdaXi1P
+    Coupling("lambdaXi1P", [], is_complex=False, factor="I/(2*Sqrt[2])")
     * Xi1("I0").C
     * Xi1("I1")
     * H("i0").C
@@ -234,9 +266,8 @@ lambdaXi1P_term = (
 TERMS.append(lambdaXi1P_term)
 
 # yXi1
-yXi1 = Coupling("yXi1", "-g0 -g1", is_complex=True)
 yXi1_term = (
-    yXi1
+    Coupling("yXi1", "-g0 -g1", is_complex=True)
     * Xi1("-I0").C
     * L("s0", "i0", "g0").bar
     * L("s0", "i2", "g1").CC
@@ -246,9 +277,8 @@ yXi1_term = (
 TERMS.append(yXi1_term)
 
 # kappaXi1
-kappaXi1 = Coupling("kappaXi1", [], is_complex=True)
 kappaXi1_term = (
-    kappaXi1
+    Coupling("kappaXi1", [], is_complex=True)
     * Xi1("-I0").C
     * H("i0")
     * eps("-i0", "-i1")
@@ -256,3 +286,28 @@ kappaXi1_term = (
     * H("i2")
 )
 TERMS.append(kappaXi1_term)
+
+# lambdaTheta1
+lambdaTheta1_term = (
+    Coupling("lambdaTheta1", [], is_complex=True)
+    * H("i0").C
+    * H("i1")
+    * H("i2").C
+    * eps("i2", "i3")
+    * c2224("-Q0", "i0", "-i1", "-i3")
+    * Theta1("Q0")
+)
+TERMS.append(lambdaTheta1_term)
+
+# lambdaTheta3
+lambdaTheta3_term = (
+    Coupling("lambdaTheta3", [], is_complex=True)
+    * H("i0").C
+    * H("i1").C
+    * eps("i1", "i4")
+    * H("i2").C
+    * eps("i2", "i3")
+    * c2224("-Q0", "i0", "-i4", "-i3")
+    * Theta3("Q0")
+)
+TERMS.append(lambdaTheta3_term)

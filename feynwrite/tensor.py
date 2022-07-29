@@ -87,6 +87,7 @@ class Tensor:
         dont_reverse = {
             "generation",
             "isospin_adjoint",
+            "isospin_4",
             "colour_adjoint",
         }
         dont_reverse = [INDICES[x] for x in dont_reverse]
@@ -433,7 +434,29 @@ class TensorProduct:
             ]
             masses.append("\n".join(lines))
 
-        return [coupling, *masses]
+        # Add C2224 to params if needed
+        c2224_desc_sentences = [
+            "Matrices for contracting 2x2x2x4 of SU(2).",
+            "Defined as: sigma(I,i,-j)*C(Q,-I,-k)*Eps(-Q, -R) from 1711.10391.",
+        ]
+        c2224_desc = " ".join(c2224_desc_sentences)
+        c2224_param = ""  # Initialise to empty string, since always enters output
+        for t in self.tensors:
+            if t.label == "C2224":
+                lines = [
+                    "C2224 == ",
+                    "{ ParameterType -> Internal",
+                    "  , ComplexParameter -> True ",
+                    "  , Indices -> {Index[SU2D], Index[SU2D], Index[SU2D], Index[SU24]}",
+                    f'  , Description -> "{c2224_desc}"',
+                    "}",
+                ]
+                c2224_param = "\n".join(lines)
+                break
+
+        # In case c2224_param is the empty string
+        output = [coupling, c2224_param, *masses]
+        return [s for s in output if s]
 
     def sum_hypercharges(self) -> Union[Fraction, int]:
         """Returns the sum of the hypercharges of the term."""
@@ -442,6 +465,9 @@ class TensorProduct:
             y = f.hypercharge * (-1 if f.is_conj else 1)
             tally += y
         return tally
+
+    def expand_indices(kind: str, replacements: Dict[str, str]):
+        pass
 
 
 def eps(*indices):
@@ -457,6 +483,12 @@ def eps(*indices):
             assert index[0] != "-"
 
     label = "Eps"
+
+    # For isospin adjoint indices, use fsu2 instead of Eps
+    kind = first[1 if is_lower else 0]
+    if len(indices) == 3 and kind == INDICES["isospin_adjoint"]:
+        label = "fsu2"
+
     tensor = Tensor(label=label, indices=indices)
     tensor.latex = r"\epsilon"
     tensor.is_field = False
@@ -492,5 +524,17 @@ def lambda_(A: str, a: str, b: str):
     label = "2*T"
     tensor = Tensor(label=label, indices=[A, a, b])
     tensor.latex = r"\lambda"
+    tensor.is_field = False
+    return tensor
+
+
+def c2224(Q: str, i: str, j: str, k: str):
+    """[C^Q]^i_{ jk}"""
+    assert i[0] != "-" and j[0] == "-" and k[0] == "-"
+    assert Q[0] == INDICES["isospin_4"] or Q[1] == INDICES["isospin_4"]
+
+    label = "C2224"
+    tensor = Tensor(label=label, indices=[Q, i, j, k])
+    tensor.latex = r"C_{2224}"
     tensor.is_field = False
     return tensor
