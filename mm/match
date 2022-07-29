@@ -2,8 +2,33 @@
 
 import sys
 from matchmakereft.libs.mm_offline import create_model, match_model_to_eft
+from rich import print
 
 model_name = sys.argv[1]
 
 create_model(f"UnbrokenSM_BFM.fr {model_name}.fr")
 match_model_to_eft(f"{model_name}_MM SMEFT_Green_Bpreserving_MM")
+
+with open(f"{model_name}_MM/MatchingProblems.dat", "r") as problems_file:
+    problems_text = problems_file.read()
+    if problems_text.strip() == "problist = {}":
+        print("\n[green]Matching performed without problems![/green] :thumbsup:")
+    elif "ee" in problems_text:
+        print(
+            f"[yellow]Matchmaker reported problems with the matching, but this may be due to gamma_5.[/yellow] :thumbsdown:"
+        )
+    else:
+        print(
+            f"[red]Matchmaker reported problems with the matching.[/red] :thumbsdown:"
+        )
+
+with open(f"{model_name}_MM/MatchingResult.dat", "r") as results_file:
+    results_text = results_file.read()
+    if model_name in results_text.strip():
+        print(
+            f"[green]{model_name} features in the matching results.[/green] :thumbsup:"
+        )
+    else:
+        print(
+            f"[red]{model_name} does not feature in the matching results.[/red] :thumbsdown:"
+        )
