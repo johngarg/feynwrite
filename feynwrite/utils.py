@@ -33,10 +33,7 @@ def wolfram_block(indices: List[str], expr: str, repl: str = "") -> str:
         "Block[",
         "  " + f"{{{','.join(indices)}}}",
         "  ,",
-        "  ExpandIndices[",
-        "    " + expr,
-        "    , FlavorExpand -> {SU2W, SU2D, Generation}",
-        "  ]",
+        "  " + expr,
         f"]{repl};",
     ]
     return "\n".join(lines)
