@@ -26,7 +26,24 @@ def main(multiplets) -> None:
         return
 
     # Check that multiplets are valid
-    valid_multiplets = {"S", "S1", "S2", "varphi", "Xi"}
+    valid_multiplets = {
+        # Colour-singlet scalars
+        "S",
+        "S1",
+        "S2",
+        "varphi",
+        "Xi",
+        "Xi1",
+        "Theta1",
+        "Theta3",
+        # Colour-triplet scalars
+        "omega1",
+        "omega2",
+        "omega4",
+        "Pi1",
+        "Pi7",
+        "zeta",
+    }
     model_labels = []
     for multiplet in multiplets:
         if multiplet not in valid_multiplets:
