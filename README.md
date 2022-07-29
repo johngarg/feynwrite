@@ -9,6 +9,7 @@ format. This provides a number of advantages:
 - Allows various checks to be done that guarantee the validity of the exported file
 - Defines an extensible and (arguably) simpler input for the terms
 - Allows the `.symm` and `.gauge` files required by `matchmakereft` to be produced automatically for a given model
+- Facilitates exporting to another format (*e.g.* Matchete)
 - Sets the stage for automating the definition of these terms
 
 
