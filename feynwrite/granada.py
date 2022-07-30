@@ -74,81 +74,82 @@ def Theta3(Q) -> Scalar:
     return tensor
 
 
-# def omega1(c0) -> Tensor:
-#     label = "omega1"
-#     latex = r"\omega_{1}"
-#     tensor = Tensor(label, [c0], latex=latex)
-#     return tensor
+def omega1(c) -> Scalar:
+    label = "omega1"
+    latex = r"\omega_{1}"
+    tensor = Scalar(label, [c], latex=latex, hypercharge=Fraction("-1/3"))
+    return tensor
 
 
-# def omega2(c0) -> Tensor:
-#     label = "omega2"
-#     latex = r"\omega_{2}"
-#     tensor = Tensor(label, [c0], latex=latex)
-#     return tensor
+def omega2(c) -> Scalar:
+    label = "omega2"
+    latex = r"\omega_{2}"
+    tensor = Scalar(label, [c], latex=latex, hypercharge=Fraction("2/3"))
+    return tensor
 
 
-# def omega4(c0) -> Tensor:
-#     label = "omega4"
-#     latex = r"\omega_{4}"
-#     tensor = Tensor(label, [c0], latex=latex)
-#     return tensor
+def omega4(c) -> Scalar:
+    label = "omega4"
+    latex = r"\omega_{4}"
+    tensor = Scalar(label, [c], latex=latex, hypercharge=Fraction("-4/3"))
+    return tensor
 
 
-# def Pi1(c0, i0) -> Tensor:
-#     label = "Pi1"
-#     latex = r"\Pi_{1}"
-#     tensor = Tensor(label, [c0, i0], latex=latex)
-#     return tensor
+def Pi1(c, i) -> Scalar:
+    label = "Pi1"
+    latex = r"\Pi_{1}"
+    tensor = Scalar(label, [c, i], latex=latex, hypercharge=Fraction("1/6"))
+    return tensor
 
 
-# def Pi7(c0, i0) -> Tensor:
-#     label = "Pi7"
-#     latex = r"\Pi_{7}"
-#     tensor = Tensor(label, [c0, i0], latex=latex)
-#     return tensor
+def Pi7(c, i) -> Scalar:
+    label = "Pi7"
+    latex = r"\Pi_{7}"
+    tensor = Scalar(label, [c, i], latex=latex, hypercharge=Fraction("7/6"))
+    return tensor
 
 
-# def zeta(c0, i0, i1) -> Tensor:
-#     label = "zeta"
-#     latex = r"\zeta"
-#     tensor = Tensor(label, [c0, i0, i1], latex=latex)
-#     return tensor
+def zeta(c, I) -> Scalar:
+    label = "zeta"
+    latex = r"\zeta"
+    tensor = Scalar(label, [c, I], latex=latex, hypercharge=Fraction("-1/3"))
+    return tensor
 
 
-# def Omega1(c0, c1) -> Tensor:
-#     label = "Omega1"
-#     latex = r"\Omega_{1}"
-#     tensor = Tensor(label, [c0, c1], latex=latex)
-#     return tensor
+def Omega1(c0, c1) -> Scalar:
+    label = "Omega1"
+    latex = r"\Omega_{1}"
+    tensor = Scalar(label, [c0, c1], latex=latex, hypercharge=Fraction("1/3"))
+    return tensor
 
 
-# def Omega2(c0, c1) -> Tensor:
-#     label = "Omega2"
-#     latex = r"\Omega_{2}"
-#     tensor = Tensor(label, [c0, c1], latex=latex)
-#     return tensor
+def Omega2(c0, c1) -> Scalar:
+    label = "Omega2"
+    latex = r"\Omega_{2}"
+    tensor = Scalar(label, [c0, c1], latex=latex, hypercharge=Fraction("-2/3"))
+    return tensor
 
 
-# def Omega4(c0, c1) -> Tensor:
-#     label = "Omega4"
-#     latex = r"\Omega_{4}"
-#     tensor = Tensor(label, [c0, c1], latex=latex)
-#     return tensor
+def Omega4(c0, c1) -> Scalar:
+    label = "Omega4"
+    latex = r"\Omega_{4}"
+    tensor = Scalar(label, [c0, c1], latex=latex, hypercharge=Fraction("4/3"))
+    return tensor
 
 
-# def Upsilon(c0, c1, i0, i1) -> Tensor:
-#     label = "Upsilon"
-#     latex = r"\Upsilon"
-#     tensor = Tensor(label, [c0, c1, i0, i1], latex=latex)
-#     return tensor
+def Upsilon(c0, c1, I) -> Scalar:
+    label = "Upsilon"
+    latex = r"\Upsilon"
+    tensor = Scalar(label, [c0, c1, I], latex=latex, hypercharge=Fraction("1/3"))
+    return tensor
 
 
-# def Phi(c0, c1, i0) -> Tensor:
-#     label = "Phi"
-#     latex = r"\Phi"
-#     tensor = Tensor(label, [c0, c1, i0], latex=latex)
-#     return tensor
+def Phi(C, i) -> Scalar:
+    label = "Phi2"  # Use different name here since Phi used for Higgs in SM model file
+    latex = r"\Phi"
+    tensor = Scalar(label, [C, i], latex=latex, hypercharge=Fraction("1/2"))
+    return tensor
+
 
 # kappaS
 kappaS_term = Coupling("kappaS", [], is_complex=False) * S() * H("i0").C * H("i0")
@@ -311,3 +312,82 @@ lambdaTheta3_term = (
     * Theta3("Q0")
 )
 TERMS.append(lambdaTheta3_term)
+
+# yqlomega1
+yqlomega1_term = (
+    Coupling("yqlomega1", ["-g0", "-g1"], is_complex=True)
+    * omega1("c0").C
+    * Q("s0", "c0", "i0", "g0").CC.bar
+    * L("s0", "i1", "g1")
+    * eps("-i0", "-i1")
+)
+TERMS.append(yqlomega1_term)
+
+# yqqomega1
+yqqomega1_term = (
+    Coupling("yqqomega1", ["-g0", "-g1"], is_complex=True)
+    * omega1("c0").C
+    * Q("s0", "c1", "i0", "g0").bar
+    * Q("s0", "c2", "i1", "g1").CC
+    * eps("i0", "i1")
+    * eps("c0", "c1", "c2")
+)
+TERMS.append(yqqomega1_term)
+
+# yeuomega1
+yeuomega1_term = (
+    Coupling("yeuomega1", ["-g0", "-g1"], is_complex=True)
+    * omega1("c0").C
+    * eR("s0", "g0").CC.bar
+    * uR("s0", "c0", "g1")
+)
+TERMS.append(yeuomega1_term)
+
+# yduomega1
+yduomega1_term = (
+    Coupling("yduomega1", ["-g0", "-g1"], is_complex=True)
+    * omega1("c0").C
+    * dR("s0", "c1", "g0").bar
+    * uR("s0", "c2", "g1").CC
+    * eps("c0", "c1", "c2")
+)
+TERMS.append(yduomega1_term)
+
+# yomega2
+yomega2_term = (
+    Coupling("yomega2", ["-g0", "-g1"], is_complex=True)
+    * omega2("c0").C
+    * dR("s0", "c1", "g0").bar
+    * dR("s0", "c2", "g1").CC
+    * eps("c0", "c1", "c2")
+)
+TERMS.append(yomega2_term)
+
+# yPi1
+yPi1_term = (
+    Coupling("yPi1", ["-g0", "-g1"], is_complex=True)
+    * Pi1("c0", "i0").C
+    * eps("i0", "i1")
+    * L("s0", "i1", "g0").bar
+    * dR("s0", "c0", "g1")
+)
+TERMS.append(yPi1_term)
+
+# yluPi7
+yluPi7_term = (
+    Coupling("yluPi7", ["-g0", "-g1"], is_complex=True)
+    * Pi7("c0", "i0").C
+    * eps("i0", "i1")
+    * L("s0", "i1", "g0").bar
+    * uR("s0", "c0", "g1")
+)
+TERMS.append(yluPi7_term)
+
+# yeqPi7
+yeqPi7_term = (
+    Coupling("yeqPi7", ["-g0", "-g1"], is_complex=True)
+    * Pi7("c0", "i0").C
+    * eR("s0", "g0").bar
+    * Q("s0", "c0", "i0", "g1")
+)
+TERMS.append(yeqPi7_term)
