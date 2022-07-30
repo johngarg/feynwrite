@@ -79,3 +79,7 @@ def wolfram_index_map(idx: str):
             return f"Index[{correspondance[k]}]"
 
     raise Exception(f"Unrecognised index {idx}")
+
+
+def wolfram_func_call(func: str, indices: List[str]):
+    return f"{func}[{','.join(indices)}]"

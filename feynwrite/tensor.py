@@ -13,6 +13,7 @@ from feynwrite.utils import (
     wolfram_block,
     sort_index_labels,
     wolfram_index_map,
+    wolfram_func_call,
 )
 
 
@@ -57,8 +58,7 @@ class Tensor:
         assert hasattr(other, "tensors")
         return TensorProduct(self, *other.tensors)
 
-    @property
-    def index_labels(self) -> List[str]:
+    def get_index_labels(self) -> List[str]:
         """Return a list of indices without negative signs for lowered indices."""
         labels = []
         for i in self.indices:
@@ -69,13 +69,28 @@ class Tensor:
             else:
                 labels.append(i)
 
-        return sort_index_labels(labels)
+        return labels
 
-    def wolfram(self) -> str:
-        """Return Wolfram-language form of object."""
+    @property
+    def index_labels(self) -> List[str]:
+        """Return a list of indices without negative signs for lowered indices, sorted
+        as expected by SM model file.
+
+        """
+        return sort_index_labels(self.get_index_labels())
+
+    def wolfram(self, label: str = "", indices: List[str] = []) -> str:
+        """Return Wolfram-language form of object. For flexibility, pass in another
+        label if it's preferable to export that one. This is useful for fermions.
+
+        """
+        if not label:
+            label = self.label
         if not self.index_labels:
-            return self.label
-        return f"{self.label}[{','.join(self.index_labels)}]"
+            return label
+        if not indices:
+            indices = self.index_labels
+        return wolfram_func_call(label, indices)
 
     @property
     def C(self) -> "Tensor":
@@ -118,7 +133,9 @@ class Coupling(Tensor):
         self.factor = factor
 
     def wolfram(self) -> str:
-        return super(Coupling, self).wolfram() + " " + self.factor
+        if self.factor:
+            return super(Coupling, self).wolfram() + " " + self.factor
+        return super(Coupling, self).wolfram()
 
 
 class Field(Tensor):
@@ -155,6 +172,13 @@ class Field(Tensor):
         conj = super(Field, self).C
 
         return conj
+
+    def wolfram(self, label: str = ""):
+        indices = self.index_labels
+        if not self.is_sm:
+            # Unsorted in this case
+            indices = self.get_index_labels()
+        return super(Field, self).wolfram(label=label, indices=indices)
 
     def feynrules_class_entry(self, count: int) -> List[str]:
         """Return the Wolfram-language code represented the `M$ClassesDescription` of
@@ -242,10 +266,7 @@ class Fermion(Field):
         if self.is_dirac_adjoint:
             label = f"anti[{label}]"
 
-        if not self.index_labels:
-            output = label
-        else:
-            output = f"{label}[{','.join(self.index_labels)}]"
+        output = super(Fermion, self).wolfram(label=label)
 
         # For bar, add . for matrix multiplication
         if self.is_dirac_adjoint:
@@ -265,12 +286,7 @@ class Scalar(Field):
         if self.is_conj:
             label = f"anti[{label}]"
 
-        if not self.index_labels:
-            output = label
-        else:
-            output = f"{label}[{','.join(self.index_labels)}]"
-
-        return output
+        return super(Scalar, self).wolfram(label=label)
 
     def feynrules_free_terms(self) -> str:
         """Returns a string representing the free-field Lagrangian for the scalar."""
