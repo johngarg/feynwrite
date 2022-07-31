@@ -43,6 +43,11 @@ def main(multiplets) -> None:
         "Pi1",
         "Pi7",
         "zeta",
+        "Omega1",
+        "Omega2",
+        "Omega4",
+        "Upsilon",
+        "Phi2",
     }
     model_labels = []
     for multiplet in multiplets:
