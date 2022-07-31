@@ -36,11 +36,15 @@ class Model:
         output = f'M$ModelName = "{self.name}";\n\n'
         output += f"M$Information =\n"
         output += f"{{ Date -> {datetime.today().strftime('%Y-%m-%d')} }};\n\n"
-        output += "M$InteractionOrderHierarchy =\n"
-        output += "{ {QCD, 1}\n"
-        output += ", {QED, 2}\n"
-        output += ", {NP, 1}\n"
-        output += "};\n\n"
+        output += "(* Sextet not defined in SM model file *)\n"
+        output += "IndexRange[Index[Sextet]] = Range[6];\n"
+        output += "IndexStyle[Sextet, x];\n"
+        output += "AddGaugeRepresentation[SU3C -> {T6, Sextet}];\n\n"
+        # output += "M$InteractionOrderHierarchy =\n"
+        # output += "{ {QCD, 1}\n"
+        # output += ", {QED, 2}\n"
+        # output += ", {NP, 1}\n"
+        # output += "};\n\n"
         return output
 
     @property

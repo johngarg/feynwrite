@@ -432,7 +432,7 @@ class TensorProduct:
             f"  , Indices -> {{{', '.join(coupling_indices)}}}"
             if coupling_indices
             else "",
-            "  , InteractionOrder -> {NP, 1}",
+            # "  , InteractionOrder -> {NP, 1}",
             f'  , Description -> "Coupling {coupling.label} of {self.__repr__()} interaction"',
             "}",
         ]
@@ -552,5 +552,20 @@ def c2224(Q: str, i: str, j: str, k: str):
     label = "C2224"
     tensor = Tensor(label=label, indices=[Q, i, j, k])
     tensor.latex = r"C_{2224}"
+    tensor.is_field = False
+    return tensor
+
+
+def K(X: str, a: str, b: str):
+    assert X[0] != "-" and a[0] == "-" and b[0] == "-"
+    assert (
+        X[0] == INDICES["colour_6"]
+        and a[1] == INDICES["colour_fundamental"]
+        and b[1] == INDICES["colour_fundamental"]
+    )
+
+    label = "K6"
+    tensor = Tensor(label=label, indices=[X, a, b])
+    tensor.latex = r"K"
     tensor.is_field = False
     return tensor
