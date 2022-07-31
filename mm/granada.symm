@@ -5,4 +5,6 @@ listareplacesymmetry =
 , yS2bar[g0_,g1_] -> yS2bar[g1, g0]
 , yXi1[g0_,g1_] -> yXi1[g1,g0]
 , yXi1bar[g0_,g1_] -> yXi1bar[g1,g0]
+, yomega2[g0_,g1_] -> -yomega2[g1,g0]
+, yomega2bar[g0_,g1_] -> -yomega2bar[g1,g0]
 }
