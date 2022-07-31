@@ -76,7 +76,7 @@ class Model:
         param_block += "\n,  ".join(params)
         param_block += "\n};\n\n"
 
-        count = 100
+        count = 100 - 1
         classes = set()
         for field in self.exotics:
             classes.add(field.feynrules_class_entry(count))
@@ -86,7 +86,7 @@ class Model:
         classes_block += "\n};\n\n"
 
         lagrangian = "(********************* The Lagrangian *********************)\n\n"
-        lagrangian += "gotoBFM={G[a__]->G[a]+GQuantum[a],Wi[a__]->Wi[a]+WiQuantum[a],B[a__]->B[a]+BQuantum[a]};\n\n"
+        lagrangian += "gotoBFM =\n{ G[a__] -> G[a] + GQuantum[a] \n  , Wi[a__] -> Wi[a] + WiQuantum[a] \n  , B[a__] -> B[a] + BQuantum[a] \n};\n\n"
 
         wolfram_term_names = set()
         for field in self.exotics:
