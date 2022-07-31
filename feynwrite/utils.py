@@ -8,6 +8,7 @@ INDICES = {
     "lorentz": "mu",
     "colour_fundamental": "c",
     "colour_adjoint": "C",
+    "colour_6": "X",
     "spinor": "s",
     "isospin_fundamental": "i",
     "isospin_adjoint": "I",
@@ -53,6 +54,7 @@ def sort_index_labels(index_labels: List[str]) -> List[str]:
         *index_dict[INDICES["isospin_adjoint"]],
         *index_dict[INDICES["isospin_fundamental"]],
         *index_dict[INDICES["generation"]],
+        *index_dict[INDICES["colour_6"]],
         *index_dict[INDICES["colour_adjoint"]],
         *index_dict[INDICES["colour_fundamental"]],
         # FIXME C2224 wants isospin_4 index at the end, so fix this way. If we
@@ -69,6 +71,7 @@ def wolfram_index_map(idx: str):
         "generation": "Generation",
         "colour_adjoint": "Gluon",
         "colour_fundamental": "Colour",
+        "colour_6": "Sextet",
     }
 
     if idx[0] == "-":

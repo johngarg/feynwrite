@@ -5,7 +5,7 @@
 # Depends on: tensor.py, sm.py
 
 from fractions import Fraction
-from feynwrite.tensor import Coupling, Scalar, eps, delta, sigma, c2224
+from feynwrite.tensor import Coupling, Scalar, eps, delta, sigma, c2224, K
 from feynwrite.sm import L, Q, H, eR, dR, uR
 
 TERMS = []
@@ -116,31 +116,31 @@ def zeta(c, I) -> Scalar:
     return tensor
 
 
-def Omega1(c0, c1) -> Scalar:
+def Omega1(X) -> Scalar:
     label = "Omega1"
     latex = r"\Omega_{1}"
-    tensor = Scalar(label, [c0, c1], latex=latex, hypercharge=Fraction("1/3"))
+    tensor = Scalar(label, [X], latex=latex, hypercharge=Fraction("1/3"))
     return tensor
 
 
-def Omega2(c0, c1) -> Scalar:
+def Omega2(X) -> Scalar:
     label = "Omega2"
     latex = r"\Omega_{2}"
-    tensor = Scalar(label, [c0, c1], latex=latex, hypercharge=Fraction("-2/3"))
+    tensor = Scalar(label, [X], latex=latex, hypercharge=Fraction("-2/3"))
     return tensor
 
 
-def Omega4(c0, c1) -> Scalar:
+def Omega4(X) -> Scalar:
     label = "Omega4"
     latex = r"\Omega_{4}"
-    tensor = Scalar(label, [c0, c1], latex=latex, hypercharge=Fraction("4/3"))
+    tensor = Scalar(label, [X], latex=latex, hypercharge=Fraction("4/3"))
     return tensor
 
 
-def Upsilon(c0, c1, I) -> Scalar:
+def Upsilon(X, I) -> Scalar:
     label = "Upsilon"
     latex = r"\Upsilon"
-    tensor = Scalar(label, [c0, c1, I], latex=latex, hypercharge=Fraction("1/3"))
+    tensor = Scalar(label, [X, I], latex=latex, hypercharge=Fraction("1/3"))
     return tensor
 
 
@@ -391,3 +391,13 @@ yeqPi7_term = (
     * Q("s0", "c0", "i0", "g1")
 )
 TERMS.append(yeqPi7_term)
+
+# yudOmega1
+yudOmega1_term = (
+    Coupling("yudOmega1", ["-g0", "-g1"], is_complex=True)
+    * Omega1("X0").C
+    * K("X0", "-c0", "-c1")
+    * uR("s0", "c0", "g0").CC.bar
+    * dR("s0", "c1", "g1")
+)
+TERMS.append(yudOmega1_term)
