@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from feynwrite.tensor import TensorProduct, Field, Coupling
+from feynwrite.utils import format_wolfram_list
 
 
 @dataclass
@@ -40,11 +41,6 @@ class Model:
         output += "IndexRange[Index[Sextet]] = Range[6];\n"
         output += "IndexStyle[Sextet, x];\n"
         output += "AddGaugeRepresentation[SU3C -> {T6, Sextet}];\n\n"
-        # output += "M$InteractionOrderHierarchy =\n"
-        # output += "{ {QCD, 1}\n"
-        # output += ", {QED, 2}\n"
-        # output += ", {NP, 1}\n"
-        # output += "};\n\n"
         return output
 
     @property
@@ -72,21 +68,19 @@ class Model:
             for param in term.feynrules_param_entries():
                 params.add(param)
 
-        param_block = "M$Parameters = {\n"
-        param_block += "\n,  ".join(params)
-        param_block += "\n};\n\n"
+        param_block = format_wolfram_list(params, starting_string="M$Parameters =\n")
 
         count = 100 - 1
         classes = set()
         for field in self.exotics:
             classes.add(field.feynrules_class_entry(count))
 
-        classes_block = "M$ClassesDescription = {\n"
-        classes_block += "\n,  ".join(classes)
-        classes_block += "\n};\n\n"
+        classes_block = format_wolfram_list(
+            classes, starting_string="M$ClassesDescription =\n"
+        )
 
         lagrangian = "(********************* The Lagrangian *********************)\n\n"
-        lagrangian += "gotoBFM =\n{ G[a__] -> G[a] + GQuantum[a] \n  , Wi[a__] -> Wi[a] + WiQuantum[a] \n  , B[a__] -> B[a] + BQuantum[a] \n};\n\n"
+        lagrangian += "gotoBFM =\n{ G[a__] -> G[a] + GQuantum[a]\n, Wi[a__] -> Wi[a] + WiQuantum[a]\n, B[a__] -> B[a] + BQuantum[a] \n};\n\n"
 
         wolfram_term_names = set()
         for field in self.exotics:

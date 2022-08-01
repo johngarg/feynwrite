@@ -194,7 +194,7 @@ class Field(Tensor):
 
         lines = [
             f"{spin_label}[{count}] == ",
-            f"{{ ClassName -> {self.label}",
+            f"  {{ ClassName -> {self.label}",
             f"  , Mass -> M{self.label}",
             f"  , Width -> 0",
             f"  , SelfConjugate -> {self.is_self_conj}",
@@ -203,7 +203,7 @@ class Field(Tensor):
             else "",
             f"  , Indices -> {{{', '.join(indices)}}}" if indices else "",
             '  , FullName -> "heavy"',
-            "}",
+            "  }",
         ]
 
         return "\n".join(line for line in lines if line)
@@ -425,16 +425,15 @@ class TensorProduct:
         non_trivial_indices = [c for c in coupling.indices if c]
         coupling_indices = [wolfram_index_map("g")] * len(non_trivial_indices)
         lines = [
-            f"{coupling.label} == ",
-            "{ ParameterType -> Internal",
+            f"{coupling.label} ==",
+            "  { ParameterType -> Internal",
             f"  , ComplexParameter -> {coupling.is_complex}",
             # Don't include `Indices` entry if there are no indices!
             f"  , Indices -> {{{', '.join(coupling_indices)}}}"
             if coupling_indices
             else "",
-            # "  , InteractionOrder -> {NP, 1}",
             f'  , Description -> "Coupling {coupling.label} of {self.__repr__()} interaction"',
-            "}",
+            "  }",
         ]
         # Filter out empty strings
         coupling = "\n".join(line for line in lines if line)
@@ -444,9 +443,9 @@ class TensorProduct:
         for f in self.exotics:
             lines = [
                 f"M{f.label} == ",
-                "{ ParameterType -> Internal",
+                "  { ParameterType -> Internal",
                 f'  , Description -> "{f.label} mass"',
-                "}",
+                "  }",
             ]
             masses.append("\n".join(lines))
 
@@ -461,11 +460,11 @@ class TensorProduct:
             if t.label == "C2224":
                 lines = [
                     "C2224 == ",
-                    "{ ParameterType -> Internal",
+                    "  { ParameterType -> Internal",
                     "  , ComplexParameter -> True ",
                     "  , Indices -> {Index[SU2D], Index[SU2D], Index[SU2D], Index[SU24]}",
                     f'  , Description -> "{c2224_desc}"',
-                    "}",
+                    "  }",
                 ]
                 c2224_param = "\n".join(lines)
                 break

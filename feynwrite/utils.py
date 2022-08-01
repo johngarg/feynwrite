@@ -86,3 +86,12 @@ def wolfram_index_map(idx: str):
 
 def wolfram_func_call(func: str, indices: List[str]):
     return f"{func}[{','.join(indices)}]"
+
+
+def format_wolfram_list(coll, starting_string: str = ""):
+    coll_list = list(coll)
+    coll_list[0] = "{ " + coll_list[0]
+    coll_block = starting_string
+    coll_block += "\n, ".join(coll_list)
+    coll_block += "\n};\n\n"
+    return coll_block
