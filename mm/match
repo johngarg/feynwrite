@@ -1,14 +1,30 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 from matchmakereft.libs.mm_offline import create_model, match_model_to_eft
 from rich import print
 
 model_name = sys.argv[1]
 
+
+def run_and_print(cmd):
+    print(cmd)
+    os.system(cmd)
+
+
+# Run feynwrite
+run_and_print(f"feynwrite {model_name} > {model_name}.fr")
+
+# Copy generic .symm and .gauge files
+run_and_print(f"cp granada.symm {model_name}.symm")
+run_and_print(f"cp granada.gauge {model_name}.gauge")
+
+# Run Matchmaker
 create_model(f"UnbrokenSM_BFM.fr {model_name}.fr")
 match_model_to_eft(f"{model_name}_MM SMEFT_Green_Bpreserving_MM")
 
+# Check output
 with open(f"{model_name}_MM/MatchingProblems.dat", "r") as problems_file:
     problems_text = problems_file.read()
     if problems_text.strip() == "problist = {}":
