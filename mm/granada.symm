@@ -11,4 +11,8 @@ listareplacesymmetry =
 , yomega2bar[g0_,g1_] -> -yomega2bar[g1,g0]
 , yuuomega4[g0_,g1_] -> -yuuomega4[g1,g0]
 , yuuomega4bar[g0_,g1_] -> -yuuomega4bar[g1,g0]
+, yqqOmega1[g0_,g1_] -> -yqqOmega1[g1_,g0_]
+, yqqOmega1bar[g0_,g1_] -> -yqqOmega1bar[g1_,g0_]
+, yOmega2[g0_,g1_] -> yOmega2[g1_,g0_]
+, yOmega2bar[g0_,g1_] -> yOmega2bar[g1_,g0_]
 }
