@@ -9,7 +9,7 @@ model_name = sys.argv[1]
 
 
 def run_and_print(cmd):
-    print(cmd)
+    print("$ " + cmd)
     os.system(cmd)
 
 
