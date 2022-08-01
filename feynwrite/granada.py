@@ -363,6 +363,25 @@ yomega2_term = (
 )
 TERMS.append(yomega2_term)
 
+# yedomega4
+yedomega4_term = (
+    Coupling("yedomega4", ["-g0", "-g1"], is_complex=True)
+    * omega4("c0").C
+    * eR("s0", "g0").CC.bar
+    * dR("s0", "c0", "g1")
+)
+TERMS.append(yedomega4_term)
+
+# yuuomega4
+yuuomega4_term = (
+    Coupling("yuuomega4", ["-g0", "-g1"], is_complex=True)
+    * omega4("c0").C
+    * uR("s0", "c1", "g0").bar
+    * uR("s0", "c2", "g1").CC
+    * eps("c0", "c1", "c2")
+)
+TERMS.append(yuuomega4_term)
+
 # yPi1
 yPi1_term = (
     Coupling("yPi1", ["-g0", "-g1"], is_complex=True)
@@ -392,10 +411,33 @@ yeqPi7_term = (
 )
 TERMS.append(yeqPi7_term)
 
+# yqlzeta
+yqlzeta_term = (
+    Coupling("yqlzeta", ["-g0", "-g1"], is_complex=True)
+    * zeta("c0", "-I0").C
+    * Q("s0", "c0", "i0", "g0").CC.bar
+    * L("s0", "i1", "g1")
+    * eps("-i0", "-i2")
+    * sigma("I0", "i2", "-i1")
+)
+TERMS.append(yqlzeta_term)
+
+# yqqzeta
+yqqzeta_term = (
+    Coupling("yqqzeta", ["-g0", "-g1"], is_complex=True)
+    * zeta("c0", "-I0").C
+    * Q("s0", "c1", "i0", "g0").bar
+    * Q("s0", "c2", "i1", "g1").CC
+    * sigma("I0", "i0", "-i2")
+    * eps("i2", "i1")
+    * eps("c0", "c1", "c2")
+)
+TERMS.append(yqqzeta_term)
+
 # yudOmega1
 yudOmega1_term = (
     Coupling("yudOmega1", ["-g0", "-g1"], is_complex=True)
-    * Omega1("X0").C
+    * Omega1("-X0").C
     * K("X0", "-c0", "-c1")
     * uR("s0", "c0", "g0").CC.bar
     * dR("s0", "c1", "g1")
@@ -406,7 +448,7 @@ TERMS.append(yudOmega1_term)
 # yqqOmega1
 yqqOmega1_term = (
     Coupling("yqqOmega1", ["-g0", "-g1"], is_complex=True)
-    * Omega1("X0").C
+    * Omega1("-X0").C
     * K("X0", "-c0", "-c1")
     * Q("s0", "c0", "i0", "g0").CC.bar
     * Q("s0", "c1", "i1", "g1")
@@ -417,12 +459,24 @@ TERMS.append(yqqOmega1_term)
 # yOmega2
 yOmega2_term = (
     Coupling("yOmega2", ["-g0", "-g1"], is_complex=True)
-    * Omega2("X0").C
+    * Omega2("-X0").C
     * K("X0", "-c0", "-c1")
     * dR("s0", "c0", "g0").CC.bar
     * dR("s0", "c1", "g1")
 )
 TERMS.append(yOmega2_term)
+
+# yUpsilon
+yUpsilon_term = (
+    Coupling("yUpsilon", ["-g0", "-g1"], is_complex=True)
+    * Upsilon("-X0", "-I0").C
+    * Q("s0", "c0", "i0", "g0").CC.bar
+    * Q("s0", "c1", "i1", "g1")
+    * eps("-i0", "-i2")
+    * sigma("I0", "i2", "-i1")
+    * K("X0", "-c0", "-c1")
+)
+TERMS.append(yUpsilon_term)
 
 # yquPhi
 yquPhi_term = (
