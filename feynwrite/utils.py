@@ -16,6 +16,31 @@ INDICES = {
     "generation": "g",
 }
 
+EXTRA_PARAMS = r"""EpsSU3 ==
+  { ParameterType -> Internal
+  , ComplexParameter -> True
+  , Indices -> {Index[Colour], Index[Colour], Index[Colour]}
+  , Description -> "Three-index epsilon symbol for contracting colour triplets into the antitriplet irrep."
+  }
+, T6 ==
+  { ParameterType -> Internal
+  , ComplexParameter -> True
+  , Indices -> {Index[Gluon], Index[Sextet], Index[Sextet]}
+  , Description -> "SU(3) generators in the sextet representation. See Appendix A.3 of 0909.2666."
+  }
+, K6 ==
+  { ParameterType -> Internal
+  , ComplexParameter -> True
+  , Indices -> {Index[Sextet], Index[Colour], Index[Colour]}
+  , Description -> "Matrices for contracting 3x3 into a 6 fo SU(3). See Appendix A.2 of 0909.2666."
+  }
+, C2224 ==
+  { ParameterType -> Internal
+  , ComplexParameter -> True
+  , Indices -> {Index[SU2D], Index[SU2D], Index[SU2D], Index[SU24]}
+  , Description -> "Matrices for contracting 2x2x2x4 of SU(2). Defined as: sigma(I,i,-j)*C(Q,-I,-k)*Eps(-Q, -R) from 1711.10391."
+  }"""
+
 
 def index_generator(label: str):
     max_number_indices = 20
@@ -54,8 +79,8 @@ def sort_index_labels(index_labels: List[str]) -> List[str]:
         *index_dict[INDICES["isospin_adjoint"]],
         *index_dict[INDICES["isospin_fundamental"]],
         *index_dict[INDICES["generation"]],
-        *index_dict[INDICES["colour_6"]],
         *index_dict[INDICES["colour_adjoint"]],
+        *index_dict[INDICES["colour_6"]],
         *index_dict[INDICES["colour_fundamental"]],
         # FIXME C2224 wants isospin_4 index at the end, so fix this way. If we
         # introduce a 4-plet with colour, this may break.

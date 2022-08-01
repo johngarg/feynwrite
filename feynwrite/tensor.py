@@ -104,6 +104,7 @@ class Tensor:
             "isospin_adjoint",
             "isospin_4",
             "colour_adjoint",
+            "colour_6",
         }
         dont_reverse = [INDICES[x] for x in dont_reverse]
 
@@ -416,6 +417,12 @@ class TensorProduct:
     def exotics(self):
         return [f for f in self.fields if not f.is_sm]
 
+    @property
+    def structures(self):
+        return [
+            t for t in self.tensors if not t.is_field and not isinstance(t, Coupling)
+        ]
+
     def feynrules_param_entries(self) -> List[str]:
         """Returns a list of strings representing the `M$Parameters` entries in the FeynRules file."""
         couplings = self.couplings
@@ -449,29 +456,7 @@ class TensorProduct:
             ]
             masses.append("\n".join(lines))
 
-        # Add C2224 to params if needed
-        c2224_desc_sentences = [
-            "Matrices for contracting 2x2x2x4 of SU(2).",
-            "Defined as: sigma(I,i,-j)*C(Q,-I,-k)*Eps(-Q, -R) from 1711.10391.",
-        ]
-        c2224_desc = " ".join(c2224_desc_sentences)
-        c2224_param = ""  # Initialise to empty string, since always enters output
-        for t in self.tensors:
-            if t.label == "C2224":
-                lines = [
-                    "C2224 == ",
-                    "  { ParameterType -> Internal",
-                    "  , ComplexParameter -> True ",
-                    "  , Indices -> {Index[SU2D], Index[SU2D], Index[SU2D], Index[SU24]}",
-                    f'  , Description -> "{c2224_desc}"',
-                    "  }",
-                ]
-                c2224_param = "\n".join(lines)
-                break
-
-        # In case c2224_param is the empty string
-        output = [coupling, c2224_param, *masses]
-        return [s for s in output if s]
+        return [coupling, *masses]
 
     def sum_hypercharges(self) -> Union[Fraction, int]:
         """Returns the sum of the hypercharges of the term."""
@@ -498,6 +483,14 @@ def eps(*indices):
             assert index[0] != "-"
 
     label = "Eps"
+
+    # Get type of indices from first letter
+    kind = first[1 if is_lower else 0]
+
+    # For colour indices, use K3 instead?
+    if len(indices) == 3 and kind == INDICES["colour_fundamental"]:
+        # label = "Sqrt[2]*K3"
+        label = "EpsSU3"
 
     # For isospin adjoint indices, use fsu2 instead of Eps
     kind = first[1 if is_lower else 0]

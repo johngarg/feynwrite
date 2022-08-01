@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from feynwrite.tensor import TensorProduct, Field, Coupling
-from feynwrite.utils import format_wolfram_list
+from feynwrite.utils import format_wolfram_list, EXTRA_PARAMS
 
 
 @dataclass
@@ -68,7 +68,11 @@ class Model:
             for param in term.feynrules_param_entries():
                 params.add(param)
 
-        param_block = format_wolfram_list(params, starting_string="M$Parameters =\n")
+        param_list = list(params)
+        param_list.append(EXTRA_PARAMS)
+        param_block = format_wolfram_list(
+            param_list, starting_string="M$Parameters =\n"
+        )
 
         count = 100 - 1
         classes = set()
