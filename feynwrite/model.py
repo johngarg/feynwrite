@@ -35,7 +35,7 @@ class Model:
     def preamble(self) -> str:
         output = f'M$ModelName = "{self.name}";\n\n'
         output += f"M$Information =\n"
-        output += f"{{ Date -> {datetime.today().strftime('%Y-%m-%d')} }};\n\n"
+        output += f"{{ Date -> \"{datetime.today().strftime('%Y-%m-%d')}\" }};\n\n"
         output += "(* Sextet not defined in SM model file *)\n"
         output += "IndexRange[Index[Sextet]] = Range[6];\n"
         output += "IndexStyle[Sextet, x];\n"
