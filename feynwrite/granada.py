@@ -5,7 +5,7 @@
 # Depends on: tensor.py, sm.py
 
 from fractions import Fraction
-from feynwrite.tensor import Coupling, Scalar, eps, delta, sigma, c2224, K
+from feynwrite.tensor import Coupling, Scalar, eps, delta, sigma, c2224, K, lambda_
 from feynwrite.sm import L, Q, H, eR, dR, uR
 
 TERMS = []
@@ -401,3 +401,50 @@ yudOmega1_term = (
     * dR("s0", "c1", "g1")
 )
 TERMS.append(yudOmega1_term)
+
+
+# yqqOmega1
+yqqOmega1_term = (
+    Coupling("yqqOmega1", ["-g0", "-g1"], is_complex=True)
+    * Omega1("X0").C
+    * K("X0", "-c0", "-c1")
+    * Q("s0", "c0", "i0", "g0").CC.bar
+    * Q("s0", "c1", "i1", "g1")
+    * eps("-i0", "-i1")
+)
+TERMS.append(yqqOmega1_term)
+
+# yOmega2
+yOmega2_term = (
+    Coupling("yOmega2", ["-g0", "-g1"], is_complex=True)
+    * Omega2("X0").C
+    * K("X0", "-c0", "-c1")
+    * dR("s0", "c0", "g0").CC.bar
+    * dR("s0", "c1", "g1")
+)
+TERMS.append(yOmega2_term)
+
+# yquPhi
+yquPhi_term = (
+    # Introduce factor of 1/2 since in paper T_A is used instead of Gell-mann
+    # matrices
+    Coupling("yquPhi", ["-g0", "-g1"], is_complex=True, factor="1/2")
+    * Phi("-C0", "i0").C
+    * Q("s0", "c0", "i1", "g0").bar
+    * uR("s0", "c1", "g1")
+    * eps("i0", "i1")
+    * lambda_("C0", "c0", "-c1")
+)
+TERMS.append(yquPhi_term)
+
+# yqdPhi
+ydqPhi_term = (
+    # Introduce factor of 1/2 since in paper T_A is used instead of Gell-mann
+    # matrices
+    Coupling("ydqPhi", ["-g0", "-g1"], is_complex=True, factor="1/2")
+    * Phi("-C0", "i0").C
+    * dR("s0", "c0", "g0").bar
+    * Q("s0", "c1", "i0", "g1")
+    * lambda_("C0", "c0", "-c1")
+)
+TERMS.append(ydqPhi_term)
