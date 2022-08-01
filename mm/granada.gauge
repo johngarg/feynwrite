@@ -1,21 +1,4 @@
-(*
-We will include the relevant data (structure constants,generators
-and clebsch-gordan) for the following representations:
-
-SU(2):
-structure constants=fsu2 (real)
-representations:Ta=2,Tq=4 For the quartet representation with hypercharge 3/2 we follow 1711.10391
-For the triplet we use C223[i,j,n]=PauliMatrix[n][[i,j]]/2 as in 1412.1837
-OmegaS3={{0,0,1},{0,-1,0},{1,0,0}} matrix needed to get a singlet out of two 3bars of su(2) -or two 3s of su(2)
-
-SU(3):
-structure constants=fsu3
-representations:T=3=(1,0)
-representations:antiT=3bar=(0,1)
-representations:FSU3C=8=(1,1)
-
- *)
-
+(* In addition to the structures provided by Matchmaker, here we include EpsSU3, K6 and T6. These are defined and described in the model files. *)
 
 replacegaugedata =
 { fsu2 -> SparseArray[Automatic, {3, 3, 3}, 0, {1, {{0, 2, 4, 6}, {{2, 3}, {3, 2}, {1, 3}, {3, 1}, {1, 2}, {2, 1}}}, {1, -1, -1, 1, 1, -1}}]
