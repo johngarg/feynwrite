@@ -11,8 +11,25 @@ from typing import List, Set
 from dataclasses import dataclass
 from datetime import datetime
 
-from feynwrite.tensor import TensorProduct, Field, Coupling
+from feynwrite.tensor import Tensor, TensorProduct, Field, Coupling
 from feynwrite.utils import format_wolfram_list, EXTRA_PARAMS
+
+
+def _unique_subcollection(coll: List[TensorProduct], subcoll_name: str) -> List[Tensor]:
+    """Return a list of unique subcoll from coll. For example
+    `_unique_subcollection(coll=terms, subcoll_name="fields")` will return a
+    list of unique fields in the terms.
+
+    """
+    seen = set()
+    output = []
+    for item in coll:
+        for subitem in getattr(item, subcoll_name):
+            if subitem.label in seen:
+                continue
+            seen.add(subitem.label)
+            output.append(subitem)
+    return output
 
 
 @dataclass
@@ -29,6 +46,8 @@ class Model:
     def __init__(self, name: str, terms: List[TensorProduct]):
         self.name = name
         self.terms = terms
+        self.fields = _unique_subcollection(self.terms, "fields")
+        self.couplings = _unique_subcollection(self.terms, "couplings")
 
     def __repr__(self) -> str:
         return f"Model({self.name})"
@@ -44,22 +63,40 @@ class Model:
         return output
 
     @property
-    def fields(self) -> List[Field]:
-        """Return a list of fields present in the model without duplicates."""
-        seen = set()
-        output = []
-        for term in self.terms:
-            for field in term.fields:
-                if field.label in seen:
-                    continue
-                seen.add(field.label)
-                output.append(field)
-        return output
-
-    @property
     def exotics(self) -> List[Field]:
         """Return a list of exotic fields present in the model without duplicates."""
         return [f for f in self.fields if not f.is_sm]
+
+    def export_mmp_config(self) -> str:
+        """Returns a string representing the MatchMakerParser configuration file for the
+        model.
+
+        """
+        sm_couplings = ["yd", "ydbar", "yu", "yubar", "yl", "ylbar"]
+        couplings_with_ranges = []
+        for sm_coupling in sm_couplings:
+            couplings_with_ranges.append(f"{{{sm_coupling}, {{3,3}}}}")
+
+        exotic_params = []
+        # Add masses
+        for exotic in self.exotics:
+            exotic_params.append(f"M{exotic.label}")
+        # Add couplings
+        for coupling in self.couplings:
+            exotic_params.append(coupling.label)
+            exotic_params.append(coupling.label + "bar")
+
+            n_indices = len(coupling.indices)
+            n_f = 3  # FIXME This is hardcoded here
+            dimensions = [str(n_f)] * n_indices
+            dimensions_str = "{" + ",".join(dimensions) + "}"
+
+            couplings_with_ranges.append(f"{{{coupling.label}, {dimensions_str}}}")
+            couplings_with_ranges.append(f"{{{coupling.label}bar, {dimensions_str}}}")
+
+        output = f"DeclareCouplings[{','.join(couplings_with_ranges)}];\n"
+        output += f"DeclareExoticParams[{','.join(exotic_params)}];"
+        return output
 
     def export(self) -> str:
         """Returns a string representing the FeynRules file for the model."""

@@ -16,7 +16,10 @@ help_message = [
 
 @click.command(help=" ".join(help_message))
 @click.argument("multiplets", required=False, nargs=-1)
-def main(multiplets) -> None:
+@click.option(
+    "--mmp-config", is_flag=True, help="Return MatchMakerParser configuration."
+)
+def main(multiplets, mmp_config) -> None:
     """Automate the production of FeynRules files."""
 
     # For a naked call, print help
@@ -72,4 +75,9 @@ def main(multiplets) -> None:
             lagrangian.append(term)
 
     model = Model(model_label, terms=lagrangian)
+
+    if mmp_config:
+        click.echo(model.export_mmp_config())
+        return
+
     click.echo(model.export())
