@@ -87,6 +87,11 @@ class Model:
             exotic_params.append(coupling.label + "bar")
 
             n_indices = len(coupling.indices)
+            # If coupling has not indices, it need not be added to $Couplings in
+            # MatchMakerParser at all
+            if not n_indices:
+                continue
+
             n_f = 3  # FIXME This is hardcoded here
             dimensions = [str(n_f)] * n_indices
             dimensions_str = "{" + ",".join(dimensions) + "}"
