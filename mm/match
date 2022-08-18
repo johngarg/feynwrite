@@ -19,6 +19,7 @@ run_and_print(f"feynwrite {model_name} > {model_name}.fr")
 # Copy generic .symm and .gauge files
 run_and_print(f"cp granada.symm {model_name}.symm")
 run_and_print(f"cp granada.gauge {model_name}.gauge")
+run_and_print(f"cp granada.red {model_name}.red")
 
 # Run Matchmaker
 create_model(f"UnbrokenSM_BFM.fr {model_name}.fr")

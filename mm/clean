@@ -1,4 +1,4 @@
 #!/usr/bin/env fish
 
-find . -mindepth 1 -maxdepth 1 -type f -a ! \( -name 'UnbrokenSM_BFM.fr' -o -name 'granada.symm' -o -name 'granada.gauge' -o -name match -o -name clean \) | xargs rm
+find . -mindepth 1 -maxdepth 1 -type f -a ! \( -name 'UnbrokenSM_BFM.fr' -o -name 'granada.symm' -o -name 'granada.gauge' -o -name 'granada.red' -o -name match -o -name clean \) | xargs rm
 find . -mindepth 1 -maxdepth 1 -type d -a ! \( -name SMEFT_Green_Bpreserving_MM \) | xargs rm -rf
