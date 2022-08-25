@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import pytest
-from feynwrite.tensor import Tensor, TensorProduct, Field
+from feynwrite.tensor import Tensor, TensorProduct, Field, Scalar
 
 
 def test_tensor_indices():
@@ -24,7 +24,7 @@ def test_conj():
     A = Tensor("A", ["i", "j"])
     assert A.C.indices == ["-i", "-j"]
 
-    F = Field("B", [], hypercharge=0, is_self_conj=True)
+    F = Scalar("B", [], hypercharge=0, is_self_conj=True)
     assert F.is_self_conj
     assert F == F.C
     assert not F.C.is_conj

@@ -165,15 +165,6 @@ class Field(Tensor):
         self.is_self_conj = is_self_conj
         self.wolfram_term_name: str = ""
 
-    @property
-    def C(self) -> Tensor:
-        if self.is_self_conj:
-            return self
-        # Tensor conjugation method
-        conj = super(Field, self).C
-
-        return conj
-
     def wolfram(self, label: str = ""):
         indices = self.index_labels
         if not self.is_sm:
@@ -192,6 +183,7 @@ class Field(Tensor):
         spin_label = str(type(self)).split(".")[-1][0]
 
         indices = [wolfram_index_map(idx) for idx in self.indices]
+        indices = [idx for idx in indices if idx != "Index[Spinor]"]
 
         lines = [
             f"{spin_label}[{count}] == ",
@@ -275,10 +267,65 @@ class Fermion(Field):
 
         return output
 
+    def feynrules_free_terms(self) -> str:
+        """Returns a string representing the free-field Lagrangian for the fermion."""
+        assert not self.is_sm
+
+        # We always want the kinetic term to look like `Fbar Ga DC[F]`. Fix this
+        # here by hand
+        if self.is_dirac_adjoint:
+            barred = self.wolfram()
+            not_barred = self.bar.wolfram()
+        else:
+            # Majorana fermion will also enter this branch
+            barred = self.bar.wolfram()
+            not_barred = self.wolfram()
+
+        spinor_indices = [
+            idx for idx in self.index_labels if idx[0] == INDICES["spinor"]
+        ]
+        assert len(spinor_indices) == 1
+        spinor_index = spinor_indices[0]
+
+        new_index = spinor_index + "0"
+        not_barred_new_idx = not_barred.replace(spinor_index, new_index)
+        kinetic = (
+            f"I {barred}Ga[mu,{spinor_index},{new_index}].DC[{not_barred_new_idx}, mu]"
+        )
+        kinetic = f"I {self.label}bar.Ga[mu].DC[{self.label}, mu]"
+        mass = f"M{self.label} {barred}{not_barred}"
+        mass = f"M{self.label} {self.label}bar.{self.label}"
+
+        # Adjust factors for Majorana fermions
+        if self.is_self_conj:
+            kinetic = "1/2 " + kinetic
+            mass = "1/2 " + mass
+
+        expr = f"{kinetic} - {mass}"
+
+        # Keep track of name for model file
+        wolfram_term_name = f"LFree{self.label}"
+        self.wolfram_term_name = wolfram_term_name
+
+        indices = self.index_labels + ["mu", new_index]
+        return f"{wolfram_term_name} :=\n" + wolfram_block(
+            indices, expr, repl="/.gotoBFM"
+        )
+
 
 class Scalar(Field):
     def __init__(self, *args, **kwargs):
         super(Scalar, self).__init__(*args, **kwargs)
+
+    @property
+    def C(self) -> "Scalar":
+        if self.is_self_conj:
+            return self
+
+        # Tensor conjugation method
+        conj = super(Field, self).C
+
+        return conj
 
     def wolfram(self) -> str:
         label = self.label

@@ -51,6 +51,19 @@ def main(multiplets, mmp_config) -> None:
         "Omega4",
         "Upsilon",
         "Phi2",
+        "NR",
+        "E",
+        "Delta1",
+        "Delta3",
+        "Sigma",
+        "Sigma1",
+        "U",
+        "D",
+        "Q1",
+        "Q5",
+        "Q7",
+        "T1",
+        "T2",
     }
     model_labels = []
     for multiplet in multiplets:

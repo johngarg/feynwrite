@@ -97,6 +97,7 @@ def wolfram_index_map(idx: str):
         "colour_adjoint": "Gluon",
         "colour_fundamental": "Colour",
         "colour_6": "Sextet",
+        "spinor": "Spinor",
     }
 
     if idx[0] == "-":

@@ -5,7 +5,17 @@
 # Depends on: tensor.py, sm.py
 
 from fractions import Fraction
-from feynwrite.tensor import Coupling, Scalar, eps, delta, sigma, c2224, K, lambda_
+from feynwrite.tensor import (
+    Coupling,
+    Scalar,
+    Fermion,
+    eps,
+    delta,
+    sigma,
+    c2224,
+    K,
+    lambda_,
+)
 from feynwrite.sm import L, Q, H, eR, dR, uR
 
 TERMS = []
@@ -148,6 +158,97 @@ def Phi(C, i) -> Scalar:
     label = "Phi2"  # Use different name here since Phi used for Higgs in SM model file
     latex = r"\Phi"
     tensor = Scalar(label, [C, i], latex=latex, hypercharge=Fraction("1/2"))
+    return tensor
+
+
+def N(s) -> Fermion:
+    label = "NR"
+    latex = "N"
+    tensor = Fermion(label, [s], latex=latex, hypercharge=0, is_self_conj=True)
+    return tensor
+
+
+def E(s) -> Fermion:
+    label = "E"
+    latex = "E"
+    tensor = Fermion(label, [s], latex=latex, hypercharge=-1)
+    return tensor
+
+
+def Delta1(s, i) -> Fermion:
+    label = "Delta1"
+    latex = r"\Delta_{1}"
+    tensor = Fermion(label, [s, i], latex=latex, hypercharge=Fraction("-1/2"))
+    return tensor
+
+
+def Delta3(s, i) -> Fermion:
+    label = "Delta3"
+    latex = r"\Delta_{3}"
+    tensor = Fermion(label, [s, i], latex=latex, hypercharge=Fraction("-3/2"))
+    return tensor
+
+
+def Sigma(s, I) -> Fermion:
+    label = "Sigma"
+    latex = r"\Sigma"
+    tensor = Fermion(label, [s, I], latex=latex, hypercharge=0, is_self_conj=True)
+    return tensor
+
+
+def Sigma1(s, I) -> Fermion:
+    label = "Sigma1"
+    latex = r"\Sigma_{1}"
+    tensor = Fermion(label, [s, I], latex=latex, hypercharge=-1)
+    return tensor
+
+
+def U(s, a) -> Fermion:
+    label = "U"
+    latex = r"U"
+    tensor = Fermion(label, [s, a], latex=latex, hypercharge=Fraction("2/3"))
+    return tensor
+
+
+def D(s, a) -> Fermion:
+    label = "D"
+    latex = r"D"
+    tensor = Fermion(label, [s, a], latex=latex, hypercharge=Fraction("-1/3"))
+    return tensor
+
+
+def Q1(s, a, i) -> Fermion:
+    label = "Q1"
+    latex = r"Q_{1}"
+    tensor = Fermion(label, [s, a, i], latex=latex, hypercharge=Fraction("1/6"))
+    return tensor
+
+
+def Q5(s, a, i) -> Fermion:
+    label = "Q5"
+    latex = r"Q_{5}"
+    tensor = Fermion(label, [s, a, i], latex=latex, hypercharge=Fraction("-5/6"))
+    return tensor
+
+
+def Q7(s, a, i) -> Fermion:
+    label = "Q7"
+    latex = r"Q_{7}"
+    tensor = Fermion(label, [s, a, i], latex=latex, hypercharge=Fraction("7/6"))
+    return tensor
+
+
+def T1(s, a, I) -> Fermion:
+    label = "T1"
+    latex = r"T_{1}"
+    tensor = Fermion(label, [s, a, I], latex=latex, hypercharge=Fraction("-1/3"))
+    return tensor
+
+
+def T2(s, a, I) -> Fermion:
+    label = "T2"
+    latex = r"T_{2}"
+    tensor = Fermion(label, [s, a, I], latex=latex, hypercharge=Fraction("2/3"))
     return tensor
 
 
@@ -502,3 +603,13 @@ ydqPhi_term = (
     * lambda_("C0", "c0", "-c1")
 )
 TERMS.append(ydqPhi_term)
+
+# lambdaN
+lambdaN_term = (
+    Coupling("lambdaN", ["-g0"], is_complex=True)
+    * N("s0").bar
+    * L("s0", "i1", "g0")
+    * H("i0")
+    * eps("-i0", "-i1")
+)
+TERMS.append(lambdaN_term)
