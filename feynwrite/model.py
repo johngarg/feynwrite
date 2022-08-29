@@ -11,7 +11,7 @@ from typing import List, Set
 from dataclasses import dataclass
 from datetime import datetime
 
-from feynwrite.tensor import Tensor, TensorProduct, Field, Coupling
+from feynwrite.tensor import Tensor, Fermion, TensorProduct, Field, Coupling
 from feynwrite.utils import format_wolfram_list, EXTRA_PARAMS
 
 
@@ -121,6 +121,12 @@ class Model:
         for field in self.exotics:
             count += 1
             classes.add(field.feynrules_class_entry(count))
+            # Add left and right fermions if needed
+            if isinstance(field, Fermion):
+                count += 1
+                classes.add(field.feynrules_class_entry_chiral(count, "L"))
+                count += 1
+                classes.add(field.feynrules_class_entry_chiral(count, "R"))
 
         classes_block = format_wolfram_list(
             classes, starting_string="M$ClassesDescription =\n"
