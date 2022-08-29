@@ -264,12 +264,6 @@ class Fermion(Field):
     def wolfram(self) -> str:
         label = self.label
 
-        # Deal with chirality
-        if self.chirality == "L":
-            label = f"left[{label}]"
-        else:
-            label = f"right[{label}]"
-
         # Deal with charge conjugates and dirac adjoints
         if self.is_charge_conj:
             label = f"CC[{label}]"

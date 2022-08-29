@@ -607,7 +607,7 @@ TERMS.append(ydqPhi_term)
 # lambdaN
 lambdaN_term = (
     Coupling("lambdaN", ["-g0"], is_complex=True)
-    * N("s0").right.bar
+    * N("s0").bar
     * L("s0", "i0", "g0")
     * eps("-i0", "-i1")
     * H("i1")
@@ -617,7 +617,7 @@ TERMS.append(lambdaN_term)
 # lambdaE
 lambdaE_term = (
     Coupling("lambdaE", ["-g0"], is_complex=True)
-    * E("s0").right.bar
+    * E("s0").bar
     * L("s0", "i0", "g0")
     * H("i0").C
 )
@@ -626,7 +626,7 @@ TERMS.append(lambdaE_term)
 # lambdaDelta1
 lambdaDelta1_term = (
     Coupling("lambdaDelta1", ["-g0"], is_complex=True)
-    * Delta1("s0", "i0").left.bar
+    * Delta1("s0", "i0").bar
     * eR("s0", "g0")
     * H("i0")
 )
@@ -635,7 +635,7 @@ TERMS.append(lambdaDelta1_term)
 # lambdaDelta3
 lambdaDelta3_term = (
     Coupling("lambdaDelta3", ["-g0"], is_complex=True)
-    * Delta3("s0", "i0").left.bar
+    * Delta3("s0", "i0").bar
     * eR("s0", "g0")
     * H("i1").C
     * eps("i0", "i1")
@@ -645,7 +645,7 @@ TERMS.append(lambdaDelta3_term)
 # lambdaSigma
 lambdaSigma_term = (
     Coupling("lambdaSigma", ["-g0"], is_complex=True, factor="1/2")
-    * Sigma("s0", "-I0").right.bar
+    * Sigma("s0", "-I0").bar
     * L("s0", "i4", "g0")
     * sigma("I0", "i2", "-i4")
     * H("i3")
@@ -656,7 +656,7 @@ TERMS.append(lambdaSigma_term)
 # lambdaSigma
 lambdaSigma1_term = (
     Coupling("lambdaSigma1", ["-g0"], is_complex=True, factor="1/2")
-    * Sigma1("s0", "-I0").right.bar
+    * Sigma1("s0", "-I0").bar
     * L("s0", "i4", "g0")
     * sigma("I0", "i3", "-i4")
     * H("i3").C
@@ -666,8 +666,8 @@ TERMS.append(lambdaSigma1_term)
 # lambdaNDelta1
 lambdaNDelta1_term = (
     Coupling("lambdaNDelta1", [], is_complex=True)
-    * N("s0").right.CC.bar
-    * Delta1("s0", "i0").right
+    * N("s0").CC.bar
+    * Delta1("s0", "i0")
     * H("i1")
     * eps("-i0", "-i1")
 )
@@ -676,8 +676,8 @@ TERMS.append(lambdaNDelta1_term)
 # lambdaEDelta1
 lambdaEDelta1_term = (
     Coupling("lambdaEDelta1", [], is_complex=True)
-    * E("s0").left.bar
-    * Delta1("s0", "i0").right
+    * E("s0").bar
+    * Delta1("s0", "i0")
     * H("i0").C
 )
 TERMS.append(lambdaEDelta1_term)
