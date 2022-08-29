@@ -5,7 +5,9 @@ import sys
 from matchmakereft.libs.mm_offline import create_model, match_model_to_eft
 from rich import print
 
-model_name = sys.argv[1]
+particle_names = sys.argv[1:]
+model_name = "_".join(particle_names)
+particles = " ".join(particle_names)
 
 
 def run_and_print(cmd):
@@ -14,7 +16,7 @@ def run_and_print(cmd):
 
 
 # Run feynwrite
-run_and_print(f"feynwrite {model_name} > {model_name}.fr")
+run_and_print(f"feynwrite {particles} > {model_name}.fr")
 
 # Copy generic .symm and .gauge files
 run_and_print(f"cp granada.symm {model_name}.symm")
