@@ -9,14 +9,14 @@ from feynwrite.tensor import Scalar, Fermion
 
 
 def L(s, i, g):
-    label = "LL"
+    label = "lL"
     tensor = Fermion(label=label, indices=[s, i, g], hypercharge=Fraction("-1/2"))
     tensor.is_sm = True
     return tensor
 
 
 def Q(s, c, i, g):
-    label = "QL"
+    label = "qL"
     tensor = Fermion(label=label, indices=[s, c, i, g], hypercharge=Fraction("1/6"))
     tensor.is_sm = True
     return tensor
@@ -31,7 +31,7 @@ def H(i):
 
 
 def eR(s, g):
-    label = "LR"
+    label = "eR"
     tensor = Fermion(label=label, indices=[s, g], chirality="R", hypercharge=-1)
     tensor.is_sm = True
     tensor.latex = r"e_{R}"
@@ -39,7 +39,7 @@ def eR(s, g):
 
 
 def dR(s, c, g):
-    label = "DR"
+    label = "dR"
     tensor = Fermion(
         label=label, indices=[s, c, g], chirality="R", hypercharge=Fraction("-1/3")
     )
@@ -49,7 +49,7 @@ def dR(s, c, g):
 
 
 def uR(s, c, g):
-    label = "UR"
+    label = "uR"
     tensor = Fermion(
         label=label, indices=[s, c, g], chirality="R", hypercharge=Fraction("2/3")
     )
