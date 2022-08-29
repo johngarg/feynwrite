@@ -179,7 +179,6 @@ class Field(Tensor):
         """
         assert not self.is_sm
 
-        count += 1
         spin_label = str(type(self)).split(".")[-1][0]
 
         indices = [wolfram_index_map(idx) for idx in self.indices]
@@ -235,6 +234,18 @@ class Fermion(Field):
             self.chirality = "R"
 
     @property
+    def left(self) -> "Fermion":
+        other = deepcopy(self)
+        other.chirality = "L"
+        return other
+
+    @property
+    def right(self) -> "Fermion":
+        other = deepcopy(self)
+        other.chirality = "R"
+        return other
+
+    @property
     def CC(self) -> "Fermion":
         """Lowers only the gauge indices"""
         conj = self.C
@@ -252,6 +263,12 @@ class Fermion(Field):
 
     def wolfram(self) -> str:
         label = self.label
+
+        # Deal with chirality
+        if self.chirality == "L":
+            label = f"left[{label}]"
+        else:
+            label = f"right[{label}]"
 
         # Deal with charge conjugates and dirac adjoints
         if self.is_charge_conj:
