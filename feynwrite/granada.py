@@ -23,7 +23,7 @@ TERMS = []
 
 def S() -> Scalar:
     """(1,1,0)"""
-    label = "S"
+    label = "Granada" + "S"
     latex = r"\mathcal{S}"
     tensor = Scalar(label, [], latex=latex, hypercharge=0)
     tensor.is_self_conj = True
@@ -32,7 +32,7 @@ def S() -> Scalar:
 
 def S1() -> Scalar:
     """(1,1,1)"""
-    label = "S1"
+    label = "Granada" + "S1"
     latex = r"\mathcal{S}_{1}"
     tensor = Scalar(label, [], latex=latex, hypercharge=1)
     return tensor
@@ -40,7 +40,7 @@ def S1() -> Scalar:
 
 def S2() -> Scalar:
     """(1,1,2)"""
-    label = "S2"
+    label = "Granada" + "S2"
     latex = r"\mathcal{S}_{2}"
     tensor = Scalar(label, [], latex=latex, hypercharge=2)
     return tensor
@@ -48,7 +48,7 @@ def S2() -> Scalar:
 
 def varphi(i) -> Scalar:
     """(1,2,1/2)"""
-    label = "varphi"
+    label = "Granada" + "varphi"
     latex = r"\varphi"
     tensor = Scalar(label, [i], latex=latex, hypercharge=Fraction("1/2"))
     return tensor
@@ -56,7 +56,7 @@ def varphi(i) -> Scalar:
 
 def Xi(I) -> Scalar:
     """(1,3,0)"""
-    label = "Xi"
+    label = "Granada" + "Xi"
     latex = r"\Xi"
     tensor = Scalar(label, [I], latex=latex, hypercharge=0)
     tensor.is_self_conj = True
@@ -64,193 +64,195 @@ def Xi(I) -> Scalar:
 
 
 def Xi1(I) -> Scalar:
-    label = "Xi1"
+    label = "Granada" + "Xi1"
     latex = r"\Xi_{1}"
     tensor = Scalar(label, [I], latex=latex, hypercharge=1)
     return tensor
 
 
 def Theta1(Q) -> Scalar:
-    label = "Theta1"
+    label = "Granada" + "Theta1"
     latex = r"\Theta_{1}"
     tensor = Scalar(label, [Q], latex=latex, hypercharge=Fraction("1/2"))
     return tensor
 
 
 def Theta3(Q) -> Scalar:
-    label = "Theta3"
+    label = "Granada" + "Theta3"
     latex = r"\Theta_{3}"
     tensor = Scalar(label, [Q], latex=latex, hypercharge=Fraction("3/2"))
     return tensor
 
 
 def omega1(c) -> Scalar:
-    label = "omega1"
+    label = "Granada" + "omega1"
     latex = r"\omega_{1}"
     tensor = Scalar(label, [c], latex=latex, hypercharge=Fraction("-1/3"))
     return tensor
 
 
 def omega2(c) -> Scalar:
-    label = "omega2"
+    label = "Granada" + "omega2"
     latex = r"\omega_{2}"
     tensor = Scalar(label, [c], latex=latex, hypercharge=Fraction("2/3"))
     return tensor
 
 
 def omega4(c) -> Scalar:
-    label = "omega4"
+    label = "Granada" + "omega4"
     latex = r"\omega_{4}"
     tensor = Scalar(label, [c], latex=latex, hypercharge=Fraction("-4/3"))
     return tensor
 
 
 def Pi1(c, i) -> Scalar:
-    label = "Pi1"
+    label = "Granada" + "Pi1"
     latex = r"\Pi_{1}"
     tensor = Scalar(label, [c, i], latex=latex, hypercharge=Fraction("1/6"))
     return tensor
 
 
 def Pi7(c, i) -> Scalar:
-    label = "Pi7"
+    label = "Granada" + "Pi7"
     latex = r"\Pi_{7}"
     tensor = Scalar(label, [c, i], latex=latex, hypercharge=Fraction("7/6"))
     return tensor
 
 
 def zeta(c, I) -> Scalar:
-    label = "zeta"
+    label = "Granada" + "zeta"
     latex = r"\zeta"
     tensor = Scalar(label, [c, I], latex=latex, hypercharge=Fraction("-1/3"))
     return tensor
 
 
 def Omega1(X) -> Scalar:
-    label = "Omega1"
+    label = "Granada" + "Omega1"
     latex = r"\Omega_{1}"
     tensor = Scalar(label, [X], latex=latex, hypercharge=Fraction("1/3"))
     return tensor
 
 
 def Omega2(X) -> Scalar:
-    label = "Omega2"
+    label = "Granada" + "Omega2"
     latex = r"\Omega_{2}"
     tensor = Scalar(label, [X], latex=latex, hypercharge=Fraction("-2/3"))
     return tensor
 
 
 def Omega4(X) -> Scalar:
-    label = "Omega4"
+    label = "Granada" + "Omega4"
     latex = r"\Omega_{4}"
     tensor = Scalar(label, [X], latex=latex, hypercharge=Fraction("4/3"))
     return tensor
 
 
 def Upsilon(X, I) -> Scalar:
-    label = "Upsilon"
+    label = "Granada" + "Upsilon"
     latex = r"\Upsilon"
     tensor = Scalar(label, [X, I], latex=latex, hypercharge=Fraction("1/3"))
     return tensor
 
 
 def Phi(C, i) -> Scalar:
-    label = "Phi2"  # Use different name here since Phi used for Higgs in SM model file
+    label = "Granada" + "Phi"
     latex = r"\Phi"
     tensor = Scalar(label, [C, i], latex=latex, hypercharge=Fraction("1/2"))
     return tensor
 
 
 def N(s) -> Fermion:
-    label = "NR"
+    label = "Granada" + "N"
     latex = "N"
     tensor = Fermion(label, [s], latex=latex, hypercharge=0, is_self_conj=True)
     return tensor
 
 
 def E(s) -> Fermion:
-    label = "ER"
+    label = "Granada" + "E"
     latex = "E"
     tensor = Fermion(label, [s], latex=latex, hypercharge=-1)
     return tensor
 
 
 def Delta1(s, i) -> Fermion:
-    label = "Delta1"
+    label = "Granada" + "Delta1"
     latex = r"\Delta_{1}"
     tensor = Fermion(label, [s, i], latex=latex, hypercharge=Fraction("-1/2"))
     return tensor
 
 
 def Delta3(s, i) -> Fermion:
-    label = "Delta3"
+    label = "Granada" + "Delta3"
     latex = r"\Delta_{3}"
     tensor = Fermion(label, [s, i], latex=latex, hypercharge=Fraction("-3/2"))
     return tensor
 
 
 def Sigma(s, I) -> Fermion:
-    label = "Sigma"
+    label = "Granada" + "Sigma"
     latex = r"\Sigma"
     tensor = Fermion(label, [s, I], latex=latex, hypercharge=0, is_self_conj=True)
     return tensor
 
 
 def Sigma1(s, I) -> Fermion:
-    label = "Sigma1"
+    label = "Granada" + "Sigma1"
     latex = r"\Sigma_{1}"
     tensor = Fermion(label, [s, I], latex=latex, hypercharge=-1)
     return tensor
 
 
 def U(s, a) -> Fermion:
-    label = "U"
+    label = "Granada" + "U"
     latex = r"U"
     tensor = Fermion(label, [s, a], latex=latex, hypercharge=Fraction("2/3"))
     return tensor
 
 
 def D(s, a) -> Fermion:
-    label = "D"
+    label = "Granada" + "D"
     latex = r"D"
     tensor = Fermion(label, [s, a], latex=latex, hypercharge=Fraction("-1/3"))
     return tensor
 
 
 def Q1(s, a, i) -> Fermion:
-    label = "Q1"
+    label = "Granada" + "Q1"
     latex = r"Q_{1}"
     tensor = Fermion(label, [s, a, i], latex=latex, hypercharge=Fraction("1/6"))
     return tensor
 
 
 def Q5(s, a, i) -> Fermion:
-    label = "Q5"
+    label = "Granada" + "Q5"
     latex = r"Q_{5}"
     tensor = Fermion(label, [s, a, i], latex=latex, hypercharge=Fraction("-5/6"))
     return tensor
 
 
 def Q7(s, a, i) -> Fermion:
-    label = "Q7"
+    label = "Granada" + "Q7"
     latex = r"Q_{7}"
     tensor = Fermion(label, [s, a, i], latex=latex, hypercharge=Fraction("7/6"))
     return tensor
 
 
 def T1(s, a, I) -> Fermion:
-    label = "T1"
+    label = "Granada" + "T1"
     latex = r"T_{1}"
     tensor = Fermion(label, [s, a, I], latex=latex, hypercharge=Fraction("-1/3"))
     return tensor
 
 
 def T2(s, a, I) -> Fermion:
-    label = "T2"
+    label = "Granada" + "T2"
     latex = r"T_{2}"
     tensor = Fermion(label, [s, a, I], latex=latex, hypercharge=Fraction("2/3"))
     return tensor
 
+
+### SCALARS
 
 # kappaS
 kappaS_term = Coupling("kappaS", [], is_complex=False) * S() * H("i0").C * H("i0")
@@ -604,10 +606,14 @@ ydqPhi_term = (
 )
 TERMS.append(ydqPhi_term)
 
+### FERMIONS
+
+## LEPTONS
+
 # lambdaN
 lambdaN_term = (
     Coupling("lambdaN", ["-g0"], is_complex=True)
-    * N("s0").bar
+    * N("s0").right.bar
     * L("s0", "i0", "g0")
     * eps("-i0", "-i1")
     * H("i1")
@@ -617,7 +623,7 @@ TERMS.append(lambdaN_term)
 # lambdaE
 lambdaE_term = (
     Coupling("lambdaE", ["-g0"], is_complex=True)
-    * E("s0").bar
+    * E("s0").right.bar
     * L("s0", "i0", "g0")
     * H("i0").C
 )
@@ -626,7 +632,7 @@ TERMS.append(lambdaE_term)
 # lambdaDelta1
 lambdaDelta1_term = (
     Coupling("lambdaDelta1", ["-g0"], is_complex=True)
-    * Delta1("s0", "i0").bar
+    * Delta1("s0", "i0").left.bar
     * eR("s0", "g0")
     * H("i0")
 )
@@ -635,7 +641,7 @@ TERMS.append(lambdaDelta1_term)
 # lambdaDelta3
 lambdaDelta3_term = (
     Coupling("lambdaDelta3", ["-g0"], is_complex=True)
-    * Delta3("s0", "i0").bar
+    * Delta3("s0", "i0").left.bar
     * eR("s0", "g0")
     * H("i1").C
     * eps("i0", "i1")
@@ -645,7 +651,7 @@ TERMS.append(lambdaDelta3_term)
 # lambdaSigma
 lambdaSigma_term = (
     Coupling("lambdaSigma", ["-g0"], is_complex=True, factor="1/2")
-    * Sigma("s0", "-I0").bar
+    * Sigma("s0", "-I0").right.bar
     * L("s0", "i4", "g0")
     * sigma("I0", "i2", "-i4")
     * H("i3")
@@ -656,7 +662,7 @@ TERMS.append(lambdaSigma_term)
 # lambdaSigma
 lambdaSigma1_term = (
     Coupling("lambdaSigma1", ["-g0"], is_complex=True, factor="1/2")
-    * Sigma1("s0", "-I0").bar
+    * Sigma1("s0", "-I0").right.bar
     * L("s0", "i4", "g0")
     * sigma("I0", "i3", "-i4")
     * H("i3").C
@@ -666,8 +672,8 @@ TERMS.append(lambdaSigma1_term)
 # lambdaNDelta1
 lambdaNDelta1_term = (
     Coupling("lambdaNDelta1", [], is_complex=True)
-    * N("s0").CC.bar
-    * Delta1("s0", "i0")
+    * N("s0").right.CC.bar
+    * Delta1("s0", "i0").right
     * H("i1")
     * eps("-i0", "-i1")
 )
@@ -676,8 +682,20 @@ TERMS.append(lambdaNDelta1_term)
 # lambdaEDelta1
 lambdaEDelta1_term = (
     Coupling("lambdaEDelta1", [], is_complex=True)
-    * E("s0").bar
-    * Delta1("s0", "i0")
+    * E("s0").left.bar
+    * Delta1("s0", "i0").right
     * H("i0").C
 )
 TERMS.append(lambdaEDelta1_term)
+
+## QUARKS
+
+# lambdaU
+lambdaU_term = (
+    Coupling("lambdaU", ["-g0"], is_complex=True)
+    * U("s0", "c0").right.bar
+    * Q("s0", "c0", "i0", "g0")
+    * H("i1")
+    * eps("-i0", "-i1")
+)
+TERMS.append(lambdaU_term)
