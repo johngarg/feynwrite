@@ -116,9 +116,10 @@ class Model:
             param_list, starting_string="M$Parameters =\n"
         )
 
-        count = 100 - 1
+        count = 200 - 1
         classes = set()
         for field in self.exotics:
+            count += 1
             classes.add(field.feynrules_class_entry(count))
 
         classes_block = format_wolfram_list(
