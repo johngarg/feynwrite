@@ -172,7 +172,7 @@ class Field(Tensor):
             indices = self.get_index_labels()
         return super(Field, self).wolfram(label=label, indices=indices)
 
-    def feynrules_class_entry(self, count: int) -> List[str]:
+    def feynrules_class_entry(self, count: int) -> str:
         """Return the Wolfram-language code represented the `M$ClassesDescription` of
         the FeynRules file. This should only be called on an exotic field.
 
@@ -187,7 +187,7 @@ class Field(Tensor):
         lines = [
             f"{spin_label}[{count}] == ",
             f"  {{ ClassName -> {self.label}",
-            f"  , Mass -> M{self.label}",
+            f"  , Mass -> M{self.label.removeprefix('Granada')}",
             f"  , Width -> 0",
             f"  , SelfConjugate -> {self.is_self_conj}",
             f"  , QuantumNumbers -> {{Y -> {self.hypercharge}}}"
@@ -213,14 +213,14 @@ class Fermion(Field):
     def __init__(
         self,
         *args,
-        chirality: str = "L",
+        chirality: str = "D",
         is_charge_conj: bool = False,
         is_dirac_adjoint: bool = False,
         **kwargs,
     ):
         super(Fermion, self).__init__(*args, **kwargs)
         # Chirality
-        assert chirality in {"L", "R"}
+        assert chirality in {"L", "R", "D"}
         self.chirality = chirality
 
         self.is_charge_conj = is_charge_conj
@@ -235,12 +235,14 @@ class Fermion(Field):
 
     @property
     def left(self) -> "Fermion":
+        assert self.chirality == "D"
         other = deepcopy(self)
         other.chirality = "L"
         return other
 
     @property
     def right(self) -> "Fermion":
+        assert self.chirality == "D"
         other = deepcopy(self)
         other.chirality = "R"
         return other
@@ -264,12 +266,17 @@ class Fermion(Field):
     def wolfram(self) -> str:
         label = self.label
 
+        # Deal with chirality
+        if not self.is_sm and self.chirality != "D":
+            label += self.chirality
+
         # Deal with charge conjugates and dirac adjoints
         if self.is_charge_conj:
             label = f"CC[{label}]"
         if self.is_dirac_adjoint:
             label = f"anti[{label}]"
 
+        # Dress label with indices
         output = super(Fermion, self).wolfram(label=label)
 
         # For bar, add . for matrix multiplication
@@ -299,6 +306,44 @@ class Fermion(Field):
         return f"{wolfram_term_name} :=\n" + wolfram_block(
             ["mu"], expr, repl="/.gotoBFM"
         )
+
+    def feynrules_class_entry_chiral(self, count: int, chirality: str) -> str:
+        """Returns the Wolfram-language code for the class entry for the unphysical field
+        picking out the `chirality` component of the fermion.
+
+        For a Majorana fermion X, we default the components to X_R and X_R^c, so
+        asking for the left-handed component
+
+        """
+        assert not self.is_sm
+        assert chirality in {"L", "R"}
+
+        spin_label = str(type(self)).split(".")[-1][0]
+
+        indices = [wolfram_index_map(idx) for idx in self.indices]
+        indices = [idx for idx in indices if idx != "Index[Spinor]"]
+
+        index_label_patterns = [idx + "_" for idx in self.index_labels]
+        index_label_patterns_str = ",".join(index_label_patterns)
+        index_labels_str = ",".join(self.index_labels)
+        projector = "left" if chirality == "L" else "right"
+
+        lines = [
+            f"{spin_label}[{count}] == ",
+            f"  {{ ClassName -> {self.label}{chirality}",
+            f"  , Mass -> M{self.label}",
+            f"  , Width -> 0",
+            f"  , SelfConjugate -> {self.is_self_conj}",
+            f"  , QuantumNumbers -> {{Y -> {self.hypercharge}}}"
+            if not self.is_self_conj
+            else "",
+            f"  , Indices -> {{{', '.join(indices)}}}" if indices else "",
+            f"  , Unphysical -> True",
+            f"  , Definitions -> {{{self.label}{chirality}[{index_label_patterns_str}] :> {projector}[{self.label}[{index_labels_str}]]}}",
+            "  }",
+        ]
+
+        return "\n".join(line for line in lines if line)
 
 
 class Scalar(Field):

@@ -10,14 +10,18 @@ from feynwrite.tensor import Scalar, Fermion
 
 def L(s, i, g):
     label = "LL"
-    tensor = Fermion(label=label, indices=[s, i, g], hypercharge=Fraction("-1/2"))
+    tensor = Fermion(
+        label=label, indices=[s, i, g], hypercharge=Fraction("-1/2"), chirality="L"
+    )
     tensor.is_sm = True
     return tensor
 
 
 def Q(s, c, i, g):
     label = "QL"
-    tensor = Fermion(label=label, indices=[s, c, i, g], hypercharge=Fraction("1/6"))
+    tensor = Fermion(
+        label=label, indices=[s, c, i, g], hypercharge=Fraction("1/6"), chirality="L"
+    )
     tensor.is_sm = True
     return tensor
 
