@@ -699,3 +699,71 @@ lambdaU_term = (
     * eps("-i0", "-i1")
 )
 TERMS.append(lambdaU_term)
+
+# lambdaD
+lambdaD_term = (
+    Coupling("lambdaD", ["-g0"], is_complex=True)
+    * D("s0", "c0").right.bar
+    * Q("s0", "c0", "i0", "g0")
+    * H("i0").C
+)
+TERMS.append(lambdaD_term)
+
+# lambdauQ1
+lambdauQ1_term = (
+    Coupling("lambdauQ1", ["-g0"], is_complex=True)
+    * Q1("s0", "c0", "i0").left.bar
+    * uR("s0", "c0", "g0")
+    * H("i1").C
+    * eps("i0", "i1")
+)
+TERMS.append(lambdauQ1_term)
+
+# lambdadQ1
+lambdadQ1_term = (
+    Coupling("lambdadQ1", ["-g0"], is_complex=True)
+    * Q1("s0", "c0", "i0").left.bar
+    * dR("s0", "c0", "g0")
+    * H("i0")
+)
+TERMS.append(lambdadQ1_term)
+
+# lambdaQ5
+lambdaQ5_term = (
+    Coupling("lambdaQ5", ["-g0"], is_complex=True)
+    * Q5("s0", "c0", "i0").left.bar
+    * dR("s0", "c0", "g0")
+    * H("i1").C
+    * eps("i0", "i1")
+)
+TERMS.append(lambdaQ5_term)
+
+# lambdaQ7
+lambdaQ7_term = (
+    Coupling("lambdaQ7", ["-g0"], is_complex=True)
+    * Q7("s0", "c0", "i0").left.bar
+    * uR("s0", "c0", "g0")
+    * H("i0")
+)
+TERMS.append(lambdaQ7_term)
+
+# lambdaT1
+lambdaT1_term = (
+    Coupling("lambdaT1", ["-g0"], is_complex=True, factor="1/2")
+    * T1("s0", "c0", "-I0").right.bar
+    * Q("s0", "c0", "i0", "g0")
+    * H("i1").C
+    * sigma("I0", "i1", "-i0")
+)
+TERMS.append(lambdaT1_term)
+
+# lambdaT2
+lambdaT2_term = (
+    Coupling("lambdaT2", ["-g0"], is_complex=True, factor="1/2")
+    * T2("s0", "c0", "-I0").right.bar
+    * Q("s0", "c0", "i0", "g0")
+    * H("i1")
+    * eps("-i1", "-i2")
+    * sigma("I0", "i2", "-i0")
+)
+TERMS.append(lambdaT2_term)
