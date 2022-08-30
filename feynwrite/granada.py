@@ -569,6 +569,16 @@ yOmega2_term = (
 )
 TERMS.append(yOmega2_term)
 
+# yOmega4
+yOmega4_term = (
+    Coupling("yOmega4", ["-g0", "-g1"], is_complex=True)
+    * Omega4("-X0").C
+    * K("X0", "-c0", "-c1")
+    * uR("s0", "c0", "g0").CC.bar
+    * uR("s0", "c1", "g1")
+)
+TERMS.append(yOmega4_term)
+
 # yUpsilon
 yUpsilon_term = (
     Coupling("yUpsilon", ["-g0", "-g1"], is_complex=True)
