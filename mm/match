@@ -43,11 +43,12 @@ with open(f"{model_name}_MM/MatchingProblems.dat", "r") as problems_file:
 
 with open(f"{model_name}_MM/MatchingResult.dat", "r") as results_file:
     results_text = results_file.read()
-    if model_name in results_text.strip():
+    mass_name = "M" + model_name.removeprefix("Granada")
+    if mass_name in results_text.strip():
         print(
-            f"[green]{model_name} features in the matching results.[/green] :thumbsup:"
+            f"[green]{mass_name} features in the matching results.[/green] :thumbsup:"
         )
     else:
         print(
-            f"[red]{model_name} does not feature in the matching results.[/red] :thumbsdown:"
+            f"[red]{mass_name} does not feature in the matching results.[/red] :thumbsdown:"
         )
