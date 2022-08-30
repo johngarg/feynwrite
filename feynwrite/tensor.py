@@ -164,6 +164,7 @@ class Field(Tensor):
         self.hypercharge = hypercharge
         self.is_self_conj = is_self_conj
         self.wolfram_term_name: str = ""
+        self.mass_label = self.label.removeprefix("Granada")
 
     def wolfram(self, label: str = ""):
         indices = self.index_labels
@@ -187,7 +188,7 @@ class Field(Tensor):
         lines = [
             f"{spin_label}[{count}] == ",
             f"  {{ ClassName -> {self.label}",
-            f"  , Mass -> M{self.label.removeprefix('Granada')}",
+            f"  , Mass -> M{self.mass_label}",
             f"  , Width -> 0",
             f"  , SelfConjugate -> {self.is_self_conj}",
             f"  , QuantumNumbers -> {{Y -> {self.hypercharge}}}"
@@ -290,7 +291,7 @@ class Fermion(Field):
         assert not self.is_sm
 
         kinetic = f"I {self.label}bar.Ga[mu].DC[{self.label}, mu]"
-        mass = f"M{self.label} {self.label}bar.{self.label}"
+        mass = f"M{self.mass_label} {self.label}bar.{self.label}"
 
         # Adjust factors for Majorana fermions
         if self.is_self_conj:
@@ -331,7 +332,7 @@ class Fermion(Field):
         lines = [
             f"{spin_label}[{count}] == ",
             f"  {{ ClassName -> {self.label}{chirality}",
-            f"  , Mass -> M{self.label}",
+            f"  , Mass -> M{self.mass_label}",
             f"  , Width -> 0",
             f"  , SelfConjugate -> {self.is_self_conj}",
             f"  , QuantumNumbers -> {{Y -> {self.hypercharge}}}"
@@ -529,7 +530,7 @@ class TensorProduct:
         masses = []
         for f in self.exotics:
             lines = [
-                f"M{f.label} == ",
+                f"M{f.mass_label} == ",
                 "  { ParameterType -> Internal",
                 f'  , Description -> "{f.label} mass"',
                 "  }",
