@@ -698,6 +698,15 @@ lambdaEDelta1_term = (
 )
 TERMS.append(lambdaEDelta1_term)
 
+# lambdaEDelta1Prime
+lambdaEDelta1Prime_term = (
+    Coupling("lambdaEDelta1Prime", [], is_complex=True)
+    * E("s0").right.bar
+    * Delta1("s0", "i0").left
+    * H("i0").C
+)
+TERMS.append(lambdaEDelta1Prime_term)
+
 ## QUARKS
 
 # lambdaU
