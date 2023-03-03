@@ -19,11 +19,22 @@ help_message = [
 @click.option(
     "--mmp-config", is_flag=True, help="Return MatchMakerParser configuration."
 )
-def main(multiplets, mmp_config) -> None:
+@click.option(
+    "--latex", is_flag=True, help="Output model in LaTeX format."
+)
+@click.option(
+    "-a", is_flag=True, help="Produce output for all valid multiplets."
+)
+@click.option(
+    "--scalars", is_flag=True, help="Produce output for all valid scalars."
+)
+@click.option(
+    "--fermions", is_flag=True, help="Produce output for all valid fermions."
+)
+def main(multiplets, mmp_config, latex, a, scalars, fermions) -> None:
     """Automate the production of FeynRules files."""
 
-    # For a naked call, print help
-    if not multiplets:
+    if not a and not fermions and not scalars and not multiplets:
         ctx = click.get_current_context()
         click.echo(ctx.get_help())
         return
@@ -67,6 +78,51 @@ def main(multiplets, mmp_config) -> None:
     }
     valid_multiplets = {"Granada" + f for f in valid_multiplets}
     model_labels = []
+
+    if scalars:
+        multiplets = [
+        "S",
+        "S1",
+        "S2",
+        "varphi",
+        "Xi",
+        "Xi1",
+        "Theta1",
+        "Theta3",
+        "omega1",
+        "omega2",
+        "omega4",
+        "Pi1",
+        "Pi7",
+        "zeta",
+        "Omega1",
+        "Omega2",
+        "Omega4",
+        "Upsilon",
+        "Phi",
+        ]
+    if fermions:
+        multiplets = [
+        "N",
+        "E",
+        "Delta1",
+        "Delta3",
+        "Sigma",
+        "Sigma1",
+        "U",
+        "D",
+        "Q1",
+        "Q5",
+        "Q7",
+        "T1",
+        "T2",
+            ]
+    if fermions or scalars:
+        multiplets = ["Granada" + f for f in multiplets]
+
+    if a:
+        multiplets = valid_multiplets
+
     for multiplet in multiplets:
         if multiplet not in valid_multiplets:
             raise Exception(
@@ -94,4 +150,8 @@ def main(multiplets, mmp_config) -> None:
         click.echo(model.export_mmp_config())
         return
 
-    click.echo(model.export())
+    if latex:
+        click.echo(model.export_latex())
+        return
+
+    click.echo(model.export_feynrules())

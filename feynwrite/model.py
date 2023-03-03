@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from feynwrite.tensor import Tensor, Fermion, TensorProduct, Field, Coupling
-from feynwrite.utils import format_wolfram_list, EXTRA_PARAMS
+from feynwrite.utils import format_wolfram_list, format_latex_eqn, EXTRA_PARAMS
 
 
 def _unique_subcollection(coll: List[TensorProduct], subcoll_name: str) -> List[Tensor]:
@@ -38,7 +38,7 @@ class Model:
     interaction Lagrangian. Models should have a `name` that is written to the
     FeynRules file.
 
-    The main role of the class is to provide the `export` method, which prints
+    The main role of the class is to provide the `export_feynrules` method, which prints
     the FeynRules file associated with the model.
 
     """
@@ -51,6 +51,10 @@ class Model:
 
     def __repr__(self) -> str:
         return f"Model({self.name})"
+
+    def export_latex(self) -> str:
+        latex_terms = [t.get_latex() for t in self.terms]
+        return format_latex_eqn(latex_terms, lhs="\\mathcal{L}")
 
     def preamble(self) -> str:
         output = f'M$ModelName = "{self.name}";\n\n'
@@ -103,7 +107,7 @@ class Model:
         output += f"DeclareExoticParams[{','.join(exotic_params)}];"
         return output
 
-    def export(self) -> str:
+    def export_feynrules(self) -> str:
         """Returns a string representing the FeynRules file for the model."""
         params = set()
         for term in self.terms:

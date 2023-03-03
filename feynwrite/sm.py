@@ -14,6 +14,7 @@ def L(s, i, g):
         label=label, indices=[s, i, g], hypercharge=Fraction("-1/2"), chirality="L"
     )
     tensor.is_sm = True
+    tensor.latex = "L"
     return tensor
 
 
@@ -23,6 +24,7 @@ def Q(s, c, i, g):
         label=label, indices=[s, c, i, g], hypercharge=Fraction("1/6"), chirality="L"
     )
     tensor.is_sm = True
+    tensor.latex = "Q"
     return tensor
 
 
@@ -31,6 +33,7 @@ def H(i):
     label = "Phi"
     tensor = Scalar(label=label, indices=[i], hypercharge=Fraction("1/2"))
     tensor.is_sm = True
+    tensor.latex = "H"
     return tensor
 
 

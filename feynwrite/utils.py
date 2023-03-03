@@ -121,3 +121,23 @@ def format_wolfram_list(coll, starting_string: str = ""):
     coll_block += "\n, ".join(coll_list)
     coll_block += "\n};\n\n"
     return coll_block
+
+def format_latex_eqn(coll, lhs: str = ""):
+    output_string = "\\begin{align}\n"
+
+    indent = "  "
+    output_string += lhs + " &= " + coll[0]
+    for latex_string in coll[1:]:
+        output_string += indent + "& \\quad + " + latex_string + "\\\\ \n"
+
+    output_string += "\\end{align}"
+
+    return output_string
+
+def sympy_to_mathematica(expr) -> str:
+    """Convert sympy expression to string in Mathematica format."""
+    return str(expr)\
+        .replace("**", "^")\
+        .replace("sqrt", "Sqrt")\
+        .replace("(", "[")\
+        .replace(")", "]")

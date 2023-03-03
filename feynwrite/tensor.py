@@ -6,6 +6,7 @@ from fractions import Fraction
 from typing import List, Union, Dict
 from dataclasses import dataclass
 from copy import deepcopy
+import sympy
 
 from feynwrite.utils import (
     INDICES,
@@ -14,6 +15,7 @@ from feynwrite.utils import (
     sort_index_labels,
     wolfram_index_map,
     wolfram_func_call,
+    sympy_to_mathematica
 )
 
 
@@ -41,10 +43,35 @@ class Tensor:
         if not indices:
             self.indices = []
 
-        self.latex = latex
         # By default, make latex label the same as string label
-        if not latex:
-            self.latex = label
+        self.latex = latex if latex else label
+
+    def get_latex(self, base_latex=None) -> str:
+        """Return LaTeX form of object. If base_latex is passed, use that instead. This
+        is useful for dealing with conjugates.
+
+        """
+        if base_latex is None:
+            base_latex = self.latex
+
+        if not self.indices:
+            return base_latex
+
+        lower_indices, upper_indices = [], []
+        for i in self.indices:
+            if i[0] == "-":
+                lower_indices.append(i[1:])
+            else:
+                upper_indices.append(i)
+
+        lower_indices_string = "" if not lower_indices else f"_{{{' '.join(lower_indices)}}}"
+        upper_indices_string = "" if not upper_indices else f"^{{{' '.join(upper_indices)}}}"
+
+        base = f"{{{base_latex}}}"
+        if self.is_field and (lower_indices or upper_indices):
+            base = f"({base_latex})"
+
+        return base + lower_indices_string + upper_indices_string
 
     @property
     def tensors(self) -> List["Tensor"]:
@@ -133,9 +160,13 @@ class Coupling(Tensor):
         # dictionary. Upon export `coupling -> coupling * coupling.factor`.
         self.factor = factor
 
+    def get_latex(self) -> str:
+        factor = sympy.latex(self.factor) if self.factor else ""
+        return factor + " " + super(Coupling, self).get_latex()
+
     def wolfram(self) -> str:
         if self.factor:
-            return super(Coupling, self).wolfram() + " " + self.factor
+            return super(Coupling, self).wolfram() + " " + sympy_to_mathematica(self.factor)
         return super(Coupling, self).wolfram()
 
 
@@ -165,6 +196,14 @@ class Field(Tensor):
         self.is_self_conj = is_self_conj
         self.wolfram_term_name: str = ""
         self.mass_label = self.label.removeprefix("Granada")
+
+    def get_latex(self) -> str:
+        # Maybe add dagger to base latex
+        base_latex = self.latex
+        if self.is_conj:
+            base_latex += "^\\dagger"
+
+        return super(Field, self).get_latex(base_latex=base_latex)
 
     def wolfram(self, label: str = ""):
         indices = self.index_labels
@@ -226,6 +265,16 @@ class Fermion(Field):
 
         self.is_charge_conj = is_charge_conj
         self.is_dirac_adjoint = is_dirac_adjoint
+
+    def get_latex(self) -> str:
+        # Maybe add bar or charge conjugate to base latex
+        base_latex = self.latex
+        if self.is_dirac_adjoint:
+            base_latex = f"\\overline{{{base_latex}}}"
+        if self.is_charge_conj:
+            base_latex = "{" + base_latex + "^{C}}"
+
+        return super(Field, self).get_latex(base_latex=base_latex)
 
     def flip_chirality(self) -> None:
         """Flip the chirality of the fermion by side-effect."""
@@ -459,8 +508,8 @@ class TensorProduct:
     def __repr__(self):
         return "*".join([t.__repr__() for t in self.tensors])
 
-    def latex(self):
-        return " ".join(t.latex for t in self.tensors)
+    def get_latex(self):
+        return " ".join(t.get_latex() for t in self.tensors)
 
     def wolfram(self):
         output = ""

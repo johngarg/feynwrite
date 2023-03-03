@@ -5,6 +5,7 @@
 # Depends on: tensor.py, sm.py
 
 from fractions import Fraction
+from sympy import sqrt, I, Rational
 from feynwrite.tensor import (
     Coupling,
     Scalar,
@@ -255,22 +256,22 @@ def T2(s, a, I) -> Fermion:
 ### SCALARS
 
 # kappaS
-kappaS_term = Coupling("kappaS", [], is_complex=False) * S() * H("i0").C * H("i0")
+kappaS_term = Coupling("kappaS", [], is_complex=False, latex="\\kappa_{\\mathcal{S}}") * S() * H("i0").C * H("i0")
 TERMS.append(kappaS_term)
 
 # lambdaS
 lambdaS_term = (
-    Coupling("lambdaS", [], is_complex=False) * S() * S() * H("i0").C * H("i0")
+    Coupling("lambdaS", [], is_complex=False, latex="\\lambda_{\\mathcal{S}}") * S() * S() * H("i0").C * H("i0")
 )
 TERMS.append(lambdaS_term)
 
 # kappaS3
-kappaS3_term = Coupling("kappaS3", [], is_complex=False) * S() * S() * S()
+kappaS3_term = Coupling("kappaS3", [], is_complex=False, latex="\\kappa_{\\mathcal{S}3}") * S() * S() * S()
 TERMS.append(kappaS3_term)
 
 # yS1
 yS1_term = (
-    Coupling("yS1", "-g0 -g1", is_complex=True)
+    Coupling("yS1", "-g0 -g1", is_complex=True, latex="[y_{\\mathcal{S}_1}]")
     * S1().C
     * L("s0", "i0", "g0").bar
     * L("s0", "i1", "g1").CC
@@ -280,7 +281,7 @@ TERMS.append(yS1_term)
 
 # yS2
 yS2_term = (
-    Coupling("yS2", "-g0 -g1", is_complex=True)
+    Coupling("yS2", "-g0 -g1", is_complex=True, latex="[y_{\\mathcal{S}_2}]")
     * S2().C
     * eR("s0", "g0").bar
     * eR("s0", "g1").CC
@@ -289,7 +290,7 @@ TERMS.append(yS2_term)
 
 # yvarphie
 yvarphie_term = (
-    Coupling("yvarphie", "-g0 -g1", is_complex=True)
+    Coupling("yvarphie", "-g0 -g1", is_complex=True, latex="[y_{\\varphi e}]")
     * varphi("i0").C
     * eR("s0", "g0").bar
     * L("s0", "i0", "g1")
@@ -298,7 +299,7 @@ TERMS.append(yvarphie_term)
 
 # yvarphid
 yvarphid_term = (
-    Coupling("yvarphid", "-g0 -g1", is_complex=True)
+    Coupling("yvarphid", "-g0 -g1", is_complex=True, latex="[y_{\\varphi d}]")
     * varphi("i0").C
     * dR("s0", "c0", "g0").bar
     * Q("s0", "c0", "i0", "g1")
@@ -307,7 +308,7 @@ TERMS.append(yvarphid_term)
 
 # yvarphiu
 yvarphiu_term = (
-    Coupling("yvarphiu", "-g0 -g1", is_complex=True)
+    Coupling("yvarphiu", "-g0 -g1", is_complex=True, latex="[y_{\\varphi u}]")
     * varphi("i0").C
     * Q("s0", "c0", "i1", "g0").bar
     * uR("s0", "c0", "g1")
@@ -317,7 +318,7 @@ TERMS.append(yvarphiu_term)
 
 # lambdavarphi
 lambdavarphi_term = (
-    Coupling("lambdavarphi", [], is_complex=True)
+    Coupling("lambdavarphi", [], is_complex=True, latex="\\lambda_{\\varphi}")
     * varphi("i0").C
     * H("i0")
     * H("i1").C
@@ -327,7 +328,7 @@ TERMS.append(lambdavarphi_term)
 
 # kappaXi
 kappaXi_term = (
-    Coupling("kappaXi", [], is_complex=False)
+    Coupling("kappaXi", [], is_complex=False, latex="\\kappa_{\\Xi}")
     * H("i0").C
     * Xi("-I0")
     * sigma("I0", "i0", "-i1")
@@ -337,7 +338,7 @@ TERMS.append(kappaXi_term)
 
 # lambdaXi
 lambdaXi_term = (
-    Coupling("lambdaXi", [], is_complex=False)
+    Coupling("lambdaXi", [], is_complex=False, latex="\\lambda_{\\Xi}")
     * Xi("-I0")
     * Xi("I0")
     * H("i0").C
@@ -347,7 +348,7 @@ TERMS.append(lambdaXi_term)
 
 # lambdaXi1
 lambdaXi1_term = (
-    Coupling("lambdaXi1", [], is_complex=False, factor="1/4")
+    Coupling("lambdaXi1", [], is_complex=False, factor=Rational("1/4"), latex="\\lambda_{\\Xi_1}")
     * Xi1("-I0").C
     * sigma("I0", "i0", "-i1")
     * Xi1("-I1")
@@ -359,7 +360,7 @@ TERMS.append(lambdaXi1_term)
 
 # lambdaXi1P
 lambdaXi1P_term = (
-    Coupling("lambdaXi1P", [], is_complex=False, factor="I/(2*Sqrt[2])")
+    Coupling("lambdaXi1P", [], is_complex=False, factor=I/(2*sqrt(2)), latex="{\\lambda_{\\Xi_1}^\\prime}")
     * Xi1("I0").C
     * Xi1("I1")
     * H("i0").C
@@ -371,7 +372,7 @@ TERMS.append(lambdaXi1P_term)
 
 # yXi1
 yXi1_term = (
-    Coupling("yXi1", "-g0 -g1", is_complex=True)
+    Coupling("yXi1", "-g0 -g1", is_complex=True, latex="[y_{\\Xi_1}]")
     * Xi1("-I0").C
     * L("s0", "i0", "g0").bar
     * L("s0", "i2", "g1").CC
@@ -382,7 +383,7 @@ TERMS.append(yXi1_term)
 
 # kappaXi1
 kappaXi1_term = (
-    Coupling("kappaXi1", [], is_complex=True)
+    Coupling("kappaXi1", [], is_complex=True, latex="\\kappa_{\\Xi_1}")
     * Xi1("-I0").C
     * H("i0")
     * eps("-i0", "-i1")
@@ -393,7 +394,7 @@ TERMS.append(kappaXi1_term)
 
 # lambdaTheta1
 lambdaTheta1_term = (
-    Coupling("lambdaTheta1", [], is_complex=True)
+    Coupling("lambdaTheta1", [], is_complex=True, latex="\\lambda_{\\Theta_1}")
     * H("i0").C
     * H("i1")
     * H("i2").C
@@ -405,7 +406,7 @@ TERMS.append(lambdaTheta1_term)
 
 # lambdaTheta3
 lambdaTheta3_term = (
-    Coupling("lambdaTheta3", [], is_complex=True)
+    Coupling("lambdaTheta3", [], is_complex=True, latex="\\lambda_{\\Theta_3}")
     * H("i0").C
     * H("i1").C
     * eps("i1", "i4")
@@ -418,7 +419,7 @@ TERMS.append(lambdaTheta3_term)
 
 # yqlomega1
 yqlomega1_term = (
-    Coupling("yqlomega1", ["-g0", "-g1"], is_complex=True)
+    Coupling("yqlomega1", ["-g0", "-g1"], is_complex=True, latex="[y_{q\\ell \\Omega_1}]")
     * omega1("c0").C
     * Q("s0", "c0", "i0", "g0").CC.bar
     * L("s0", "i1", "g1")
@@ -428,7 +429,7 @@ TERMS.append(yqlomega1_term)
 
 # yqqomega1
 yqqomega1_term = (
-    Coupling("yqqomega1", ["-g0", "-g1"], is_complex=True)
+    Coupling("yqqomega1", ["-g0", "-g1"], is_complex=True, latex="[y_{qq \\Omega_1}]")
     * omega1("c0").C
     * Q("s0", "c1", "i0", "g0").bar
     * Q("s0", "c2", "i1", "g1").CC
@@ -439,7 +440,7 @@ TERMS.append(yqqomega1_term)
 
 # yeuomega1
 yeuomega1_term = (
-    Coupling("yeuomega1", ["-g0", "-g1"], is_complex=True)
+    Coupling("yeuomega1", ["-g0", "-g1"], is_complex=True, latex="[y_{e u \\Omega_1}]")
     * omega1("c0").C
     * eR("s0", "g0").CC.bar
     * uR("s0", "c0", "g1")
@@ -448,7 +449,7 @@ TERMS.append(yeuomega1_term)
 
 # yduomega1
 yduomega1_term = (
-    Coupling("yduomega1", ["-g0", "-g1"], is_complex=True)
+    Coupling("yduomega1", ["-g0", "-g1"], is_complex=True, latex="[y_{d u \\Omega_1}]")
     * omega1("c0").C
     * dR("s0", "c1", "g0").bar
     * uR("s0", "c2", "g1").CC
@@ -458,7 +459,7 @@ TERMS.append(yduomega1_term)
 
 # yomega2
 yomega2_term = (
-    Coupling("yomega2", ["-g0", "-g1"], is_complex=True)
+    Coupling("yomega2", ["-g0", "-g1"], is_complex=True, latex="[y_{\\Omega_2}]")
     * omega2("c0").C
     * dR("s0", "c1", "g0").bar
     * dR("s0", "c2", "g1").CC
@@ -468,7 +469,7 @@ TERMS.append(yomega2_term)
 
 # yedomega4
 yedomega4_term = (
-    Coupling("yedomega4", ["-g0", "-g1"], is_complex=True)
+    Coupling("yedomega4", ["-g0", "-g1"], is_complex=True, latex="[y_{e d \\Omega_4}]")
     * omega4("c0").C
     * eR("s0", "g0").CC.bar
     * dR("s0", "c0", "g1")
@@ -477,7 +478,7 @@ TERMS.append(yedomega4_term)
 
 # yuuomega4
 yuuomega4_term = (
-    Coupling("yuuomega4", ["-g0", "-g1"], is_complex=True)
+    Coupling("yuuomega4", ["-g0", "-g1"], is_complex=True, latex="[y_{u u \\Omega_4}]")
     * omega4("c0").C
     * uR("s0", "c1", "g0").bar
     * uR("s0", "c2", "g1").CC
@@ -487,7 +488,7 @@ TERMS.append(yuuomega4_term)
 
 # yPi1
 yPi1_term = (
-    Coupling("yPi1", ["-g0", "-g1"], is_complex=True)
+    Coupling("yPi1", ["-g0", "-g1"], is_complex=True, latex="[y_{\\Pi_1}]")
     * Pi1("c0", "i0").C
     * eps("i0", "i1")
     * L("s0", "i1", "g0").bar
@@ -497,7 +498,7 @@ TERMS.append(yPi1_term)
 
 # yluPi7
 yluPi7_term = (
-    Coupling("yluPi7", ["-g0", "-g1"], is_complex=True)
+    Coupling("yluPi7", ["-g0", "-g1"], is_complex=True, latex="[y_{\\ell u \\Pi_7}]")
     * Pi7("c0", "i0").C
     * eps("i0", "i1")
     * L("s0", "i1", "g0").bar
@@ -507,7 +508,7 @@ TERMS.append(yluPi7_term)
 
 # yeqPi7
 yeqPi7_term = (
-    Coupling("yeqPi7", ["-g0", "-g1"], is_complex=True)
+    Coupling("yeqPi7", ["-g0", "-g1"], is_complex=True, latex="[y_{e q \\Pi_7}]")
     * Pi7("c0", "i0").C
     * eR("s0", "g0").bar
     * Q("s0", "c0", "i0", "g1")
@@ -516,7 +517,7 @@ TERMS.append(yeqPi7_term)
 
 # yqlzeta
 yqlzeta_term = (
-    Coupling("yqlzeta", ["-g0", "-g1"], is_complex=True)
+    Coupling("yqlzeta", ["-g0", "-g1"], is_complex=True, latex="[y_{q\\ell \\zeta}]")
     * zeta("c0", "-I0").C
     * Q("s0", "c0", "i0", "g0").CC.bar
     * L("s0", "i1", "g1")
@@ -527,7 +528,7 @@ TERMS.append(yqlzeta_term)
 
 # yqqzeta
 yqqzeta_term = (
-    Coupling("yqqzeta", ["-g0", "-g1"], is_complex=True)
+    Coupling("yqqzeta", ["-g0", "-g1"], is_complex=True, latex="[y_{qq \\zeta}]")
     * zeta("c0", "-I0").C
     * Q("s0", "c1", "i0", "g0").bar
     * Q("s0", "c2", "i1", "g1").CC
@@ -539,7 +540,7 @@ TERMS.append(yqqzeta_term)
 
 # yudOmega1
 yudOmega1_term = (
-    Coupling("yudOmega1", ["-g0", "-g1"], is_complex=True)
+    Coupling("yudOmega1", ["-g0", "-g1"], is_complex=True, latex="[y_{u d \\Omega_1}]")
     * Omega1("-X0").C
     * K("X0", "-c0", "-c1")
     * uR("s0", "c0", "g0").CC.bar
@@ -550,7 +551,7 @@ TERMS.append(yudOmega1_term)
 
 # yqqOmega1
 yqqOmega1_term = (
-    Coupling("yqqOmega1", ["-g0", "-g1"], is_complex=True)
+    Coupling("yqqOmega1", ["-g0", "-g1"], is_complex=True, latex="[y_{q q \\Omega_1}]")
     * Omega1("-X0").C
     * K("X0", "-c0", "-c1")
     * Q("s0", "c0", "i0", "g0").CC.bar
@@ -561,7 +562,7 @@ TERMS.append(yqqOmega1_term)
 
 # yOmega2
 yOmega2_term = (
-    Coupling("yOmega2", ["-g0", "-g1"], is_complex=True)
+    Coupling("yOmega2", ["-g0", "-g1"], is_complex=True, latex="[y_{\\Omega_2}]")
     * Omega2("-X0").C
     * K("X0", "-c0", "-c1")
     * dR("s0", "c0", "g0").CC.bar
@@ -571,7 +572,7 @@ TERMS.append(yOmega2_term)
 
 # yOmega4
 yOmega4_term = (
-    Coupling("yOmega4", ["-g0", "-g1"], is_complex=True)
+    Coupling("yOmega4", ["-g0", "-g1"], is_complex=True, latex="[y_{\\Omega_4}]")
     * Omega4("-X0").C
     * K("X0", "-c0", "-c1")
     * uR("s0", "c0", "g0").CC.bar
@@ -581,7 +582,7 @@ TERMS.append(yOmega4_term)
 
 # yUpsilon
 yUpsilon_term = (
-    Coupling("yUpsilon", ["-g0", "-g1"], is_complex=True)
+    Coupling("yUpsilon", ["-g0", "-g1"], is_complex=True, latex="[y_{\\Upsilon}]")
     * Upsilon("-X0", "-I0").C
     * Q("s0", "c0", "i0", "g0").CC.bar
     * Q("s0", "c1", "i1", "g1")
@@ -595,7 +596,7 @@ TERMS.append(yUpsilon_term)
 yquPhi_term = (
     # Introduce factor of 1/2 since in paper T_A is used instead of Gell-mann
     # matrices
-    Coupling("yquPhi", ["-g0", "-g1"], is_complex=True, factor="1/2")
+    Coupling("yquPhi", ["-g0", "-g1"], is_complex=True, factor=Rational("1/2"), latex="[y_{q u \\Phi}]")
     * Phi("-C0", "i0").C
     * Q("s0", "c0", "i1", "g0").bar
     * uR("s0", "c1", "g1")
@@ -608,7 +609,7 @@ TERMS.append(yquPhi_term)
 ydqPhi_term = (
     # Introduce factor of 1/2 since in paper T_A is used instead of Gell-mann
     # matrices
-    Coupling("ydqPhi", ["-g0", "-g1"], is_complex=True, factor="1/2")
+    Coupling("ydqPhi", ["-g0", "-g1"], is_complex=True, factor=Rational("1/2"), latex="[y_{q d \\Phi}]")
     * Phi("-C0", "i0").C
     * dR("s0", "c0", "g0").bar
     * Q("s0", "c1", "i0", "g1")
@@ -622,7 +623,7 @@ TERMS.append(ydqPhi_term)
 
 # lambdaN
 lambdaN_term = (
-    Coupling("lambdaN", ["-g0"], is_complex=True)
+    Coupling("lambdaN", ["-g0"], is_complex=True, latex="\\lambda_N")
     * N("s0").right.bar
     * L("s0", "i0", "g0")
     * eps("-i0", "-i1")
@@ -632,7 +633,7 @@ TERMS.append(lambdaN_term)
 
 # lambdaE
 lambdaE_term = (
-    Coupling("lambdaE", ["-g0"], is_complex=True)
+    Coupling("lambdaE", ["-g0"], is_complex=True, latex="\\lambda_E")
     * E("s0").right.bar
     * L("s0", "i0", "g0")
     * H("i0").C
@@ -641,7 +642,7 @@ TERMS.append(lambdaE_term)
 
 # lambdaDelta1
 lambdaDelta1_term = (
-    Coupling("lambdaDelta1", ["-g0"], is_complex=True)
+    Coupling("lambdaDelta1", ["-g0"], is_complex=True, latex="\\lambda_{\\Delta_1}")
     * Delta1("s0", "i0").left.bar
     * eR("s0", "g0")
     * H("i0")
@@ -650,7 +651,7 @@ TERMS.append(lambdaDelta1_term)
 
 # lambdaDelta3
 lambdaDelta3_term = (
-    Coupling("lambdaDelta3", ["-g0"], is_complex=True)
+    Coupling("lambdaDelta3", ["-g0"], is_complex=True, latex="\\lambda_{\\Delta_3}")
     * Delta3("s0", "i0").left.bar
     * eR("s0", "g0")
     * H("i1").C
@@ -660,7 +661,7 @@ TERMS.append(lambdaDelta3_term)
 
 # lambdaSigma
 lambdaSigma_term = (
-    Coupling("lambdaSigma", ["-g0"], is_complex=True, factor="1/2")
+    Coupling("lambdaSigma", ["-g0"], is_complex=True, factor=Rational("1/2"), latex="\\lambda_{\\Sigma}")
     * Sigma("s0", "-I0").right.bar
     * L("s0", "i4", "g0")
     * sigma("I0", "i2", "-i4")
@@ -671,7 +672,7 @@ TERMS.append(lambdaSigma_term)
 
 # lambdaSigma
 lambdaSigma1_term = (
-    Coupling("lambdaSigma1", ["-g0"], is_complex=True, factor="1/2")
+    Coupling("lambdaSigma1", ["-g0"], is_complex=True, factor=Rational("1/2"), latex="\\lambda_{\\Sigma_1}")
     * Sigma1("s0", "-I0").right.bar
     * L("s0", "i4", "g0")
     * sigma("I0", "i3", "-i4")
@@ -681,7 +682,7 @@ TERMS.append(lambdaSigma1_term)
 
 # lambdaNDelta1
 lambdaNDelta1_term = (
-    Coupling("lambdaNDelta1", [], is_complex=True)
+    Coupling("lambdaNDelta1", [], is_complex=True, latex="\\lambda_{N \\Delta_1}")
     * N("s0").right.CC.bar
     * Delta1("s0", "i0").right
     * H("i1")
@@ -689,9 +690,19 @@ lambdaNDelta1_term = (
 )
 TERMS.append(lambdaNDelta1_term)
 
+# lambdaNDelta1
+lambdaNDelta1Prime_term = (
+    Coupling("lambdaNDelta1Prime", [], is_complex=True, latex="{\\lambda_{N \\Delta_1}^\\prime}")
+    * Delta1("s0", "i0").left.bar
+    * N("s0").right
+    * H("i1").C
+    * eps("-i0", "-i1")
+)
+TERMS.append(lambdaNDelta1Prime_term)
+
 # lambdaEDelta1
 lambdaEDelta1_term = (
-    Coupling("lambdaEDelta1", [], is_complex=True)
+    Coupling("lambdaEDelta1", [], is_complex=True, latex="\\lambda_{E \\Delta_1}")
     * E("s0").left.bar
     * Delta1("s0", "i0").right
     * H("i0").C
@@ -700,7 +711,7 @@ TERMS.append(lambdaEDelta1_term)
 
 # lambdaEDelta1Prime
 lambdaEDelta1Prime_term = (
-    Coupling("lambdaEDelta1Prime", [], is_complex=True)
+    Coupling("lambdaEDelta1Prime", [], is_complex=True, latex="{\\lambda_{E \\Delta_1}^\\prime}")
     * E("s0").right.bar
     * Delta1("s0", "i0").left
     * H("i0").C
@@ -711,7 +722,7 @@ TERMS.append(lambdaEDelta1Prime_term)
 
 # lambdaU
 lambdaU_term = (
-    Coupling("lambdaU", ["-g0"], is_complex=True)
+    Coupling("lambdaU", ["-g0"], is_complex=True, latex="\\lambda_U")
     * U("s0", "c0").right.bar
     * Q("s0", "c0", "i0", "g0")
     * H("i1")
@@ -721,7 +732,7 @@ TERMS.append(lambdaU_term)
 
 # lambdaD
 lambdaD_term = (
-    Coupling("lambdaD", ["-g0"], is_complex=True)
+    Coupling("lambdaD", ["-g0"], is_complex=True, latex="\\lambda_D")
     * D("s0", "c0").right.bar
     * Q("s0", "c0", "i0", "g0")
     * H("i0").C
@@ -730,7 +741,7 @@ TERMS.append(lambdaD_term)
 
 # lambdauQ1
 lambdauQ1_term = (
-    Coupling("lambdauQ1", ["-g0"], is_complex=True)
+    Coupling("lambdauQ1", ["-g0"], is_complex=True, latex="\\lambda_{u Q_1}")
     * Q1("s0", "c0", "i0").left.bar
     * uR("s0", "c0", "g0")
     * H("i1").C
@@ -740,7 +751,7 @@ TERMS.append(lambdauQ1_term)
 
 # lambdadQ1
 lambdadQ1_term = (
-    Coupling("lambdadQ1", ["-g0"], is_complex=True)
+    Coupling("lambdadQ1", ["-g0"], is_complex=True, latex="\\lambda_{d Q_1}")
     * Q1("s0", "c0", "i0").left.bar
     * dR("s0", "c0", "g0")
     * H("i0")
@@ -749,7 +760,7 @@ TERMS.append(lambdadQ1_term)
 
 # lambdaQ5
 lambdaQ5_term = (
-    Coupling("lambdaQ5", ["-g0"], is_complex=True)
+    Coupling("lambdaQ5", ["-g0"], is_complex=True, latex="\\lambda_{Q_5}")
     * Q5("s0", "c0", "i0").left.bar
     * dR("s0", "c0", "g0")
     * H("i1").C
@@ -759,7 +770,7 @@ TERMS.append(lambdaQ5_term)
 
 # lambdaQ7
 lambdaQ7_term = (
-    Coupling("lambdaQ7", ["-g0"], is_complex=True)
+    Coupling("lambdaQ7", ["-g0"], is_complex=True, latex="\\lambda_{Q_7}")
     * Q7("s0", "c0", "i0").left.bar
     * uR("s0", "c0", "g0")
     * H("i0")
@@ -768,7 +779,7 @@ TERMS.append(lambdaQ7_term)
 
 # lambdaT1
 lambdaT1_term = (
-    Coupling("lambdaT1", ["-g0"], is_complex=True, factor="1/2")
+    Coupling("lambdaT1", ["-g0"], is_complex=True, factor=Rational("1/2"), latex="\\lambda_{T_1}")
     * T1("s0", "c0", "-I0").right.bar
     * Q("s0", "c0", "i0", "g0")
     * H("i1").C
@@ -778,7 +789,7 @@ TERMS.append(lambdaT1_term)
 
 # lambdaT2
 lambdaT2_term = (
-    Coupling("lambdaT2", ["-g0"], is_complex=True, factor="1/2")
+    Coupling("lambdaT2", ["-g0"], is_complex=True, factor=Rational("1/2"), latex="\\lambda_{T_2}")
     * T2("s0", "c0", "-I0").right.bar
     * Q("s0", "c0", "i0", "g0")
     * H("i1")
