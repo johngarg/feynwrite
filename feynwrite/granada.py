@@ -168,6 +168,12 @@ def N(s) -> Fermion:
     tensor = Fermion(label, [s], latex=latex, hypercharge=0, is_self_conj=True)
     return tensor
 
+def ND(s) -> Fermion:
+    """Dirac fermion (1,1,0) with imposed fermion-number symmetry."""
+    label = "Granada" + "ND"
+    latex = "N_D"
+    tensor = Fermion(label, [s], latex=latex, hypercharge=0, is_self_conj=False)
+    return tensor
 
 def E(s) -> Fermion:
     label = "Granada" + "E"
@@ -194,6 +200,13 @@ def Sigma(s, I) -> Fermion:
     label = "Granada" + "Sigma"
     latex = r"\Sigma"
     tensor = Fermion(label, [s, I], latex=latex, hypercharge=0, is_self_conj=True)
+    return tensor
+
+def SigmaD(s, I) -> Fermion:
+    """Dirac fermion (1,3,0) with imposed fermion-number symmetry."""
+    label = "Granada" + "SigmaD"
+    latex = r"\Sigma_D"
+    tensor = Fermion(label, [s, I], latex=latex, hypercharge=0, is_self_conj=False)
     return tensor
 
 
@@ -680,23 +693,23 @@ lambdaSigma1_term = (
 )
 TERMS.append(lambdaSigma1_term)
 
-# lambdaNDelta1
+# lambdaNDelta1: Typo in 1711.10391?
 lambdaNDelta1_term = (
     Coupling("lambdaNDelta1", [], is_complex=True, latex="\\lambda_{N \\Delta_1}")
     * N("s0").right.CC.bar
     * Delta1("s0", "i0").right
     * H("i1")
-    * eps("-i0", "-i1")
+    * eps("-i1", "-i0")
 )
 TERMS.append(lambdaNDelta1_term)
 
-# lambdaNDelta1
+# lambdaNDelta1Prime
 lambdaNDelta1Prime_term = (
     Coupling("lambdaNDelta1Prime", [], is_complex=True, latex="{\\lambda_{N \\Delta_1}^\\prime}")
-    * Delta1("s0", "i0").left.bar
-    * N("s0").right
-    * H("i1").C
-    * eps("-i0", "-i1")
+    * N("s0").right.bar
+    * Delta1("s0", "i0").left
+    * H("i1")
+    * eps("-i1", "-i0")
 )
 TERMS.append(lambdaNDelta1Prime_term)
 
@@ -718,6 +731,90 @@ lambdaEDelta1Prime_term = (
 )
 TERMS.append(lambdaEDelta1Prime_term)
 
+# lambdaEDelta3
+lambdaEDelta3_term = (
+    Coupling("lambdaEDelta3", [], is_complex=True, latex="\\lambda_{E \\Delta_3}")
+    * E("s0").left.bar
+    * Delta3("s0", "i0").right
+    * H("i1")
+    * eps("-i1", "-i0")
+)
+TERMS.append(lambdaEDelta3_term)
+
+# lambdaEDelta3Prime
+lambdaEDelta3Prime_term = (
+    Coupling("lambdaEDelta3Prime", [], is_complex=True, latex="{\\lambda_{E \\Delta_3}^\\prime}")
+    * E("s0").right.bar
+    * Delta3("s0", "i0").left
+    * H("i1")
+    * eps("-i1", "-i0")
+)
+TERMS.append(lambdaEDelta3Prime_term)
+
+# lambdaSigmaDelta1
+lambdaSigmaDelta1_term = (
+    Coupling("lambdaSigmaDelta1", [], is_complex=True, factor=Rational("1/2"), latex="{\\lambda_{\\Sigma \\Delta_1}}")
+    * Sigma("s0", "-I0").right.CC.bar
+    * Delta1("s0", "i0").right
+    * sigma("I0", "i1", "-i0")
+    * H("i2")
+    * eps("-i2", "-i1")
+)
+TERMS.append(lambdaSigmaDelta1_term)
+
+# lambdaSigmaDelta1Prime
+lambdaSigmaDelta1Prime_term = (
+    Coupling("lambdaSigmaDelta1Prime", [], is_complex=True, factor=Rational("1/2"), latex="{\\lambda_{\\Sigma \\Delta_1}^{\\prime}}")
+    * Sigma("s0", "-I0").right.bar
+    * Delta1("s0", "i0").left
+    * sigma("I0", "i1", "-i0")
+    * H("i2")
+    * eps("-i2", "-i1")
+)
+TERMS.append(lambdaSigmaDelta1Prime_term)
+
+# lambdaSigma1Delta1
+lambdaSigma1Delta1_term = (
+    Coupling("lambdaSigma1Delta1", [], is_complex=True, factor=Rational("1/2"), latex="\\lambda_{\\Sigma_1 \\Delta_1}")
+    * Sigma1("s0", "-I0").left.bar
+    * Delta1("s0", "i0").right
+    * sigma("I0", "i1", "-i0")
+    * H("i1").C
+)
+TERMS.append(lambdaSigma1Delta1_term)
+
+# lambdaSigma1Delta1Prime
+lambdaSigma1Delta1Prime_term = (
+    Coupling("lambdaSigma1Delta1Prime", [], is_complex=True, factor=Rational("1/2"), latex="{\\lambda_{\\Sigma_1 \\Delta_1}^{\\prime}}")
+    * Sigma1("s0", "-I0").right.bar
+    * Delta1("s0", "i0").left
+    * sigma("I0", "i1", "-i0")
+    * H("i1").C
+)
+TERMS.append(lambdaSigma1Delta1Prime_term)
+
+# lambdaSigma1Delta3
+lambdaSigma1Delta3_term = (
+    Coupling("lambdaSigma1Delta3", [], is_complex=True, factor=Rational("1/2"), latex="\\lambda_{\\Sigma_1 \\Delta_1}")
+    * Sigma1("s0", "-I0").left.bar
+    * Delta3("s0", "i0").right
+    * sigma("I0", "i1", "-i0")
+    * H("i2")
+    * eps("-i2", "-i1")
+)
+TERMS.append(lambdaSigma1Delta3_term)
+
+# lambdaSigma1Delta3Prime
+lambdaSigma1Delta3Prime_term = (
+    Coupling("lambdaSigma1Delta3Prime", [], is_complex=True, factor=Rational("1/2"), latex="{\\lambda_{\\Sigma_1 \\Delta_1}^{\\prime}}")
+    * Sigma1("s0", "-I0").right.bar
+    * Delta3("s0", "i0").left
+    * sigma("I0", "i1", "-i0")
+    * H("i2")
+    * eps("-i2", "-i1")
+)
+TERMS.append(lambdaSigma1Delta3Prime_term)
+
 ## QUARKS
 
 # lambdaU
@@ -726,7 +823,7 @@ lambdaU_term = (
     * U("s0", "c0").right.bar
     * Q("s0", "c0", "i0", "g0")
     * H("i1")
-    * eps("-i0", "-i1")
+    * eps("-i1", "-i0")
 )
 TERMS.append(lambdaU_term)
 
@@ -797,3 +894,23 @@ lambdaT2_term = (
     * sigma("I0", "i2", "-i0")
 )
 TERMS.append(lambdaT2_term)
+
+# lambdaUQ1
+lambdaUQ1_term = (
+    Coupling("lambdaUQ1", [], is_complex=True, latex="\\lambda_{U Q_1}")
+    * U("s0", "c0").left.bar
+    * Q1("s0", "c0", "i0").right
+    * H("i1")
+    * eps("-i1", "-i0")
+)
+TERMS.append(lambdaUQ1_term)
+
+# lambdaUQ1Prime
+lambdaUQ1Prime_term = (
+    Coupling("lambdaUQ1Prime", [], is_complex=True, latex="{\\lambda_{U Q_1}^\\prime}")
+    * U("s0", "c0").right.bar
+    * Q1("s0", "c0", "i0").left
+    * H("i1")
+    * eps("-i1", "-i0")
+)
+TERMS.append(lambdaUQ1Prime_term)
