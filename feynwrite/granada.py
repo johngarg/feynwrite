@@ -14,6 +14,8 @@ from feynwrite.tensor import (
     delta,
     sigma,
     c2224,
+    c344,
+    eps4,
     K,
     lambda_,
 )
@@ -693,128 +695,6 @@ lambdaSigma1_term = (
 )
 TERMS.append(lambdaSigma1_term)
 
-# lambdaNDelta1: Typo in 1711.10391?
-lambdaNDelta1_term = (
-    Coupling("lambdaNDelta1", [], is_complex=True, latex="\\lambda_{N \\Delta_1}")
-    * N("s0").right.CC.bar
-    * Delta1("s0", "i0").right
-    * H("i1")
-    * eps("-i1", "-i0")
-)
-TERMS.append(lambdaNDelta1_term)
-
-# lambdaNDelta1Prime
-lambdaNDelta1Prime_term = (
-    Coupling("lambdaNDelta1Prime", [], is_complex=True, latex="{\\lambda_{N \\Delta_1}^\\prime}")
-    * N("s0").right.bar
-    * Delta1("s0", "i0").left
-    * H("i1")
-    * eps("-i1", "-i0")
-)
-TERMS.append(lambdaNDelta1Prime_term)
-
-# lambdaEDelta1
-lambdaEDelta1_term = (
-    Coupling("lambdaEDelta1", [], is_complex=True, latex="\\lambda_{E \\Delta_1}")
-    * E("s0").left.bar
-    * Delta1("s0", "i0").right
-    * H("i0").C
-)
-TERMS.append(lambdaEDelta1_term)
-
-# lambdaEDelta1Prime
-lambdaEDelta1Prime_term = (
-    Coupling("lambdaEDelta1Prime", [], is_complex=True, latex="{\\lambda_{E \\Delta_1}^\\prime}")
-    * E("s0").right.bar
-    * Delta1("s0", "i0").left
-    * H("i0").C
-)
-TERMS.append(lambdaEDelta1Prime_term)
-
-# lambdaEDelta3
-lambdaEDelta3_term = (
-    Coupling("lambdaEDelta3", [], is_complex=True, latex="\\lambda_{E \\Delta_3}")
-    * E("s0").left.bar
-    * Delta3("s0", "i0").right
-    * H("i1")
-    * eps("-i1", "-i0")
-)
-TERMS.append(lambdaEDelta3_term)
-
-# lambdaEDelta3Prime
-lambdaEDelta3Prime_term = (
-    Coupling("lambdaEDelta3Prime", [], is_complex=True, latex="{\\lambda_{E \\Delta_3}^\\prime}")
-    * E("s0").right.bar
-    * Delta3("s0", "i0").left
-    * H("i1")
-    * eps("-i1", "-i0")
-)
-TERMS.append(lambdaEDelta3Prime_term)
-
-# lambdaSigmaDelta1
-lambdaSigmaDelta1_term = (
-    Coupling("lambdaSigmaDelta1", [], is_complex=True, factor=Rational("1/2"), latex="{\\lambda_{\\Sigma \\Delta_1}}")
-    * Sigma("s0", "-I0").right.CC.bar
-    * Delta1("s0", "i0").right
-    * sigma("I0", "i1", "-i0")
-    * H("i2")
-    * eps("-i2", "-i1")
-)
-TERMS.append(lambdaSigmaDelta1_term)
-
-# lambdaSigmaDelta1Prime
-lambdaSigmaDelta1Prime_term = (
-    Coupling("lambdaSigmaDelta1Prime", [], is_complex=True, factor=Rational("1/2"), latex="{\\lambda_{\\Sigma \\Delta_1}^{\\prime}}")
-    * Sigma("s0", "-I0").right.bar
-    * Delta1("s0", "i0").left
-    * sigma("I0", "i1", "-i0")
-    * H("i2")
-    * eps("-i2", "-i1")
-)
-TERMS.append(lambdaSigmaDelta1Prime_term)
-
-# lambdaSigma1Delta1
-lambdaSigma1Delta1_term = (
-    Coupling("lambdaSigma1Delta1", [], is_complex=True, factor=Rational("1/2"), latex="\\lambda_{\\Sigma_1 \\Delta_1}")
-    * Sigma1("s0", "-I0").left.bar
-    * Delta1("s0", "i0").right
-    * sigma("I0", "i1", "-i0")
-    * H("i1").C
-)
-TERMS.append(lambdaSigma1Delta1_term)
-
-# lambdaSigma1Delta1Prime
-lambdaSigma1Delta1Prime_term = (
-    Coupling("lambdaSigma1Delta1Prime", [], is_complex=True, factor=Rational("1/2"), latex="{\\lambda_{\\Sigma_1 \\Delta_1}^{\\prime}}")
-    * Sigma1("s0", "-I0").right.bar
-    * Delta1("s0", "i0").left
-    * sigma("I0", "i1", "-i0")
-    * H("i1").C
-)
-TERMS.append(lambdaSigma1Delta1Prime_term)
-
-# lambdaSigma1Delta3
-lambdaSigma1Delta3_term = (
-    Coupling("lambdaSigma1Delta3", [], is_complex=True, factor=Rational("1/2"), latex="\\lambda_{\\Sigma_1 \\Delta_1}")
-    * Sigma1("s0", "-I0").left.bar
-    * Delta3("s0", "i0").right
-    * sigma("I0", "i1", "-i0")
-    * H("i2")
-    * eps("-i2", "-i1")
-)
-TERMS.append(lambdaSigma1Delta3_term)
-
-# lambdaSigma1Delta3Prime
-lambdaSigma1Delta3Prime_term = (
-    Coupling("lambdaSigma1Delta3Prime", [], is_complex=True, factor=Rational("1/2"), latex="{\\lambda_{\\Sigma_1 \\Delta_1}^{\\prime}}")
-    * Sigma1("s0", "-I0").right.bar
-    * Delta3("s0", "i0").left
-    * sigma("I0", "i1", "-i0")
-    * H("i2")
-    * eps("-i2", "-i1")
-)
-TERMS.append(lambdaSigma1Delta3Prime_term)
-
 ## QUARKS
 
 # lambdaU
@@ -895,22 +775,286 @@ lambdaT2_term = (
 )
 TERMS.append(lambdaT2_term)
 
-# lambdaUQ1
-lambdaUQ1_term = (
-    Coupling("lambdaUQ1", [], is_complex=True, latex="\\lambda_{U Q_1}")
-    * U("s0", "c0").left.bar
-    * Q1("s0", "c0", "i0").right
-    * H("i1")
-    * eps("-i1", "-i0")
-)
-TERMS.append(lambdaUQ1_term)
 
-# lambdaUQ1Prime
-lambdaUQ1Prime_term = (
-    Coupling("lambdaUQ1Prime", [], is_complex=True, latex="{\\lambda_{U Q_1}^\\prime}")
-    * U("s0", "c0").right.bar
-    * Q1("s0", "c0", "i0").left
-    * H("i1")
-    * eps("-i1", "-i0")
+## Additional terms in the scalar potential (hatted in the paper)
+
+# lambda_hat_S1
+lambda_hat_S1_term = (
+    Coupling("lambdaHatS1", [], is_complex=False, latex="\\hat{\\lambda}_{\\mathcal{S}_1}")
+    * H("i0").C
+    * H("i0")
+    * S1().C
+    * S1()
 )
-TERMS.append(lambdaUQ1Prime_term)
+TERMS.append(lambda_hat_S1_term)
+
+# lambda_hat_S2
+lambda_hat_S2_term = (
+    Coupling("lambdaHatS2", [], is_complex=False, latex="\\hat{\\lambda}_{\\mathcal{S}_2}")
+    * H("i0").C
+    * H("i0")
+    * S2().C
+    * S2()
+)
+TERMS.append(lambda_hat_S2_term)
+
+# lambda_hat_varphi
+lambda_hat_varphi_term = (
+    Coupling("lambdaHatvarphi", [], is_complex=False, latex="\\hat{\\lambda}_{\\varphi}")
+    * H("i0").C
+    * H("i0")
+    * varphi("i1").C
+    * varphi("i1")
+)
+TERMS.append(lambda_hat_varphi_term)
+
+# lambda_hat_Theta1
+lambda_hat_Theta1_term = (
+    Coupling("lambdaHatTheta1", [], is_complex=False, latex="\\hat{\\lambda}_{\\Theta_1}")
+    * H("i0").C
+    * H("i0")
+    * Theta1("Q0").C
+    * Theta1("Q0")
+)
+TERMS.append(lambda_hat_Theta1_term)
+
+# lambda_hat_Theta3
+lambda_hat_Theta3_term = (
+    Coupling("lambdaHatTheta3", [], is_complex=False, latex="\\hat{\\lambda}_{\\Theta_3}")
+    * H("i0").C
+    * H("i0")
+    * Theta3("Q0").C
+    * Theta3("Q0")
+)
+TERMS.append(lambda_hat_Theta3_term)
+
+# lambda_hat_omega1
+lambda_hat_omega1_term = (
+    Coupling("lambdaHatomega1", [], is_complex=False, latex="\\hat{\\lambda}_{\\omega_1}")
+    * H("i0").C
+    * H("i0")
+    * omega1("c0").C
+    * omega1("c0")
+)
+TERMS.append(lambda_hat_omega1_term)
+
+# lambda_hat_omega2
+lambda_hat_omega2_term = (
+    Coupling("lambdaHatomega2", [], is_complex=False, latex="\\hat{\\lambda}_{\\omega_2}")
+    * H("i0").C
+    * H("i0")
+    * omega2("c0").C
+    * omega2("c0")
+)
+TERMS.append(lambda_hat_omega2_term)
+
+# lambda_hat_omega4
+lambda_hat_omega4_term = (
+    Coupling("lambdaHatomega4", [], is_complex=False, latex="\\hat{\\lambda}_{\\omega_4}")
+    * H("i0").C
+    * H("i0")
+    * omega4("c0").C
+    * omega4("c0")
+)
+TERMS.append(lambda_hat_omega4_term)
+
+
+# lambda_hat_Pi1
+lambda_hat_Pi1_term = (
+    Coupling("lambdaHatPi1", [], is_complex=False, latex="\\hat{\\lambda}_{\\Pi_1}")
+    * H("i0").C
+    * H("i0")
+    * Pi1("c0", "i1").C
+    * Pi1("c0", "i1")
+)
+TERMS.append(lambda_hat_Pi1_term)
+
+# lambda_hat_Pi7
+lambda_hat_Pi7_term = (
+    Coupling("lambdaHatPi7", [], is_complex=False, latex="\\hat{\\lambda}_{\\Pi_7}")
+    * H("i0").C
+    * H("i0")
+    * Pi7("c0", "i1").C
+    * Pi7("c0", "i1")
+)
+TERMS.append(lambda_hat_Pi7_term)
+
+# lambda_hat_zeta
+lambda_hat_zeta_term = (
+    Coupling("lambdaHatzeta", [], is_complex=False, latex="\\hat{\\lambda}_{\\zeta}")
+    * H("i0").C
+    * H("i0")
+    * zeta("c0", "-I0").C
+    * zeta("c0", "I0")
+)
+TERMS.append(lambda_hat_zeta_term)
+
+# lambda_hat_Omega1
+lambda_hat_Omega1_term = (
+    Coupling("lambdaHatOmega1", [], is_complex=False, latex="\\hat{\\lambda}_{\\Omega_1}")
+    * H("i0").C
+    * H("i0")
+    * Omega1("-X0").C
+    * Omega1("X0")
+)
+TERMS.append(lambda_hat_Omega1_term)
+
+# lambda_hat_Omega2
+lambda_hat_Omega2_term = (
+    Coupling("lambdaHatOmega2", [], is_complex=False, latex="\\hat{\\lambda}_{\\Omega_2}")
+    * H("i0").C
+    * H("i0")
+    * Omega2("-X0").C
+    * Omega2("X0")
+)
+TERMS.append(lambda_hat_Omega2_term)
+
+# lambda_hat_Omega4
+lambda_hat_Omega4_term = (
+    Coupling("lambdaHatOmega4", [], is_complex=False, latex="\\hat{\\lambda}_{\\Omega_4}")
+    * H("i0").C
+    * H("i0")
+    * Omega4("-X0").C
+    * Omega4("X0")
+)
+TERMS.append(lambda_hat_Omega4_term)
+
+# lambda_hat_Upsilon
+lambda_hat_Upsilon_term = (
+    Coupling("lambdaHatUpsilon", [], is_complex=False, latex="\\hat{\\lambda}_{\\Upsilon}")
+    * H("i0").C
+    * H("i0")
+    * Upsilon("-X0", "-I0").C
+    * Upsilon("X0", "I0")
+)
+TERMS.append(lambda_hat_Upsilon_term)
+
+# lambda_hat_Phi
+lambda_hat_Phi_term = (
+    Coupling("lambdaHatPhi", [], is_complex=False, latex="\\hat{\\lambda}_{\\Phi}")
+    * H("i0").C
+    * H("i0")
+    * Phi("-C0", "i1").C
+    * Phi("C0", "i1")
+)
+TERMS.append(lambda_hat_Phi_term)
+
+
+# lambda_hat_prime_varphi
+lambda_hat_prime_varphi_term = (
+    Coupling("lambdaHatPrimevarphi", [], is_complex=False, latex="\\hat{\\lambda}^{\\prime}_{\\varphi}")
+    * H("i0").C
+    * varphi("i0")
+    * varphi("i1").C
+    * H("i1")
+)
+TERMS.append(lambda_hat_prime_varphi_term)
+
+
+# lambda_hat_prime_Theta1
+lambda_hat_prime_Theta1_term = (
+    Coupling("lambdaHatPrimeTheta1", [], is_complex=False, latex="\\hat{\\lambda}^{\\prime}_{\\Theta_1}")
+    * Theta1("-Q0").C
+    * c344("-I0", "Q0", "-Q1")
+    * Theta1("Q1")
+    * H("i1").C
+    * sigma("I0", "i1", "-i2")
+    * H("i2")
+)
+TERMS.append(lambda_hat_prime_Theta1_term)
+
+
+# lambda_hat_prime_Theta3
+lambda_hat_prime_Theta3_term = (
+    Coupling("lambdaHatPrimeTheta3", [], is_complex=False, latex="\\hat{\\lambda}^{\\prime}_{\\Theta_3}")
+    * Theta3("-Q0").C
+    * c344("-I0", "Q0", "-Q1")
+    * Theta3("Q1")
+    * H("i1").C
+    * sigma("I0", "i1", "-i2")
+    * H("i2")
+)
+TERMS.append(lambda_hat_prime_Theta3_term)
+
+# lambda_hat_prime_Pi1
+lambda_hat_prime_Pi1_term = (
+    Coupling("lambdaHatPrimePi1", [], is_complex=False, latex="\\hat{\\lambda}^{\\prime}_{\\Pi_1}")
+    * Pi1("c0", "i0").C
+    * H("i0")
+    * H("i1").C
+    * Pi1("c0","i1")
+)
+TERMS.append(lambda_hat_prime_Pi1_term)
+
+# lambda_hat_prime_Pi7
+lambda_hat_prime_Pi7_term = (
+    Coupling("lambdaHatPrimePi7", [], is_complex=False, latex="\\hat{\\lambda}^{\\prime}_{\\Pi_7}")
+    * Pi7("c0", "i0").C
+    * H("i0")
+    * H("i1").C
+    * Pi7("c0","i1")
+)
+TERMS.append(lambda_hat_prime_Pi7_term)
+
+# lambda_hat_prime_Phi
+lambda_hat_prime_Phi_term = (
+    Coupling("lambdaHatPrimePhi", [], is_complex=False, latex="\\hat{\\lambda}^{\\prime}_{\\Phi}")
+    * Phi("-C0", "i0").C
+    * H("i0")
+    * H("i1").C
+    * Phi("-C1", "i1")
+    * lambda_("C0", "c0", "-c1")
+    * lambda_("C1", "c1", "-c0")
+)
+TERMS.append(lambda_hat_prime_Phi_term)
+
+
+# lambda_hat_prime_zeta
+lambda_hat_prime_zeta_term = (
+    Coupling("lambdaHatPrimezeta", [], is_complex=False, factor=I/(sqrt(2)), latex="\\hat{\\lambda}^{\\prime}_{\\zeta}")
+    * zeta("c0", "I0").C
+    * zeta("c0", "I1")
+    * H("i0").C
+    * H("i1")
+    * sigma("I2", "i0", "-i1")
+    * eps("-I0", "-I1", "-I2")
+)
+TERMS.append(lambda_hat_prime_zeta_term)
+
+# lambda_hat_prime_Upsilon
+lambda_hat_prime_Upsilon_term = (
+    Coupling("lambdaHatPrimeUpsilon", [], is_complex=False, factor=I/(sqrt(2)), latex="\\hat{\\lambda}^{\\prime}_{\\Upsilon}")
+    * Upsilon("-X0", "I0").C
+    * Upsilon("X0", "I1")
+    * H("i0").C
+    * H("i1")
+    * sigma("I2", "i0", "-i1")
+    * eps("-I0", "-I1", "-I2")
+)
+TERMS.append(lambda_hat_prime_Upsilon_term)
+
+
+# lambda_hat_prime_prime_Upsilon
+lambda_hat_prime_prime_Theta1_term = (
+    Coupling("lambdaHatPrimePrimeTheta1", [], is_complex=True, latex="\\hat{\\lambda}^{\\prime\\prime}_{\\Theta_1}")
+    * Theta1("Q0")
+    * Theta1("Q2")
+    * H("i0").C
+    * H("i1")
+    * eps4("-Q0", "-Q1")
+    * c344("-I0", "Q1", "-Q2")
+    * sigma("I0", "i0", "-i1")
+)
+TERMS.append(lambda_hat_prime_prime_Theta1_term)
+
+# lambda_hat_prime_prime_Phi
+lambda_hat_prime_prime_Phi_term = (
+    Coupling("lambdaHatPrimePrimePhi", [], is_complex=True, latex="\\hat{\\lambda}^{\\prime\\prime}_{\\Phi}")
+    * H("i0").C
+    * Phi("-C0", "i0")
+    * H("i1").C
+    * Phi("-C1", "i1")
+    * lambda_("C0", "c0", "-c1")
+    * lambda_("C1", "c1", "-c0")
+)
+TERMS.append(lambda_hat_prime_prime_Phi_term)

@@ -632,6 +632,13 @@ def eps(*indices):
     tensor.is_field = False
     return tensor
 
+def eps4(Q0: str, Q1: str):
+    assert Q0[0] == "-" and Q1[0] == "-"
+    label = "Eps4"
+    tensor = Tensor(label=label, indices=[Q0, Q1])
+    tensor.latex = r"\epsilon"
+    tensor.is_field = False
+    return tensor
 
 def delta(i: str, j: str):
     # Assert correct index structure
@@ -674,6 +681,17 @@ def c2224(Q: str, i: str, j: str, k: str):
     label = "C2224"
     tensor = Tensor(label=label, indices=[Q, i, j, k])
     tensor.latex = r"C_{2224}"
+    tensor.is_field = False
+    return tensor
+
+def c344(I: str, Q0: str, Q1: str):
+    """[C^I]^Q0_{ Q1}"""
+    assert Q0[0] == INDICES["isospin_4"] or Q0[1] == INDICES["isospin_4"]
+    assert Q1[0] == INDICES["isospin_4"] or Q1[1] == INDICES["isospin_4"]
+
+    label = "C344"
+    tensor = Tensor(label=label, indices=[I, Q0, Q1])
+    tensor.latex = r"C_{344}"
     tensor.is_field = False
     return tensor
 

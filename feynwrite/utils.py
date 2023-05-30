@@ -22,6 +22,12 @@ EXTRA_PARAMS = r"""EpsSU3 ==
   , Indices -> {Index[Colour], Index[Colour], Index[Colour]}
   , Description -> "Three-index epsilon symbol for contracting colour triplets into the antitriplet irrep."
   }
+, Eps4 ==
+  { ParameterType -> Internal
+  , ComplexParameter -> True
+  , Indices -> {Index[SU24], Index[SU24]}
+  , Description -> "SU(2) product for two quadruplets. Defined in 1711.10391."
+  }
 , T6 ==
   { ParameterType -> Internal
   , ComplexParameter -> True
@@ -39,6 +45,12 @@ EXTRA_PARAMS = r"""EpsSU3 ==
   , ComplexParameter -> True
   , Indices -> {Index[SU2D], Index[SU2D], Index[SU2D], Index[SU24]}
   , Description -> "Matrices for contracting 2x2x2x4 of SU(2). Defined as: sigma(I,i,-j)*C(Q,-I,-k)*Eps(-Q, -R) from 1711.10391."
+  }
+, C344 ==
+  { ParameterType -> Internal
+  , ComplexParameter -> True
+  , Indices -> {Index[SU2W], Index[SU24], Index[SU24]}
+  , Description -> "Matrices for contracting 4x4x3 of SU(2). Gotten from `RepMatrices[SU2, {3}]` from GroupMath."
   }"""
 
 
