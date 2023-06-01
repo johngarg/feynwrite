@@ -2,7 +2,7 @@
 
 import os
 import sys
-from matchmakereft.libs.mm_offline import create_model, match_model_to_eft, match_model_to_eft_onlytree
+from matchmakereft.libs.mm_offline import create_model, match_model, match_model_to_eft
 from rich import print
 
 particle_names = sys.argv[1:]

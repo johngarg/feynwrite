@@ -1,4 +1,33 @@
-#!/usr/bin/env fish
+#!/usr/bin/env python3
 
-find . -mindepth 1 -maxdepth 1 -type f -a ! \( -name 'UnbrokenSM_BFM.fr' -o -name 'granada.symm' -o -name 'granada.gauge' -o -name 'granada.red' -o -name match -o -name clean \) | xargs rm
-find . -mindepth 1 -maxdepth 1 -type d -a ! \( -name SMEFT_Green_Bpreserving_MM \) | xargs rm -rf
+import os
+
+def remove_files_except(dont_remove):
+    # Get the current working directory
+    current_directory = os.getcwd()
+
+    # Get the list of all files in the current directory
+    files = os.listdir(current_directory)
+
+    # Iterate through each file
+    for file_name in files:
+        # Construct the absolute path of the file
+        file_path = os.path.join(current_directory, file_name)
+
+        # Check if the file is not in the "dont_remove" list
+        if file_name not in dont_remove:
+            # Check if the file is a regular file (not a directory)
+            if os.path.isfile(file_path):
+                # Remove the file
+                os.remove(file_path)
+                print(f"Removed file: {file_name}")
+            else:
+                # Remove the directory and its contents
+                os.system(f"rm -r {file_path}")
+                print(f"Removed directory: {file_name}")
+
+# Usage example
+dont_remove = ["UnbrokenSM_BFM.fr", "granada.symm", "granada.gauge", "granada.red", "match", "clean", "SMEFT_Green_Bpreserving_MM"]
+directory = "/path/to/directory"  # Path to the directory
+
+remove_files_except(dont_remove)

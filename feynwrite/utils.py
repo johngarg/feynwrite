@@ -28,6 +28,12 @@ EXTRA_PARAMS = r"""EpsSU3 ==
   , Indices -> {Index[SU24], Index[SU24]}
   , Description -> "SU(2) product for two quadruplets. Defined in 1711.10391."
   }
+, T2244 ==
+  { ParameterType -> Internal
+  , ComplexParameter -> False
+  , Indices -> {Index[SU2D], Index[SU2D], Index[SU24], Index[SU24]}
+  , Description -> "Clebsch-Gordan coefficients to multiply 2* x 2* x 4 x 4 for SU(2). Gotten from GroupMath."
+  }
 , T6 ==
   { ParameterType -> Internal
   , ComplexParameter -> True

@@ -15,7 +15,7 @@ from feynwrite.tensor import (
     sigma,
     c2224,
     c344,
-    eps4,
+    t2244,
     K,
     lambda_,
 )
@@ -1034,16 +1034,27 @@ lambda_hat_prime_Upsilon_term = (
 TERMS.append(lambda_hat_prime_Upsilon_term)
 
 
-# lambda_hat_prime_prime_Upsilon
+# lambda_hat_prime_prime_Theta1
+# lambda_hat_prime_prime_Theta1_term = (
+#     Coupling("lambdaHatPrimePrimeTheta1", [], is_complex=True, latex="\\hat{\\lambda}^{\\prime\\prime}_{\\Theta_1}")
+#     * Theta1("Q0")
+#     * Theta1("Q2")
+#     * H("i0").C
+#     * H("i1").C
+#     * eps("i2", "i1")
+#     * eps4("-Q0", "-Q1")
+#     * c344("-I0", "Q1", "-Q2")
+#     * sigma("I0", "i0", "-i2")
+# )
+# TERMS.append(lambda_hat_prime_prime_Theta1_term)
+
 lambda_hat_prime_prime_Theta1_term = (
     Coupling("lambdaHatPrimePrimeTheta1", [], is_complex=True, latex="\\hat{\\lambda}^{\\prime\\prime}_{\\Theta_1}")
+    * t2244("i0","i1","-Q0","-Q1")
     * Theta1("Q0")
-    * Theta1("Q2")
+    * Theta1("Q1")
     * H("i0").C
-    * H("i1")
-    * eps4("-Q0", "-Q1")
-    * c344("-I0", "Q1", "-Q2")
-    * sigma("I0", "i0", "-i1")
+    * H("i1").C
 )
 TERMS.append(lambda_hat_prime_prime_Theta1_term)
 

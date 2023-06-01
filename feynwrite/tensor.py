@@ -632,6 +632,14 @@ def eps(*indices):
     tensor.is_field = False
     return tensor
 
+def t2244(i0: str, i1: str, Q0: str, Q1: str):
+    assert Q0[0] == "-" and Q1[0] == "-"
+    label = "T2244"
+    tensor = Tensor(label=label, indices=[i0, i1, Q0, Q1])
+    tensor.latex = r"C_{2244}"
+    tensor.is_field = False
+    return tensor
+
 def eps4(Q0: str, Q1: str):
     assert Q0[0] == "-" and Q1[0] == "-"
     label = "Eps4"
