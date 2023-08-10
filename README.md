@@ -26,7 +26,7 @@ Simply run:
 
 Modifications to the common Lagrangian can be made in the `granada.py` file. Important notes:
 - Spinors with contracted indices should be written next to each other
-- Adjoint SU(2) indices should be written lowered or raised to make the code happy, this has no special mathematical meaning
+- Adjoint SU(2) indices should be written in the opposite position to where they are if they are conjugated, since the conjugation function swaps the index position
 
 # Usage
 
