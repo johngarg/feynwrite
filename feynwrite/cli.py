@@ -6,6 +6,7 @@ import click
 
 from feynwrite.model import Model
 from feynwrite.granada import TERMS
+from feynwrite.two_field import TWO_FIELD_TERMS
 
 help_message = [
     "Print FeynRules file for the multiplets in the Granada dictionary.",
@@ -19,18 +20,10 @@ help_message = [
 @click.option(
     "--mmp-config", is_flag=True, help="Return MatchMakerParser configuration."
 )
-@click.option(
-    "--latex", is_flag=True, help="Output model in LaTeX format."
-)
-@click.option(
-    "-a", is_flag=True, help="Produce output for all valid multiplets."
-)
-@click.option(
-    "--scalars", is_flag=True, help="Produce output for all valid scalars."
-)
-@click.option(
-    "--fermions", is_flag=True, help="Produce output for all valid fermions."
-)
+@click.option("--latex", is_flag=True, help="Output model in LaTeX format.")
+@click.option("-a", is_flag=True, help="Produce output for all valid multiplets.")
+@click.option("--scalars", is_flag=True, help="Produce output for all valid scalars.")
+@click.option("--fermions", is_flag=True, help="Produce output for all valid fermions.")
 def main(multiplets, mmp_config, latex, a, scalars, fermions) -> None:
     """Automate the production of FeynRules files."""
 
@@ -83,47 +76,57 @@ def main(multiplets, mmp_config, latex, a, scalars, fermions) -> None:
 
     if scalars:
         multiplets = [
-        "S",
-        "S1",
-        "S2",
-        "varphi",
-        "Xi",
-        "Xi1",
-        "Theta1",
-        "Theta3",
-        "omega1",
-        "omega2",
-        "omega4",
-        "Pi1",
-        "Pi7",
-        "zeta",
-        "Omega1",
-        "Omega2",
-        "Omega4",
-        "Upsilon",
-        "Phi",
+            "S",
+            "S1",
+            "S2",
+            "varphi",
+            "Xi",
+            "Xi1",
+            "Theta1",
+            "Theta3",
+            "omega1",
+            "omega2",
+            "omega4",
+            "Pi1",
+            "Pi7",
+            "zeta",
+            "Omega1",
+            "Omega2",
+            "Omega4",
+            "Upsilon",
+            "Phi",
         ]
     if fermions:
         multiplets = [
-        "N",
-        "E",
-        "Delta1",
-        "Delta3",
-        "Sigma",
-        "Sigma1",
-        "U",
-        "D",
-        "Q1",
-        "Q5",
-        "Q7",
-        "T1",
-        "T2",
-            ]
+            "N",
+            "E",
+            "Delta1",
+            "Delta3",
+            "Sigma",
+            "Sigma1",
+            "U",
+            "D",
+            "Q1",
+            "Q5",
+            "Q7",
+            "T1",
+            "T2",
+        ]
     if fermions or scalars:
         multiplets = ["Granada" + f for f in multiplets]
 
     if a:
         multiplets = valid_multiplets
+
+    if len(multiplets) > 1:
+        print(
+            """(*** Warning:
+        The Lagrangian produced is only valid for:
+            - One-loop matching of multiple fermions
+            - One-loop matching of models with only one scalar field
+ ***)
+            """
+        )
 
     for multiplet in multiplets:
         if multiplet not in valid_multiplets:
@@ -137,7 +140,11 @@ def main(multiplets, mmp_config, latex, a, scalars, fermions) -> None:
 
     # Collect the Lagrangian
     lagrangian = []
-    for term in TERMS:
+    terms_ = TERMS
+    if len(multiplets) > 1:
+        terms_ += TWO_FIELD_TERMS
+
+    for term in terms_:
         exotic_labels = [exotic.label for exotic in term.exotics]
         # We only want to include those terms that don't contain other exotics
         for exotic_label in exotic_labels:
