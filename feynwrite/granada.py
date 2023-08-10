@@ -1299,3 +1299,110 @@ lambda_hat_Sigma1_Delta3_term = (
     * eps("-i3", "-i2")
 )
 TERMS.append(lambda_hat_Sigma1_Delta3_term)
+
+
+#### Quarks
+
+# lambda_hat_U_Q1
+lambda_hat_U_Q1_term = (
+    Coupling("lambdaHatUQ1", [], is_complex=True, latex="\\hat{\\lambda}_{U Q_1}",)
+    * U("s0", "c0").right.bar
+    * Q1("s0", "c0", "i1").left
+    * H("i0")
+    * eps("-i0", "-i1")
+)
+TERMS.append(lambda_hat_U_Q1_term)
+
+# lambda_hat_U_Q7
+lambda_hat_U_Q7_term = (
+    Coupling("lambdaHatUQ7", [], is_complex=True, latex="\\hat{\\lambda}_{U Q_7}",)
+    * U("s0", "c0").right.bar
+    * Q7("s0", "c0", "i0").left
+    * H("i0").C
+)
+TERMS.append(lambda_hat_U_Q7_term)
+
+# lambda_hat_D_Q1
+lambda_hat_D_Q1_term = (
+    Coupling("lambdaHatDQ1", [], is_complex=True, latex="\\hat{\\lambda}_{D Q_1}",)
+    * D("s0", "c0").right.bar
+    * Q1("s0", "c0", "i0").left
+    * H("i0").C
+)
+TERMS.append(lambda_hat_D_Q1_term)
+
+# lambda_hat_D_Q5
+lambda_hat_D_Q5_term = (
+    Coupling("lambdaHatDQ5", [], is_complex=True, latex="\\hat{\\lambda}_{D Q_5}",)
+    * D("s0", "c0").right.bar
+    * Q5("s0", "c0", "i1").left
+    * H("i0")
+    * eps("-i0", "-i1")
+)
+TERMS.append(lambda_hat_D_Q5_term)
+
+# lambda_hat_T1_Q1
+lambda_hat_T1_Q1_term = (
+    Coupling(
+        "lambdaHatT1Q1",
+        [],
+        is_complex=True,
+        latex="\\hat{\\lambda}_{T_1 Q_1}",
+        factor=Rational("1/2"),
+    )
+    * T1("s0", "c0", "-I0").right.bar
+    * Q1("s0", "c0", "i0").left
+    * sigma("I0", "i3", "-i0")
+    * H("i3").C
+)
+TERMS.append(lambda_hat_T1_Q1_term)
+
+# lambda_hat_T1_Q5
+lambda_hat_T1_Q5_term = (
+    Coupling(
+        "lambdaHatT1Q5",
+        [],
+        is_complex=True,
+        latex="\\hat{\\lambda}_{T_1 Q_5}",
+        factor=Rational("1/2"),
+    )
+    * T1("s0", "c0", "-I0").right.bar
+    * Q5("s0", "c0", "i4").left
+    * sigma("I0", "i2", "-i4")
+    * H("i3")
+    * eps("-i3", "-i2")
+)
+TERMS.append(lambda_hat_T1_Q5_term)
+
+# lambda_hat_T2_Q1
+lambda_hat_T2_Q1_term = (
+    Coupling(
+        "lambdaHatT2Q1",
+        [],
+        is_complex=True,
+        latex="\\hat{\\lambda}_{T_2 Q_1}",
+        factor=Rational("1/2"),
+    )
+    * T2("s0", "c0", "-I0").right.bar
+    * Q1("s0", "c0", "i4").left
+    * sigma("I0", "i2", "-i4")
+    * H("i3")
+    * eps("-i3", "-i2")
+)
+TERMS.append(lambda_hat_T1_Q5_term)
+
+# lambda_hat_T2_Q7
+lambda_hat_T2_Q7_term = (
+    Coupling(
+        "lambdaHatT2Q7",
+        [],
+        is_complex=True,
+        latex="\\hat{\\lambda}_{T_2 Q_7}",
+        factor=Rational("1/2"),
+    )
+    * T2("s0", "c0", "-I0").right.bar
+    * Q7("s0", "c0", "i0").left
+    * sigma("I0", "i3", "-i0")
+    * H("i3").C
+)
+TERMS.append(lambda_hat_T2_Q7_term)
