@@ -50,21 +50,6 @@ lambdaNDelta1_term = (
 )
 TWO_FIELD_TERMS.append(lambdaNDelta1_term)
 
-# # lambdaNDelta1Prime
-# lambdaNDelta1Prime_term = (
-#     Coupling(
-#         "lambdaNDelta1Prime",
-#         [],
-#         is_complex=True,
-#         latex="{\\lambda_{N \\Delta_1}^\\prime}",
-#     )
-#     * N("s0").right.bar
-#     * Delta1("s0", "i0").left
-#     * H("i1")
-#     * eps("-i1", "-i0")
-# )
-# TWO_FIELD_TERMS.append(lambdaNDelta1Prime_term)
-
 # lambdaEDelta1
 lambdaEDelta1_term = (
     Coupling("lambdaEDelta1", [], is_complex=True, latex="\\lambda_{E \\Delta_1}")
@@ -73,20 +58,6 @@ lambdaEDelta1_term = (
     * H("i0").C
 )
 TWO_FIELD_TERMS.append(lambdaEDelta1_term)
-
-# # lambdaEDelta1Prime
-# lambdaEDelta1Prime_term = (
-#     Coupling(
-#         "lambdaEDelta1Prime",
-#         [],
-#         is_complex=True,
-#         latex="{\\lambda_{E \\Delta_1}^\\prime}",
-#     )
-#     * E("s0").right.bar
-#     * Delta1("s0", "i0").left
-#     * H("i0").C
-# )
-# TWO_FIELD_TERMS.append(lambdaEDelta1Prime_term)
 
 # lambdaEDelta3
 lambdaEDelta3_term = (
@@ -97,21 +68,6 @@ lambdaEDelta3_term = (
     * eps("-i1", "-i0")
 )
 TWO_FIELD_TERMS.append(lambdaEDelta3_term)
-
-# # lambdaEDelta3Prime
-# lambdaEDelta3Prime_term = (
-#     Coupling(
-#         "lambdaEDelta3Prime",
-#         [],
-#         is_complex=True,
-#         latex="{\\lambda_{E \\Delta_3}^\\prime}",
-#     )
-#     * E("s0").right.bar
-#     * Delta3("s0", "i0").left
-#     * H("i1")
-#     * eps("-i1", "-i0")
-# )
-# TWO_FIELD_TERMS.append(lambdaEDelta3Prime_term)
 
 # lambdaSigmaDelta1
 lambdaSigmaDelta1_term = (
@@ -130,23 +86,6 @@ lambdaSigmaDelta1_term = (
 )
 TWO_FIELD_TERMS.append(lambdaSigmaDelta1_term)
 
-# # lambdaSigmaDelta1Prime
-# lambdaSigmaDelta1Prime_term = (
-#     Coupling(
-#         "lambdaSigmaDelta1Prime",
-#         [],
-#         is_complex=True,
-#         factor=Rational("1/2"),
-#         latex="{\\lambda_{\\Sigma \\Delta_1}^{\\prime}}",
-#     )
-#     * Sigma("s0", "-I0").right.bar
-#     * Delta1("s0", "i0").left
-#     * sigma("I0", "i1", "-i0")
-#     * H("i2")
-#     * eps("-i2", "-i1")
-# )
-# TWO_FIELD_TERMS.append(lambdaSigmaDelta1Prime_term)
-
 # lambdaSigma1Delta1
 lambdaSigma1Delta1_term = (
     Coupling(
@@ -162,22 +101,6 @@ lambdaSigma1Delta1_term = (
     * H("i1").C
 )
 TWO_FIELD_TERMS.append(lambdaSigma1Delta1_term)
-
-# # lambdaSigma1Delta1Prime
-# lambdaSigma1Delta1Prime_term = (
-#     Coupling(
-#         "lambdaSigma1Delta1Prime",
-#         [],
-#         is_complex=True,
-#         factor=Rational("1/2"),
-#         latex="{\\lambda_{\\Sigma_1 \\Delta_1}^{\\prime}}",
-#     )
-#     * Sigma1("s0", "-I0").right.bar
-#     * Delta1("s0", "i0").left
-#     * sigma("I0", "i1", "-i0")
-#     * H("i1").C
-# )
-# TWO_FIELD_TERMS.append(lambdaSigma1Delta1Prime_term)
 
 # lambdaSigma1Delta3
 lambdaSigma1Delta3_term = (
@@ -196,23 +119,7 @@ lambdaSigma1Delta3_term = (
 )
 TWO_FIELD_TERMS.append(lambdaSigma1Delta3_term)
 
-# # lambdaSigma1Delta3Prime
-# lambdaSigma1Delta3Prime_term = (
-#     Coupling(
-#         "lambdaSigma1Delta3Prime",
-#         [],
-#         is_complex=True,
-#         factor=Rational("1/2"),
-#         latex="{\\lambda_{\\Sigma_1 \\Delta_1}^{\\prime}}",
-#     )
-#     * Sigma1("s0", "-I0").right.bar
-#     * Delta3("s0", "i0").left
-#     * sigma("I0", "i1", "-i0")
-#     * H("i2")
-#     * eps("-i2", "-i1")
-# )
-# TWO_FIELD_TERMS.append(lambdaSigma1Delta3Prime_term)
-
+### QUARKS
 
 # lambdaUQ1
 lambdaUQ1_term = (
@@ -235,6 +142,8 @@ TWO_FIELD_TERMS.append(lambdaUQ1_term)
 # TWO_FIELD_TERMS.append(lambdaUQ1Prime_term)
 
 
+## FIXME: Did you not finish this?
+
 #### Additional terms necessary for two-field extensions for just the fermions
 #### Leptons
 
@@ -245,7 +154,8 @@ lambda_hat_N_Delta1_term = (
     )
     * N("s0").right.bar
     * Delta1("s0", "i0").left
-    * H("i0").C
+    * H("i1")
+    * eps("-i0", "-i1")
 )
 TWO_FIELD_TERMS.append(lambda_hat_N_Delta1_term)
 
