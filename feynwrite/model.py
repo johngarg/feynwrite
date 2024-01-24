@@ -84,7 +84,7 @@ class Model:
         exotic_params = []
         # Add masses
         for exotic in self.exotics:
-            exotic_params.append(f"M{exotic.label}")
+            exotic_params.append(f"M{exotic.label.removeprefix('Granada')}")
         # Add couplings
         for coupling in self.couplings:
             exotic_params.append(coupling.label)
