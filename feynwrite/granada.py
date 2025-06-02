@@ -10,6 +10,7 @@ from feynwrite.tensor import (
     Coupling,
     Scalar,
     Fermion,
+    Vector,
     eps,
     delta,
     sigma,
@@ -269,7 +270,6 @@ def T2(s, a, I) -> Fermion:
     latex = r"T_{2}"
     tensor = Fermion(label, [s, a, I], latex=latex, hypercharge=Fraction("2/3"))
     return tensor
-
 
 ### SCALARS
 
@@ -1212,3 +1212,6 @@ lambda_hat_prime_prime_Phi_term = (
     * lambda_("C1", "c1", "-c0")
 )
 TERMS.append(lambda_hat_prime_prime_Phi_term)
+
+
+### Tree-level terms for the Lorentz vectors

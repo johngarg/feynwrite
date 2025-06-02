@@ -455,8 +455,63 @@ class Scalar(Field):
         )
 
 
-def Vector(Tensor):
-    pass
+class Vector(Field):
+    def __init__(self, *args, **kwargs):
+        super(Vector, self).__init__(*args, **kwargs)
+
+    @property
+    def C(self) -> "Vector":
+        if self.is_self_conj:
+            return self
+
+        # Tensor conjugation method
+        conj = super(Field, self).C
+
+        return conj
+
+    def wolfram(self) -> str:
+        label = self.label
+
+        # Deal with conj
+        if self.is_conj:
+            label = f"anti[{label}]"
+
+        return super(Vector, self).wolfram(label=label)
+
+    def feynrules_free_terms(self) -> str:
+        """Returns a string representing the free-field Lagrangian for the scalar."""
+        assert not self.is_sm
+
+        indices = self.index_labels + ["mu"]
+
+        # We always want the kinetic term to look like (D S)^dag (D S), but
+        # would look like (D S) (D S)^dag if S where already `conj`ed. Fix this
+        # here by hand
+        if self.is_conj:
+            dagger = self.wolfram()
+            no_dagger = self.C.wolfram()
+        else:
+            # Real scalar will also enter this branch
+            dagger = self.C.wolfram()
+            no_dagger = self.wolfram()
+
+        kinetic = f"DC[{dagger}, mu] DC[{no_dagger}, mu]"
+        mass = f"M{self.label}^2 {dagger} {no_dagger}"
+
+        # Adjust factors for real scalars
+        if self.is_self_conj:
+            kinetic = "1/2 " + kinetic
+            mass = "1/2 " + mass
+
+        expr = f"{kinetic} - {mass}"
+
+        # Keep track of name for model file
+        wolfram_term_name = f"LFree{self.label}"
+        self.wolfram_term_name = wolfram_term_name
+
+        return f"{wolfram_term_name} :=\n" + wolfram_block(
+            indices, expr, repl="/.gotoBFM"
+        )
 
 
 @dataclass

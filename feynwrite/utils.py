@@ -5,7 +5,7 @@ from collections import defaultdict
 
 # Conventional index heads
 INDICES = {
-    "lorentz": "mu",
+    "lorentz": "l",
     "colour_fundamental": "c",
     "colour_adjoint": "C",
     "colour_6": "X",
@@ -116,6 +116,7 @@ def wolfram_index_map(idx: str):
         "colour_fundamental": "Colour",
         "colour_6": "Sextet",
         "spinor": "Spinor",
+        "lorentz": "Lorentz",
     }
 
     if idx[0] == "-":
