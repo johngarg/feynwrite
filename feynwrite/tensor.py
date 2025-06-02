@@ -36,7 +36,7 @@ class Tensor:
         # Represent indices as space-separated string, e.g. "i j k"
         if isinstance(indices, str):
             indices = indices.split(" ")
-        self.indices = indices
+        self.indices = list(indices)
 
         # If initialised with an empty string, make sure self.indices is the
         # empty list
@@ -509,6 +509,7 @@ class TensorProduct:
         return "*".join([t.__repr__() for t in self.tensors])
 
     def get_latex(self):
+        self.relabel_indices()
         return " ".join(t.get_latex() for t in self.tensors)
 
     def wolfram(self):
@@ -599,6 +600,39 @@ class TensorProduct:
     def expand_indices(kind: str, replacements: Dict[str, str]):
         pass
 
+    def relabel_indices(self) -> None:
+        """Cleans up indices by side effect"""
+        index_dict = {
+            "i": "ijklmn",
+            "c": "abcde",
+            "C": "ABCDE",
+            "I": "IJKLMN",
+            "Q": "PQRST",
+            "X": "XYZ",
+            "g": "pqrst",
+            "s": ["\\alpha", "\\beta", "\\gamma", "\\delta"],
+        }
+
+        for tensor in self.tensors:
+            indices = tensor.indices
+            if not indices:
+                continue
+
+            for i, index in enumerate(indices):
+                is_lower = True if index[0] == "-" else False
+                offset = 1 if is_lower else 0
+                # Extract index type and numeric label
+                index_type, index_num = index[0+offset], index[(1+offset):]
+                if index_type in index_dict and index_num:
+                    index_num = int(index_num)
+                    # Update index by side effect
+                    if isinstance(tensor.indices, tuple):
+                        breakpoint()
+                    tensor.indices[i] = ("-" if is_lower else "") + index_dict[index_type][index_num]
+
+        return None
+
+
 
 def eps(*indices):
     """Tensor representing antisymmetric symbol"""
@@ -627,7 +661,7 @@ def eps(*indices):
     if len(indices) == 3 and kind == INDICES["isospin_adjoint"]:
         label = "fsu2"
 
-    tensor = Tensor(label=label, indices=indices)
+    tensor = Tensor(label=label, indices=list(indices))
     tensor.latex = r"\epsilon"
     tensor.is_field = False
     return tensor
