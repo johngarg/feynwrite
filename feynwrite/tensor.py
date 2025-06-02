@@ -117,6 +117,9 @@ class Tensor:
             return label
         if not indices:
             indices = self.index_labels
+        if label == "Ga":
+            return wolfram_func_call(label, indices) + "."
+
         return wolfram_func_call(label, indices)
 
     @property
@@ -804,5 +807,16 @@ def K(X: str, a: str, b: str):
     label = "K6"
     tensor = Tensor(label=label, indices=[X, a, b])
     tensor.latex = r"K"
+    tensor.is_field = False
+    return tensor
+
+def Ga(l: str, s0: str, s1: str):
+    """Gamma matrix"""
+    assert l[0] == INDICES["lorentz"]
+    assert s0[0] == INDICES["spinor"]
+    assert s1[0] == "-" and s1[1] == INDICES["spinor"]
+    label = "Ga"
+    tensor = Tensor(label=label, indices=[l, s0, s1])
+    tensor.latex = r"\gamma"
     tensor.is_field = False
     return tensor

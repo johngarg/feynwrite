@@ -18,6 +18,7 @@ from feynwrite.tensor import (
     c344,
     t2244,
     K,
+    Ga,
     lambda_,
 )
 from feynwrite.sm import L, Q, H, eR, dR, uR
@@ -269,6 +270,19 @@ def T2(s, a, I) -> Fermion:
     label = "Granada" + "T2"
     latex = r"T_{2}"
     tensor = Fermion(label, [s, a, I], latex=latex, hypercharge=Fraction("2/3"))
+    return tensor
+
+def VB(l) -> Vector:
+    label = "Granada" + "VB"
+    latex = r"\mathcal{B}"
+    tensor = Vector(label, [l], latex=latex, hypercharge=0)
+    tensor.is_self_conj = True
+    return tensor
+
+def VB1(l) -> Vector:
+    label = "Granada" + "VB1"
+    latex = r"\mathcal{B}_{1}"
+    tensor = Vector(label, [l], latex=latex, hypercharge=1)
     return tensor
 
 ### SCALARS
@@ -1215,3 +1229,20 @@ TERMS.append(lambda_hat_prime_prime_Phi_term)
 
 
 ### Tree-level terms for the Lorentz vectors
+
+# g_du_VB1
+g_du_VB1_term = (
+    Coupling(
+        "gduVB1Term",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g^{du}_{\\mathcal{B}_{1}}]",
+    )
+    * VB1("l0").C
+    * dR("s0", "c0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * uR("s1", "c0", "g1")
+)
+TERMS.append(g_du_VB1_term)
+
+# g_phi_VB1
