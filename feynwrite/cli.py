@@ -24,10 +24,11 @@ help_message = [
 @click.option("-a", is_flag=True, help="Produce output for all valid multiplets.")
 @click.option("--scalars", is_flag=True, help="Produce output for all valid scalars.")
 @click.option("--fermions", is_flag=True, help="Produce output for all valid fermions.")
-def main(multiplets, mmp_config, latex, a, scalars, fermions) -> None:
+@click.option("--vectors", is_flag=True, help="Produce output for all valid vectors.")
+def main(multiplets, mmp_config, latex, a, scalars, fermions, vectors) -> None:
     """Automate the production of FeynRules files."""
 
-    if not a and not fermions and not scalars and not multiplets:
+    if not a and not fermions and not scalars and not vectors and not multiplets:
         ctx = click.get_current_context()
         click.echo(ctx.get_help())
         return
@@ -70,6 +71,8 @@ def main(multiplets, mmp_config, latex, a, scalars, fermions) -> None:
         "Q7",
         "T1",
         "T2",
+        # Vectors
+        "VB1",
     }
     valid_multiplets = {"Granada" + f for f in valid_multiplets}
     model_labels = []
@@ -112,7 +115,11 @@ def main(multiplets, mmp_config, latex, a, scalars, fermions) -> None:
             "T1",
             "T2",
         ]
-    if fermions or scalars:
+    if vectors:
+        multiplets = [
+            "VB1"
+        ]
+    if fermions or scalars or vectors:
         multiplets = ["Granada" + f for f in multiplets]
 
     if a:
