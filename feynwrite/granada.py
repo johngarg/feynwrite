@@ -21,7 +21,7 @@ from feynwrite.tensor import (
     Ga,
     lambda_,
 )
-from feynwrite.sm import L, Q, H, eR, dR, uR
+from feynwrite.sm import L, Q, H, eR, dR, uR, DH
 
 TERMS = []
 
@@ -1246,3 +1246,15 @@ g_du_VB1_term = (
 TERMS.append(g_du_VB1_term)
 
 # g_phi_VB1
+g_phi_VB1_term = (
+    Coupling(
+        "gphiVB1Term",
+        [],
+        is_complex=True,
+        latex="[g^{\\phi}_{\\mathcal{B}_{1}}]",
+    )
+    * VB1("l0").C
+    * DH("l0", "i0")
+    * H("i1")
+    * eps("-i0", "-i1")
+)

@@ -128,13 +128,14 @@ class Tensor:
 
         """
 
-        # Don't reverse the generation and adjoint indices
+        # Don't reverse the generation, adjoint or spacetime indices
         dont_reverse = {
             "generation",
             "isospin_adjoint",
             "isospin_4",
             "colour_adjoint",
             "colour_6",
+            "lorentz",
         }
         dont_reverse = [INDICES[x] for x in dont_reverse]
 
@@ -440,7 +441,7 @@ class Scalar(Field):
             no_dagger = self.wolfram()
 
         kinetic = f"DC[{dagger}, mu] DC[{no_dagger}, mu]"
-        mass = f"M{self.label}^2 {dagger} {no_dagger}"
+        mass = f"M{self.mass_label}^2 {dagger} {no_dagger}"
 
         # Adjust factors for real scalars
         if self.is_self_conj:
@@ -461,6 +462,7 @@ class Scalar(Field):
 class Vector(Field):
     def __init__(self, *args, **kwargs):
         super(Vector, self).__init__(*args, **kwargs)
+        self.is_deriv = False
 
     @property
     def C(self) -> "Vector":
@@ -478,6 +480,21 @@ class Vector(Field):
         # Deal with conj
         if self.is_conj:
             label = f"anti[{label}]"
+
+        if self.is_deriv:
+            deriv_index, *other_indices = self.indices
+
+            # Construct tensor without derivative to use the label
+            tensor_without_deriv = Vector(
+                label=self.label,
+                indices=other_indices,
+                hypercharge=self.hypercharge
+            )
+            tensor_without_deriv.is_deriv = False
+            # Get label
+            label_without_deriv = super(Vector, tensor_without_deriv).wolfram(label=label)
+
+            return f"I DC[{label_without_deriv}, {deriv_index}]"
 
         return super(Vector, self).wolfram(label=label)
 
@@ -499,7 +516,7 @@ class Vector(Field):
             no_dagger = self.wolfram()
 
         kinetic = f"DC[{dagger}, mu] DC[{no_dagger}, mu]"
-        mass = f"M{self.label}^2 {dagger} {no_dagger}"
+        mass = f"M{self.mass_label}^2 {dagger} {no_dagger}"
 
         # Adjust factors for real scalars
         if self.is_self_conj:

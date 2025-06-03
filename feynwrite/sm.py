@@ -5,7 +5,7 @@
 """
 
 from fractions import Fraction
-from feynwrite.tensor import Scalar, Fermion
+from feynwrite.tensor import Scalar, Fermion, Vector
 
 
 def L(s, i, g):
@@ -34,6 +34,15 @@ def H(i):
     tensor = Scalar(label=label, indices=[i], hypercharge=Fraction("1/2"))
     tensor.is_sm = True
     tensor.latex = "H"
+    return tensor
+
+
+def DH(l, i):
+    label = "Phi"
+    tensor = Vector(label=label, indices=[l, i], hypercharge=Fraction("1/2"))
+    tensor.is_sm = True
+    tensor.latex = "H"
+    tensor.is_deriv = True
     return tensor
 
 
