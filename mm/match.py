@@ -14,7 +14,7 @@ def run_and_print(cmd):
 
 
 # Run feynwrite
-# run_and_print(f"feynwrite {particles} > {model_name}.fr")
+run_and_print(f"feynwrite {particles} > {model_name}.fr")
 
 # Copy generic .symm and .gauge files
 run_and_print(f"cp granada.symm {model_name}.symm")
