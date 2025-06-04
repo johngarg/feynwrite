@@ -29,7 +29,6 @@ def Q(s, c, i, g):
 
 
 def H(i):
-    # TODO Fix this, as exotic in Granada dictionary with the same name
     label = "Phi"
     tensor = Scalar(label=label, indices=[i], hypercharge=Fraction("1/2"))
     tensor.is_sm = True

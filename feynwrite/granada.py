@@ -1233,7 +1233,7 @@ TERMS.append(lambda_hat_prime_prime_Phi_term)
 # g_du_VB1
 g_du_VB1_term = (
     Coupling(
-        "gduVB1Term",
+        "gduVB1",
         "-g0 -g1",
         is_complex=True,
         latex="[g^{du}_{\\mathcal{B}_{1}}]",
@@ -1248,7 +1248,7 @@ TERMS.append(g_du_VB1_term)
 # g_phi_VB1
 g_phi_VB1_term = (
     Coupling(
-        "gphiVB1Term",
+        "gphiVB1",
         [],
         is_complex=True,
         latex="[g^{\\phi}_{\\mathcal{B}_{1}}]",
@@ -1258,3 +1258,4 @@ g_phi_VB1_term = (
     * H("i1")
     * eps("-i0", "-i1")
 )
+TERMS.append(g_phi_VB1_term)

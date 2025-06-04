@@ -226,7 +226,7 @@ class Field(Tensor):
         spin_label = str(type(self)).split(".")[-1][0]
 
         indices = [wolfram_index_map(idx) for idx in self.indices]
-        indices = [idx for idx in indices if idx != "Index[Spinor]"]
+        indices = [idx for idx in indices if idx not in {"Index[Spinor]", "Index[Lorentz]"}]
 
         lines = [
             f"{spin_label}[{count}] == ",
@@ -502,11 +502,8 @@ class Vector(Field):
         """Returns a string representing the free-field Lagrangian for the scalar."""
         assert not self.is_sm
 
-        indices = self.index_labels + ["mu"]
+        indices = self.index_labels + ["mu", "nu"]
 
-        # We always want the kinetic term to look like (D S)^dag (D S), but
-        # would look like (D S) (D S)^dag if S where already `conj`ed. Fix this
-        # here by hand
         if self.is_conj:
             dagger = self.wolfram()
             no_dagger = self.C.wolfram()
@@ -515,7 +512,14 @@ class Vector(Field):
             dagger = self.C.wolfram()
             no_dagger = self.wolfram()
 
-        kinetic = f"DC[{dagger}, mu] DC[{no_dagger}, mu]"
+        lab = self.label
+        gauge_indices = ",".join(self.get_index_labels()[1:])
+
+        # Kinetic term
+        kinetic_1 = f"DC[{lab}bar[nu,{gauge_indices}], mu] DC[{lab}[mu,{gauge_indices}], nu]"
+        kinetic_2 = f"DC[{lab}bar[nu,{gauge_indices}], mu] DC[{lab}[nu,{gauge_indices}], mu]"
+        kinetic = f"{kinetic_1} - {kinetic_2}"
+
         mass = f"M{self.mass_label}^2 {dagger} {no_dagger}"
 
         # Adjust factors for real scalars

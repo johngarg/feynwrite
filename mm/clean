@@ -27,7 +27,6 @@ def remove_files_except(dont_remove):
                 print(f"Removed directory: {file_name}")
 
 # Usage example
-dont_remove = ["UnbrokenSM_BFM.fr", "granada.symm", "granada.gauge", "granada.red", "match", "clean", "SMEFT_Green_Bpreserving_MM"]
-directory = "/path/to/directory"  # Path to the directory
+dont_remove = ["UnbrokenSM_BFM.fr", "granada.symm", "granada.gauge", "granada.red", "match", "clean", "SMEFT_Green_Bpreserving_MM", "match.py", "readme.md", "qgraf"]
 
 remove_files_except(dont_remove)

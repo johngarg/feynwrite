@@ -1,8 +1,6 @@
-#!/usr/bin/env python3.11
-
 import os
 import sys
-from matchmakereft.libs.mm_offline import create_model, match_model_to_eft
+from matchmakereft.libs.mm_offline import create_model, match_model_to_eft, compute_rge_model_to_eft, match_model_to_eft_onlytree
 from rich import print
 
 particle_names = sys.argv[1:]
@@ -16,7 +14,7 @@ def run_and_print(cmd):
 
 
 # Run feynwrite
-run_and_print(f"feynwrite {particles} > {model_name}.fr")
+# run_and_print(f"feynwrite {particles} > {model_name}.fr")
 
 # Copy generic .symm and .gauge files
 run_and_print(f"cp granada.symm {model_name}.symm")
@@ -25,7 +23,19 @@ run_and_print(f"cp granada.red {model_name}.red")
 
 # Run Matchmaker
 create_model(f"UnbrokenSM_BFM.fr {model_name}.fr")
-match_model_to_eft(f"{model_name}_MM SMEFT_Green_Bpreserving_MM")
+
+vector = False
+for particle in particle_names:
+    if particle.startswith("GranadaV"):
+        vector = True
+        break
+
+if vector:
+    print("Lorentz vector present in model. Proceeding with only tree-level matching.")
+    match_model_to_eft_onlytree(f"{model_name}_MM SMEFT_Green_Bpreserving_MM")
+else:
+    match_model_to_eft(f"{model_name}_MM SMEFT_Green_Bpreserving_MM")
+    compute_rge_model_to_eft(f"{model_name}_MM SMEFT_Green_Bpreserving_MM")
 
 # Check output
 with open(f"{model_name}_MM/MatchingProblems.dat", "r") as problems_file:
