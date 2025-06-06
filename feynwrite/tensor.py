@@ -512,7 +512,10 @@ class Vector(Field):
             dagger = self.C.wolfram()
             no_dagger = self.wolfram()
 
+        # Work out the label for the kinetic term
         lab = self.label
+        lab_dag = self.label if self.is_self_conj else self.label + "bar"
+
         gauge_indices = ",".join(self.get_index_labels()[1:])
         # Add a comma to the beginning of the string list only if there are
         # gauge indices
@@ -520,8 +523,8 @@ class Vector(Field):
             gauge_indices = "," + gauge_indices
 
         # Kinetic term
-        kinetic_1 = f"DC[{lab}bar[nu{gauge_indices}], mu] DC[{lab}[mu{gauge_indices}], nu]"
-        kinetic_2 = f"DC[{lab}bar[nu{gauge_indices}], mu] DC[{lab}[nu{gauge_indices}], mu]"
+        kinetic_1 = f"DC[{lab_dag}[nu{gauge_indices}], mu] DC[{lab}[mu{gauge_indices}], nu]"
+        kinetic_2 = f"DC[{lab_dag}[nu{gauge_indices}], mu] DC[{lab}[nu{gauge_indices}], mu]"
         kinetic = f"{kinetic_1} - {kinetic_2}"
 
         mass = f"M{self.mass_label}^2 {dagger} {no_dagger}"
