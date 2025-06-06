@@ -285,6 +285,91 @@ def VB1(l) -> Vector:
     tensor = Vector(label, [l], latex=latex, hypercharge=1)
     return tensor
 
+def VW(l, I) -> Vector:
+    label = "Granada" + "VW"
+    latex = r"\mathcal{W}"
+    tensor = Vector(label, [l, I], latex=latex, hypercharge=0)
+    return tensor
+
+def VW1(l, I) -> Vector:
+    label = "Granada" + "VW1"
+    latex = r"\mathcal{W}_{1}"
+    tensor = Vector(label, [l, I], latex=latex, hypercharge=1)
+    return tensor
+
+def VG(l, C) -> Vector:
+    label = "Granada" + "VG"
+    latex = r"\mathcal{G}"
+    tensor = Vector(label, [l, C], latex=latex, hypercharge=0)
+    return tensor
+
+def VG1(l, C) -> Vector:
+    label = "Granada" + "VG1"
+    latex = r"\mathcal{G}_{1}"
+    tensor = Vector(label, [l, C], latex=latex, hypercharge=1)
+    return tensor
+
+def VH(l, C, I) -> Vector:
+    label = "Granada" + "VH"
+    latex = r"\mathcal{H}"
+    tensor = Vector(label, [l, C, I], latex=latex, hypercharge=0)
+    return tensor
+
+def VL1(l, i) -> Vector:
+    label = "Granada" + "VL1"
+    latex = r"\mathcal{L}_{1}"
+    tensor = Vector(label, [l, i], latex=latex, hypercharge=Fraction("1/2"))
+    return tensor
+
+def VL3(l, i) -> Vector:
+    label = "Granada" + "VL3"
+    latex = r"\mathcal{L}_{3}"
+    tensor = Vector(label, [l, i], latex=latex, hypercharge=Fraction("-3/2"))
+    return tensor
+
+def VU2(l, c) -> Vector:
+    label = "Granada" + "VU2"
+    latex = r"\mathcal{U}_{2}"
+    tensor = Vector(label, [l, c], latex=latex, hypercharge=Fraction("2/3"))
+    return tensor
+
+def VU5(l, c) -> Vector:
+    label = "Granada" + "VU5"
+    latex = r"\mathcal{U}_{5}"
+    tensor = Vector(label, [l, c], latex=latex, hypercharge=Fraction("5/3"))
+    return tensor
+
+def VQ1(l, c, i) -> Vector:
+    label = "Granada" + "VQ1"
+    latex = r"\mathcal{Q}_{1}"
+    tensor = Vector(label, [l, c, i], latex=latex, hypercharge=Fraction("1/6"))
+    return tensor
+
+def VQ5(l, c, i) -> Vector:
+    label = "Granada" + "VQ5"
+    latex = r"\mathcal{Q}_{5}"
+    tensor = Vector(label, [l, c, i], latex=latex, hypercharge=Fraction("-5/6"))
+    return tensor
+
+def VX(l, c, I) -> Vector:
+    label = "Granada" + "VX"
+    latex = r"\mathcal{X}"
+    tensor = Vector(label, [l, c, I], latex=latex, hypercharge=Fraction("2/3"))
+    return tensor
+
+## VY1 and VY5 are in the 6* colour rep
+def VY1(l, X, i) -> Vector:
+    label = "Granada" + "VY1"
+    latex = r"\mathcal{Y}_{1}"
+    tensor = Vector(label, [l, X, i], latex=latex, hypercharge=Fraction("1/6"))
+    return tensor
+
+def VY5(l, X, i) -> Vector:
+    label = "Granada" + "VY5"
+    latex = r"\mathcal{Y}_{5}"
+    tensor = Vector(label, [l, X, i], latex=latex, hypercharge=Fraction("-5/6"))
+    return tensor
+
 ### SCALARS
 
 # kappaS
@@ -1349,3 +1434,53 @@ g_phi_VB1_term = (
     * eps("-i0", "-i1")
 )
 TERMS.append(g_phi_VB1_term)
+
+# g_l_VW
+g_l_VW_term = (
+    Coupling(
+        "glVW",
+        "-g0 -g1",
+        is_complex=False,
+        factor=Rational("1/2"),
+        latex="[g_{\\mathcal{W}}^{l}]",
+    )
+    * VW("l0", "-I0")
+    * L("s0", "i0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * L("s1", "i1", "g1")
+    * sigma("I0", "i0", "-i1")
+)
+TERMS.append(g_l_VW_term)
+
+# g_q_VW
+g_q_VW_term = (
+    Coupling(
+        "gqVW",
+        "-g0 -g1",
+        is_complex=False,
+        factor=Rational("1/2"),
+        latex="[g_{\\mathcal{W}}^{q}]",
+    )
+    * VW("l0", "-I0")
+    * Q("s0", "c0", "i0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * Q("s1", "c0", "i1", "g1")
+    * sigma("I0", "i0", "-i1")
+)
+TERMS.append(g_q_VW_term)
+
+# g_phi_VW
+g_phi_VW_term = (
+    Coupling(
+        "gphiVW",
+        [],
+        is_complex=True,
+        factor=Rational("1/2"),
+        latex="[g_{\\mathcal{W}}^{\\phi}]",
+    )
+    * VW("l0", "-I0")
+    * H("i0").C
+    * DH("l0", "i1")
+    * sigma("I0", "i0", "-i1")
+)
+TERMS.append(g_phi_VW_term)
