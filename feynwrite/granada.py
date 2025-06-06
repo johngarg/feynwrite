@@ -1229,6 +1229,96 @@ TERMS.append(lambda_hat_prime_prime_Phi_term)
 
 
 ### Tree-level terms for the Lorentz vectors
+###
+
+# g_l_VB
+g_l_VB_term = (
+    Coupling(
+        "glVB",
+        "-g0 -g1",
+        is_complex=False,
+        latex="[g_{\\mathcal{B}}^{l}]",
+    )
+    * VB("l0")
+    * L("s0", "i0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * L("s1", "i0", "g1")
+)
+TERMS.append(g_l_VB_term)
+
+# g_q_VB
+g_q_VB_term = (
+    Coupling(
+        "gqVB",
+        "-g0 -g1",
+        is_complex=False,
+        latex="[g_{\\mathcal{B}}^{q}]",
+    )
+    * VB("l0")
+    * Q("s0", "c0", "i0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * Q("s1", "c0", "i0", "g1")
+)
+TERMS.append(g_q_VB_term)
+
+# g_e_VB
+g_e_VB_term = (
+    Coupling(
+        "geVB",
+        "-g0 -g1",
+        is_complex=False,
+        latex="[g_{\\mathcal{B}}^{e}]",
+    )
+    * VB("l0")
+    * eR("s0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * eR("s1", "g1")
+)
+TERMS.append(g_e_VB_term)
+
+# g_u_VB
+g_u_VB_term = (
+    Coupling(
+        "guVB",
+        "-g0 -g1",
+        is_complex=False,
+        latex="[g_{\\mathcal{B}}^{u}]",
+    )
+    * VB("l0")
+    * uR("s0", "c0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * uR("s1", "c0", "g1")
+)
+TERMS.append(g_u_VB_term)
+
+# g_d_VB
+g_d_VB_term = (
+    Coupling(
+        "gdVB",
+        "-g0 -g1",
+        is_complex=False,
+        latex="[g_{\\mathcal{B}}^{d}]",
+    )
+    * VB("l0")
+    * dR("s0", "c0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * dR("s1", "c0", "g1")
+)
+TERMS.append(g_d_VB_term)
+
+# g_phi_VB
+g_phi_VB_term = (
+    Coupling(
+        "gphiVB",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g_{\\mathcal{B}}^{\\phi}]",
+    )
+    * VB("l0")
+    * H("i0").C
+    * DH("l0", "i0")
+)
+TERMS.append(g_phi_VB_term)
 
 # g_du_VB1
 g_du_VB1_term = (

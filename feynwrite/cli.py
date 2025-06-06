@@ -72,7 +72,22 @@ def main(multiplets, mmp_config, latex, a, scalars, fermions, vectors) -> None:
         "T1",
         "T2",
         # Vectors
+        "VB",
         "VB1",
+        "VW",
+        "VW1",
+        "VG",
+        "VG1",
+        "VH",
+        "VL1",
+        "VL3",
+        "VU2",
+        "VU5",
+        "VQ1",
+        "VQ5",
+        "VX",
+        "VY1",
+        "VY5",
     }
     valid_multiplets = {"Granada" + f for f in valid_multiplets}
     model_labels = []
@@ -117,7 +132,22 @@ def main(multiplets, mmp_config, latex, a, scalars, fermions, vectors) -> None:
         ]
     if vectors:
         multiplets = [
-            "VB1"
+            "VB",
+            "VB1",
+            "VW",
+            "VW1",
+            "VG",
+            "VG1",
+            "VH",
+            "VL1",
+            "VL3",
+            "VU2",
+            "VU5",
+            "VQ1",
+            "VQ5",
+            "VX",
+            "VY1",
+            "VY5",
         ]
     if fermions or scalars or vectors:
         multiplets = ["Granada" + f for f in multiplets]
