@@ -987,7 +987,7 @@ lambda_hat_Theta1_term = (
     )
     * H("i0").C
     * H("i0")
-    * Theta1("Q0").C
+    * Theta1("-Q0").C
     * Theta1("Q0")
 )
 TERMS.append(lambda_hat_Theta1_term)
@@ -999,7 +999,7 @@ lambda_hat_Theta3_term = (
     )
     * H("i0").C
     * H("i0")
-    * Theta3("Q0").C
+    * Theta3("-Q0").C
     * Theta3("Q0")
 )
 TERMS.append(lambda_hat_Theta3_term)
@@ -1326,7 +1326,7 @@ g_l_VB_term = (
         is_complex=False,
         latex="[g_{\\mathcal{B}}^{l}]",
     )
-    * VB("l0")
+    * VB("-l0")
     * L("s0", "i0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * L("s1", "i0", "g1")
@@ -1341,7 +1341,7 @@ g_q_VB_term = (
         is_complex=False,
         latex="[g_{\\mathcal{B}}^{q}]",
     )
-    * VB("l0")
+    * VB("-l0")
     * Q("s0", "c0", "i0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * Q("s1", "c0", "i0", "g1")
@@ -1356,7 +1356,7 @@ g_e_VB_term = (
         is_complex=False,
         latex="[g_{\\mathcal{B}}^{e}]",
     )
-    * VB("l0")
+    * VB("-l0")
     * eR("s0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * eR("s1", "g1")
@@ -1371,7 +1371,7 @@ g_u_VB_term = (
         is_complex=False,
         latex="[g_{\\mathcal{B}}^{u}]",
     )
-    * VB("l0")
+    * VB("-l0")
     * uR("s0", "c0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * uR("s1", "c0", "g1")
@@ -1386,7 +1386,7 @@ g_d_VB_term = (
         is_complex=False,
         latex="[g_{\\mathcal{B}}^{d}]",
     )
-    * VB("l0")
+    * VB("-l0")
     * dR("s0", "c0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * dR("s1", "c0", "g1")
@@ -1397,11 +1397,11 @@ TERMS.append(g_d_VB_term)
 g_phi_VB_term = (
     Coupling(
         "gphiVB",
-        "-g0 -g1",
+        [],
         is_complex=True,
         latex="[g_{\\mathcal{B}}^{\\phi}]",
     )
-    * VB("l0")
+    * VB("-l0")
     * H("i0").C
     * DH("l0", "i0")
 )
@@ -1415,7 +1415,7 @@ g_du_VB1_term = (
         is_complex=True,
         latex="[g^{du}_{\\mathcal{B}_{1}}]",
     )
-    * VB1("l0").C
+    * VB1("-l0").C
     * dR("s0", "c0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * uR("s1", "c0", "g1")
@@ -1430,7 +1430,7 @@ g_phi_VB1_term = (
         is_complex=True,
         latex="[g^{\\phi}_{\\mathcal{B}_{1}}]",
     )
-    * VB1("l0").C
+    * VB1("-l0").C
     * DH("l0", "i0")
     * H("i1")
     * eps("-i0", "-i1")
@@ -1446,7 +1446,7 @@ g_l_VW_term = (
         factor=Rational("1/2"),
         latex="[g_{\\mathcal{W}}^{l}]",
     )
-    * VW("l0", "-I0")
+    * VW("-l0", "-I0")
     * L("s0", "i0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * L("s1", "i1", "g1")
@@ -1463,7 +1463,7 @@ g_q_VW_term = (
         factor=Rational("1/2"),
         latex="[g_{\\mathcal{W}}^{q}]",
     )
-    * VW("l0", "-I0")
+    * VW("-l0", "-I0")
     * Q("s0", "c0", "i0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * Q("s1", "c0", "i1", "g1")
@@ -1480,7 +1480,7 @@ g_phi_VW_term = (
         factor=Rational("1/2"),
         latex="[g_{\\mathcal{W}}^{\\phi}]",
     )
-    * VW("l0", "-I0")
+    * VW("-l0", "-I0")
     * H("i0").C
     * DH("l0", "i1")
     * sigma("I0", "i0", "-i1")
@@ -1496,7 +1496,7 @@ g_phi_VW1_term = (
         factor=Rational("1/2"),
         latex="[g_{\\mathcal{W_{1}}}^{\\phi}]",
     )
-    * VW1("l0", "-I0").C
+    * VW1("-l0", "-I0").C
     * DH("l0", "i0")
     * H("i2")
     * eps("-i0", "-i1")
@@ -1512,7 +1512,7 @@ g_q_VG_term = (
         is_complex=False,
         latex="[g_{\\mathcal{G}}^{q}]",
     )
-    * VG("l0", "-C0")
+    * VG("-l0", "-C0")
     * Q("s0", "c0", "i0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * Q("s1", "c1", "i0", "g1")
@@ -1528,7 +1528,7 @@ g_u_VG_term = (
         is_complex=False,
         latex="[g_{\\mathcal{G}}^{u}]",
     )
-    * VG("l0", "-C0")
+    * VG("-l0", "-C0")
     * uR("s0", "c0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * uR("s1", "c1", "g1")
@@ -1544,7 +1544,7 @@ g_d_VG_term = (
         is_complex=False,
         latex="[g_{\\mathcal{G}}^{d}]",
     )
-    * VG("l0", "-C0")
+    * VG("-l0", "-C0")
     * dR("s0", "c0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * dR("s1", "c1", "g1")
@@ -1560,7 +1560,7 @@ g_VG1_term = (
         is_complex=True,
         latex="[g_{\\mathcal{G}_{1}}]",
     )
-    * VG1("l0", "-C0").C
+    * VG1("-l0", "-C0").C
     * dR("s0", "c0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * uR("s1", "c1", "g1")
@@ -1577,7 +1577,7 @@ g_q_VH_term = (
         is_complex=False,
         latex="[g_{\\mathcal{H}}]",
     )
-    * VH("l0", "-C0", "-I0")
+    * VH("-l0", "-C0", "-I0")
     * Q("s0", "c0", "i0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * Q("s1", "c1", "i1", "g1")
@@ -1594,7 +1594,7 @@ gamma_VL1_term = (
         is_complex=True,
         latex="[\\gamma_{\\mathcal{L}_1}]",
     )
-    * VL1("l0", "i0").C
+    * VL1("-l0", "i0").C
     * DH("l0", "i0")
 )
 TERMS.append(gamma_VL1_term)
@@ -1608,8 +1608,8 @@ gB_VL1_term = (
         latex="[g^{B}_{\\mathcal{L}_1}]",
         factor=I,
     )
-    * VL1("l0", "i0").C
-    * VL1("l1", "i0")
+    * VL1("-l0", "i0").C
+    * VL1("-l1", "i0")
     * FS("B", "l0", "l1")
 )
 TERMS.append(gB_VL1_term)
@@ -1623,10 +1623,10 @@ gW_VL1_term = (
         latex="[g^{W}_{\\mathcal{L}_1}]",
         factor=I,
     )
-    * VL1("l0", "i0").C
-    * VL1("l1", "i1")
-    * sigma("I0", "i0", "-i1")              # SU(2) triplet structure
-    * FS("Wi", "l0", "l1", "I0")           # adjoint index for W field strength
+    * VL1("-l0", "i0").C
+    * VL1("-l1", "i1")
+    * sigma("I0", "i0", "-i1")
+    * FS("Wi", "l0", "l1", "-I0")
 )
 TERMS.append(gW_VL1_term)
 
@@ -1640,8 +1640,8 @@ gBt_VL1_term = (
         latex="[g^{\\tilde{B}}_{\\mathcal{L}_1}]",
         factor=I * Rational("1/2"), # From dual definition
     )
-    * VL1("l0", "i0").C
-    * VL1("l1", "i0")
+    * VL1("-l0", "i0").C
+    * VL1("-l1", "i0")
     * eps("l0", "l1", "l2", "l3")
     * FS("B", "l2", "l3")
 )

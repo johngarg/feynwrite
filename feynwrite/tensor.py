@@ -565,7 +565,7 @@ class TensorProduct:
         upper, lower = [], []
         for tensor in self.tensors:
             for index in tensor.indices:
-                if not index:
+                if not index or index in ["B", "Wi", "G"]:
                     continue
                 if index[0] == "-":
                     lower.append(index[1:])

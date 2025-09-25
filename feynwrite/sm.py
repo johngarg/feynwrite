@@ -82,4 +82,5 @@ def FS(V, l0, l1, V_index=None):
         is_conj=False
     )
     tensor.is_sm = True
+    tensor.hypercharge = 0
     return tensor
