@@ -1216,6 +1216,7 @@ lambda_hat_prime_Phi_term = (
     Coupling(
         "lambdaHatPrimePhi",
         [],
+        factor=Rational("1/4"),
         is_complex=False,
         latex="\\hat{\\lambda}^{\\prime}_{\\Phi}",
     )
@@ -1300,6 +1301,7 @@ lambda_hat_prime_prime_Phi_term = (
     Coupling(
         "lambdaHatPrimePrimePhi",
         [],
+        factor=Rational("1/4"),
         is_complex=True,
         latex="\\hat{\\lambda}^{\\prime\\prime}_{\\Phi}",
     )
@@ -1484,3 +1486,300 @@ g_phi_VW_term = (
     * sigma("I0", "i0", "-i1")
 )
 TERMS.append(g_phi_VW_term)
+
+# g_phi_VW1
+g_phi_VW1_term = (
+    Coupling(
+        "gphiVW1",
+        [],
+        is_complex=True,
+        factor=Rational("1/2"),
+        latex="[g_{\\mathcal{W_{1}}}^{\\phi}]",
+    )
+    * VW1("l0", "-I0").C
+    * H("i0").C
+    * DH("l0", "i1")
+    * sigma("I0", "i0", "-i1")
+)
+TERMS.append(g_phi_VW1_term)
+
+# g_q_VG
+g_q_VG_term = (
+    Coupling(
+        "gqVG",
+        "-g0 -g1",
+        factor=Rational("1/2"),
+        is_complex=False,
+        latex="[g_{\\mathcal{G}}^{q}]",
+    )
+    * VG("l0", "-C0")
+    * Q("s0", "c0", "i0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * Q("s1", "c1", "i0", "g1")
+    * lambda_("C0", "c0", "-c1")
+)
+TERMS.append(g_q_VG_term)
+
+# g_u_VG
+g_u_VG_term = (
+    Coupling(
+        "guVG",
+        "-g0 -g1",
+        factor=Rational("1/2"),
+        is_complex=False,
+        latex="[g_{\\mathcal{G}}^{u}]",
+    )
+    * VG("l0", "-C0")
+    * uR("s0", "c0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * uR("s1", "c1", "g1")
+    * lambda_("C0", "c0", "-c1")
+)
+TERMS.append(g_u_VG_term)
+
+# g_d_VG
+g_d_VG_term = (
+    Coupling(
+        "gdVG",
+        "-g0 -g1",
+        factor=Rational("1/2"),
+        is_complex=False,
+        latex="[g_{\\mathcal{G}}^{d}]",
+    )
+    * VG("l0", "-C0")
+    * dR("s0", "c0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * dR("s1", "c1", "g1")
+    * lambda_("C0", "c0", "-c1")
+)
+TERMS.append(g_d_VG_term)
+
+# g_VG1
+g_VG1_term = (
+    Coupling(
+        "gVG1",
+        "-g0 -g1",
+        factor=Rational("1/2"),
+        is_complex=True,
+        latex="[g_{\\mathcal{G}_{1}}]",
+    )
+    * VG("l0", "-C0").C
+    * dR("s0", "c0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * uR("s1", "c1", "g1")
+    * lambda_("C0", "c0", "-c1")
+)
+TERMS.append(g_VG1_term)
+
+# g_q_VH : (1/2) g_H  H^{μ a A}  \bar q_L σ^a γ_μ T_A q_L
+g_q_VH_term = (
+    Coupling(
+        "gqVH",
+        "-g0 -g1",
+        factor=Rational("1/2"),
+        is_complex=False,
+        latex="[g_{\\mathcal{H}}]",
+    )
+    * VH("l0", "-C0", "-I0")
+    * Q("s0", "c0", "i0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * Q("s1", "c1", "i1", "g1")
+    * sigma("I0", "i0", "-i1")
+    * lambda_("C0", "c0", "-c1")
+)
+TERMS.append(g_q_VH_term)
+
+## TODO Fill in \mathcal{L}_1
+
+# g_VL3 : (g_{L3}) L3^{μ†} \bar{e}_R^c γ_μ l_L + h.c.
+g_VL3_term = (
+    Coupling(
+        "gVL3",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g_{\\mathcal{L}_3}]",
+    )
+    * VL3("l0", "i0").C
+    * eR("s0", "g0").CC.bar
+    * Ga("l0", "s0", "-s1")
+    * L("s1", "i0", "g1")
+)
+TERMS.append(g_VL3_term)
+
+# (g^{ed}_{U2}) U2^{μ†} \bar e_R γ_μ d_R + h.c.
+g_ed_VU2_term = (
+    Coupling(
+        "gedVU2",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g_{\\mathcal{U}_2}^{ed}]",
+    )
+    * VU2("l0", "c0").C
+    * eR("s0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * dR("s1", "c0", "g1")
+)
+TERMS.append(g_ed_VU2_term)
+
+# (g^{lq}_{U2}) U2^{μ†} \bar l_L γ_μ q_L + h.c.
+g_lq_VU2_term = (
+    Coupling(
+        "glqVU2",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g_{\\mathcal{U}_2}^{lq}]",
+    )
+    * VU2("l0", "c0").C
+    * L("s0", "i0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * Q("s1", "c0", "i0", "g1")
+)
+TERMS.append(g_lq_VU2_term)
+
+# (g_{U5}) U5^{μ†} \bar e_R γ_μ u_R + h.c.
+g_VU5_term = (
+    Coupling(
+        "gVU5",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g_{\\mathcal{U}_5}]",
+    )
+    * VU5("l0", "c0").C
+    * eR("s0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * uR("s1", "c0", "g1")
+)
+TERMS.append(g_VU5_term)
+
+
+# (g^{ul}_{Q1}) Q1^{μ†} \bar u_R^c γ_μ l_L + h.c.
+g_ul_VQ1_term = (
+    Coupling(
+        "gulVQ1",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g_{\\mathcal{Q}_1}^{ul}]",
+    )
+    * VQ1("l0", "c0", "i0").C
+    * uR("s0", "c0", "g0").CC.bar
+    * Ga("l0", "s0", "-s1")
+    * L("s1", "i0", "g1")
+)
+TERMS.append(g_ul_VQ1_term)
+
+# (g^{dq}_{Q1}) Q1^{μ†}_A ε_{ABC} \bar d_R^B γ_μ (iσ2 q_L^c)^C + h.c.
+g_dq_VQ1_term = (
+    Coupling(
+        "gdqVQ1",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g_{\\mathcal{Q}_1}^{dq}]",
+    )
+    * VQ1("l0", "c0", "i0").C
+    * dR("s0", "c1", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * Q("s1", "c2", "i1", "g1").CC
+    * eps("c0", "c1", "c2")
+    * eps("-i0", "-i1")
+)
+TERMS.append(g_dq_VQ1_term)
+
+# (g^{dl}_{Q5}) Q5^{μ†} \bar d_R^c γ_μ l_L + h.c.
+g_dl_VQ5_term = (
+    Coupling(
+        "gdlVQ5",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g_{\\mathcal{Q}_5}^{dl}]",
+    )
+    * VQ5("l0", "c0", "i0").C
+    * dR("s0", "c0", "g0").CC.bar
+    * Ga("l0", "s0", "-s1")
+    * L("s1", "i0", "g1")
+)
+TERMS.append(g_dl_VQ5_term)
+
+# (g^{eq}_{Q5}) Q5^{μ†} \bar e_R^c γ_μ q_L + h.c.
+g_eq_VQ5_term = (
+    Coupling(
+        "geqVQ5",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g_{\\mathcal{Q}_5}^{eq}]",
+    )
+    * VQ5("l0", "c0", "i0").C
+    * eR("s0", "g0").CC.bar
+    * Ga("l0", "s0", "-s1") # should the first spinor index be lowered here?
+    * Q("s1", "c0", "i0", "g1")
+)
+TERMS.append(g_eq_VQ5_term)
+
+# (g^{uq}_{Q5}) Q5^{μ†}_A ε_{ABC} \bar u_R^B γ_μ q_L^{c\,C} + h.c.
+g_uq_VQ5_term = (
+    Coupling(
+        "guqVQ5",
+        "-g0 -g1",
+        is_complex=True,
+        latex="[g_{\\mathcal{Q}_5}^{uq}]",
+    )
+    * VQ5("l0", "c0", "i0").C
+    * uR("s0", "c1", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * Q("s1", "c2", "i1", "g1").CC
+    * eps("c0", "c1", "c2")
+    * eps("-i0", "-i1")
+)
+TERMS.append(g_uq_VQ5_term)
+
+# (1/2) g_X  X^{a μ†}  \bar l_L σ^a γ_μ q_L + h.c.
+g_VX_term = (
+    Coupling(
+        "gVX",
+        "-g0 -g1",
+        factor=Rational("1/2"),
+        is_complex=True,
+        latex="[g_{\\mathcal{X}}]",
+    )
+    * VX("l0", "c0", "I0").C
+    * L("s0", "i0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * Q("s1", "c0", "i1", "g1")
+    * sigma("I0", "i0", "-i1")
+)
+TERMS.append(g_VX_term)
+
+# (1/2) g_{Y1}  Y1^{AB μ†}  \bar d_R^{(A|} γ_μ (iσ2 q_L^c)^{|B)}  + h.c.
+g_VY1_term = (
+    Coupling(
+        "gVY1",
+        "-g0 -g1",
+        factor=Rational("1/2"),
+        is_complex=True,
+        latex="[g_{\\mathcal{Y}_1}]",
+    )
+    * VY1("l0", "X0", "i0").C
+    * K("X0", "-c0", "-c1")
+    * dR("s0", "c0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * Q("s1", "c1", "i1", "g1").CC
+    * eps("-i0", "-i1")
+)
+TERMS.append(g_VY1_term)
+
+# (1/2) g_{Y5}  Y5^{AB μ†}  \bar u_R^{(A|} γ_μ (iσ2 q_L^c)^{|B)}  + h.c.
+g_VY5_term = (
+    Coupling(
+        "gVY5",
+        "-g0 -g1",
+        factor=Rational("1/2"),
+        is_complex=True,
+        latex="[g_{\\mathcal{Y}_5}]",
+    )
+    * VY5("l0", "X0", "i0").C
+    * K("X0", "-c0", "-c1")
+    * uR("s0", "c0", "g0").bar
+    * Ga("l0", "s0", "-s1")
+    * Q("s1", "c1", "i1", "g1").CC
+    * eps("-i0", "-i1")
+)
+TERMS.append(g_VY5_term)
