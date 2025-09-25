@@ -21,7 +21,7 @@ from feynwrite.tensor import (
     Ga,
     lambda_,
 )
-from feynwrite.sm import L, Q, H, eR, dR, uR, DH
+from feynwrite.sm import L, Q, H, eR, dR, uR, DH, FS
 
 TERMS = []
 
@@ -1586,7 +1586,128 @@ g_q_VH_term = (
 )
 TERMS.append(g_q_VH_term)
 
-## TODO Fill in \mathcal{L}_1
+# γ_{L1}  :  γ_L1  L1_μ^† D^μ φ  + h.c.
+gamma_VL1_term = (
+    Coupling(
+        "gammaVL1",
+        [],
+        is_complex=True,
+        latex="[\\gamma_{\\mathcal{L}_1}]",
+    )
+    * VL1("l0", "i0").C
+    * DH("l0", "i0")
+)
+TERMS.append(gamma_VL1_term)
+
+# i g^B_{L1}  L1_μ^† L1_ν B^{μν}
+gB_VL1_term = (
+    Coupling(
+        "gBVL1",
+        [],
+        is_complex=False,
+        latex="[g^{B}_{\\mathcal{L}_1}]",
+        factor=I,
+    )
+    * VL1("l0", "i0").C
+    * VL1("l1", "i0")
+    * FS("B", "l0", "l1")
+)
+TERMS.append(gB_VL1_term)
+
+# i g^W_{L1}  L1_{i μ}^† σ^a_{ij} L1_{j ν} W^{a μν}
+gW_VL1_term = (
+    Coupling(
+        "gWVL1",
+        [],
+        is_complex=False,
+        latex="[g^{W}_{\\mathcal{L}_1}]",
+        factor=I,
+    )
+    * VL1("l0", "i0").C
+    * VL1("l1", "i1")
+    * sigma("I0", "i0", "-i1")              # SU(2) triplet structure
+    * FS("Wi", "l0", "l1", "I0")           # adjoint index for W field strength
+)
+TERMS.append(gW_VL1_term)
+
+# i g^{~B}_{L1}  L1_μ^† L1_ν  \tilde{B}^{μν}
+#   \tilde{F}^{μν} = (1/2) ε^{μνρσ} F_{ρσ}.
+gBt_VL1_term = (
+    Coupling(
+        "gBtildeVL1",
+        [],
+        is_complex=False,
+        latex="[g^{\\tilde{B}}_{\\mathcal{L}_1}]",
+        factor=I * Rational("1/2"), # From dual definition
+    )
+    * VL1("l0", "i0").C
+    * VL1("l1", "i0")
+    * eps("l0", "l1", "l2", "l3")
+    * FS("B", "l2", "l3")
+)
+TERMS.append(gBt_VL1_term)
+
+# i g^{~W}_{L1}  L1_{i μ}^† σ^a_{ij} L1_{j ν}  \tilde{W}^{a μν}
+gWt_VL1_term = (
+    Coupling(
+        "gWtildeVL1",
+        [],
+        is_complex=False,
+        latex="[g^{\\tilde{W}}_{\\mathcal{L}_1}]",
+        factor=I * Rational("1/2"), # From dual definition
+    )
+    * VL1("l0", "i0").C
+    * VL1("l1", "i1")
+    * sigma("I0", "i0", "-i1")
+    * eps("l0", "l1", "l2", "l3")
+    * FS("Wi", "l2", "l3", "I0")
+)
+TERMS.append(gWt_VL1_term)
+
+# h^{(1)}_{L1}  (L1_μ^† L1^μ) (φ^† φ)
+h1_VL1_term = (
+    Coupling(
+        "h1VL1",
+        [],
+        is_complex=False,
+        latex="[h^{(1)}_{\\mathcal{L}_1}]",
+    )
+    * VL1("l0", "i0").C
+    * VL1("l0", "i0")
+    * H("i1").C
+    * H("i1")
+)
+TERMS.append(h1_VL1_term)
+
+# h^{(2)}_{L1}  (L1_μ^† φ) (φ^† L1^μ)
+h2_VL1_term = (
+    Coupling(
+        "h2VL1",
+        [],
+        is_complex=False,
+        latex="[h^{(2)}_{\\mathcal{L}_1}]",
+    )
+    * VL1("l0", "i0").C
+    * H("i0")
+    * H("i1").C
+    * VL1("l0", "i1")
+)
+TERMS.append(h2_VL1_term)
+
+# h^{(3)}_{L1}  (L1_μ^† φ) (L1^μ^† φ)
+h3_VL1_term = (
+    Coupling(
+        "h3VL1",
+        [],
+        is_complex=True,
+        latex="[h^{(3)}_{\\mathcal{L}_1}]",
+    )
+    * VL1("l0", "i0").C
+    * H("i0")
+    * VL1("l0", "i1").C
+    * H("i1")
+)
+TERMS.append(h3_VL1_term)
 
 # g_VL3 : (g_{L3}) L3^{μ†} \bar{e}_R^c γ_μ l_L + h.c.
 g_VL3_term = (

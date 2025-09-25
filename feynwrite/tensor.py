@@ -747,6 +747,10 @@ def eps(*indices):
     if len(indices) == 3 and kind == INDICES["isospin_adjoint"]:
         label = "fsu2"
 
+    # For lorentz indices, use LorEps
+    if len(indices) == 4 and kind == INDICES["lorentz"]:
+        label = "LorEps"
+
     tensor = Tensor(label=label, indices=list(indices))
     tensor.latex = r"\epsilon"
     tensor.is_field = False

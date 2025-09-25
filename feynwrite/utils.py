@@ -83,7 +83,7 @@ def wolfram_block(indices: List[str], expr: str, repl: str = "") -> str:
     return "\n".join(lines)
 
 
-def sort_index_labels(index_labels: List[str]) -> List[str]:
+def sort_index_labels_old(index_labels: List[str]) -> List[str]:
     # Index labels shouldn't start with a "-" ever
     index_dict = defaultdict(list)
     for i in index_labels:
@@ -105,6 +105,58 @@ def sort_index_labels(index_labels: List[str]) -> List[str]:
         *index_dict[INDICES["isospin_4"]],
     ]
 
+def sort_index_labels(index_labels: List[str]) -> List[str]:
+    """Sorts index labels into canonical order, but preserves and places any
+    unknown indices first instead of dropping them. This is useful for the
+    current implementation of the field strength tensor.
+
+    """
+    # Filter out empty strings and sanity-check that indices don't start with "-"
+    cleaned = [i for i in index_labels if i]
+
+    # Bucket indices by their prefix character
+    index_dict = defaultdict(list)
+    for i in cleaned:
+        index_dict[i[0]].append(i)
+
+    # Compute the set of known categories in order
+    known_prefixes = [
+        INDICES["lorentz"],
+        INDICES["spinor"],
+        INDICES["isospin_adjoint"],
+        INDICES["isospin_fundamental"],
+        INDICES["generation"],
+        INDICES["colour_adjoint"],
+        INDICES["colour_6"],
+        INDICES["colour_fundamental"],
+        INDICES["isospin_4"],
+    ]
+
+    # All prefixes seen in the current list
+    seen_prefixes = set(i[0] for i in cleaned)
+
+    # Find "unknown" ones — not in known_prefixes
+    unknown_prefixes = [p for p in seen_prefixes if p not in known_prefixes]
+
+    # Sort unknown ones or preserve original order — here we preserve order of first appearance
+    unknown_indices = []
+    for i in cleaned:
+        if i[0] in unknown_prefixes:
+            unknown_indices.append(i)
+
+    # Build the final sorted list: unknowns first, then known categories in canonical order
+    return [
+        *unknown_indices,
+        *index_dict[INDICES["lorentz"]],
+        *index_dict[INDICES["spinor"]],
+        *index_dict[INDICES["isospin_adjoint"]],
+        *index_dict[INDICES["isospin_fundamental"]],
+        *index_dict[INDICES["generation"]],
+        *index_dict[INDICES["colour_adjoint"]],
+        *index_dict[INDICES["colour_6"]],
+        *index_dict[INDICES["colour_fundamental"]],
+        *index_dict[INDICES["isospin_4"]],
+    ]
 
 def wolfram_index_map(idx: str):
     correspondance = {

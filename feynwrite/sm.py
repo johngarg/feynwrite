@@ -5,7 +5,7 @@
 """
 
 from fractions import Fraction
-from feynwrite.tensor import Scalar, Fermion, Vector
+from feynwrite.tensor import Scalar, Fermion, Vector, Tensor
 
 
 def L(s, i, g):
@@ -70,4 +70,16 @@ def uR(s, c, g):
     )
     tensor.is_sm = True
     tensor.latex = r"u_{R}"
+    return tensor
+
+def FS(V, l0, l1, V_index=None):
+    indices = [V, l0, l1] if V_index is None else [V, l0, l1, V_index]
+    tensor = Tensor(
+        label="FS",
+        indices=indices,
+        latex=V,
+        is_field=True,
+        is_conj=False
+    )
+    tensor.is_sm = True
     return tensor
