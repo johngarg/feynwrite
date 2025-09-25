@@ -1640,10 +1640,10 @@ gBt_VL1_term = (
         latex="[g^{\\tilde{B}}_{\\mathcal{L}_1}]",
         factor=I * Rational("1/2"), # From dual definition
     )
-    * VL1("-l0", "i0").C
-    * VL1("-l1", "i0")
-    * eps("l0", "l1", "l2", "l3")
+    * VL1("l0", "i0").C
+    * VL1("l1", "i0")
     * FS("B", "l2", "l3")
+    * eps("-l0", "-l1", "-l2", "-l3")
 )
 TERMS.append(gBt_VL1_term)
 
@@ -1659,8 +1659,8 @@ gWt_VL1_term = (
     * VL1("l0", "i0").C
     * VL1("l1", "i1")
     * sigma("I0", "i0", "-i1")
-    * eps("l0", "l1", "l2", "l3")
-    * FS("Wi", "l2", "l3", "I0")
+    * FS("Wi", "l2", "l3", "-I0")
+    * eps("-l0", "-l1", "-l2", "-l3")
 )
 TERMS.append(gWt_VL1_term)
 
@@ -1672,7 +1672,7 @@ h1_VL1_term = (
         is_complex=False,
         latex="[h^{(1)}_{\\mathcal{L}_1}]",
     )
-    * VL1("l0", "i0").C
+    * VL1("-l0", "i0").C
     * VL1("l0", "i0")
     * H("i1").C
     * H("i1")
@@ -1687,7 +1687,7 @@ h2_VL1_term = (
         is_complex=False,
         latex="[h^{(2)}_{\\mathcal{L}_1}]",
     )
-    * VL1("l0", "i0").C
+    * VL1("-l0", "i0").C
     * H("i0")
     * H("i1").C
     * VL1("l0", "i1")
@@ -1702,7 +1702,7 @@ h3_VL1_term = (
         is_complex=True,
         latex="[h^{(3)}_{\\mathcal{L}_1}]",
     )
-    * VL1("l0", "i0").C
+    * VL1("-l0", "i0").C
     * H("i0")
     * VL1("l0", "i1").C
     * H("i1")
@@ -1717,7 +1717,7 @@ g_VL3_term = (
         is_complex=True,
         latex="[g_{\\mathcal{L}_3}]",
     )
-    * VL3("l0", "i0").C
+    * VL3("-l0", "i0").C
     * eR("s0", "g0").CC.bar
     * Ga("l0", "s0", "-s1")
     * L("s1", "i0", "g1")
@@ -1732,7 +1732,7 @@ g_ed_VU2_term = (
         is_complex=True,
         latex="[g_{\\mathcal{U}_2}^{ed}]",
     )
-    * VU2("l0", "c0").C
+    * VU2("-l0", "c0").C
     * eR("s0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * dR("s1", "c0", "g1")
@@ -1747,7 +1747,7 @@ g_lq_VU2_term = (
         is_complex=True,
         latex="[g_{\\mathcal{U}_2}^{lq}]",
     )
-    * VU2("l0", "c0").C
+    * VU2("-l0", "c0").C
     * L("s0", "i0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * Q("s1", "c0", "i0", "g1")
@@ -1762,7 +1762,7 @@ g_VU5_term = (
         is_complex=True,
         latex="[g_{\\mathcal{U}_5}]",
     )
-    * VU5("l0", "c0").C
+    * VU5("-l0", "c0").C
     * eR("s0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * uR("s1", "c0", "g1")
@@ -1778,7 +1778,7 @@ g_ul_VQ1_term = (
         is_complex=True,
         latex="[g_{\\mathcal{Q}_1}^{ul}]",
     )
-    * VQ1("l0", "c0", "i0").C
+    * VQ1("-l0", "c0", "i0").C
     * uR("s0", "c0", "g0").CC.bar
     * Ga("l0", "s0", "-s1")
     * L("s1", "i0", "g1")
@@ -1793,12 +1793,12 @@ g_dq_VQ1_term = (
         is_complex=True,
         latex="[g_{\\mathcal{Q}_1}^{dq}]",
     )
-    * VQ1("l0", "c0", "i0").C
+    * VQ1("-l0", "c0", "i0").C
     * dR("s0", "c1", "g0").bar
     * Ga("l0", "s0", "-s1")
     * Q("s1", "c2", "i1", "g1").CC
     * eps("c0", "c1", "c2")
-    * eps("-i0", "-i1")
+    * eps("i0", "i1")
 )
 TERMS.append(g_dq_VQ1_term)
 
@@ -1810,7 +1810,7 @@ g_dl_VQ5_term = (
         is_complex=True,
         latex="[g_{\\mathcal{Q}_5}^{dl}]",
     )
-    * VQ5("l0", "c0", "i0").C
+    * VQ5("-l0", "c0", "i0").C
     * dR("s0", "c0", "g0").CC.bar
     * Ga("l0", "s0", "-s1")
     * L("s1", "i0", "g1")
@@ -1825,7 +1825,7 @@ g_eq_VQ5_term = (
         is_complex=True,
         latex="[g_{\\mathcal{Q}_5}^{eq}]",
     )
-    * VQ5("l0", "c0", "i0").C
+    * VQ5("-l0", "c0", "i0").C
     * eR("s0", "g0").CC.bar
     * Ga("l0", "s0", "-s1") # should the first spinor index be lowered here?
     * Q("s1", "c0", "i0", "g1")
@@ -1840,12 +1840,12 @@ g_uq_VQ5_term = (
         is_complex=True,
         latex="[g_{\\mathcal{Q}_5}^{uq}]",
     )
-    * VQ5("l0", "c0", "i0").C
+    * VQ5("-l0", "c0", "i0").C
     * uR("s0", "c1", "g0").bar
     * Ga("l0", "s0", "-s1")
     * Q("s1", "c2", "i1", "g1").CC
     * eps("c0", "c1", "c2")
-    * eps("-i0", "-i1")
+    * eps("i0", "i1")
 )
 TERMS.append(g_uq_VQ5_term)
 
@@ -1858,7 +1858,7 @@ g_VX_term = (
         is_complex=True,
         latex="[g_{\\mathcal{X}}]",
     )
-    * VX("l0", "c0", "I0").C
+    * VX("-l0", "c0", "-I0").C
     * L("s0", "i0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * Q("s1", "c0", "i1", "g1")
@@ -1875,12 +1875,12 @@ g_VY1_term = (
         is_complex=True,
         latex="[g_{\\mathcal{Y}_1}]",
     )
-    * VY1("l0", "X0", "i0").C
-    * K("X0", "-c0", "-c1")
+    * VY1("-l0", "X0", "i0").C
+    * K("-X0", "c0", "c1")
     * dR("s0", "c0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * Q("s1", "c1", "i1", "g1").CC
-    * eps("-i0", "-i1")
+    * eps("i0", "i1")
 )
 TERMS.append(g_VY1_term)
 
@@ -1893,11 +1893,11 @@ g_VY5_term = (
         is_complex=True,
         latex="[g_{\\mathcal{Y}_5}]",
     )
-    * VY5("l0", "X0", "i0").C
-    * K("X0", "-c0", "-c1")
+    * VY5("-l0", "X0", "i0").C
+    * K("-X0", "c0", "c1")
     * uR("s0", "c0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * Q("s1", "c1", "i1", "g1").CC
-    * eps("-i0", "-i1")
+    * eps("i0", "i1")
 )
 TERMS.append(g_VY5_term)

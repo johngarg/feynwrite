@@ -829,12 +829,18 @@ def c344(I: str, Q0: str, Q1: str):
 
 
 def K(X: str, a: str, b: str):
-    assert X[0] != "-" and a[0] == "-" and b[0] == "-"
-    assert (
-        X[0] == INDICES["colour_6"]
-        and a[1] == INDICES["colour_fundamental"]
-        and b[1] == INDICES["colour_fundamental"]
-    )
+    if X[0] != "-" and a[0] == "-" and b[0] == "-":
+        assert (
+            X[0] == INDICES["colour_6"]
+            and a[1] == INDICES["colour_fundamental"]
+            and b[1] == INDICES["colour_fundamental"]
+        )
+    else:
+        assert (
+            X[1] == INDICES["colour_6"]
+            and a[0] == INDICES["colour_fundamental"]
+            and b[0] == INDICES["colour_fundamental"]
+        )
 
     label = "K6"
     tensor = Tensor(label=label, indices=[X, a, b])
