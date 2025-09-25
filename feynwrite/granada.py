@@ -275,7 +275,7 @@ def T2(s, a, I) -> Fermion:
 def VB(l) -> Vector:
     label = "Granada" + "VB"
     latex = r"\mathcal{B}"
-    tensor = Vector(label, [l], latex=latex, hypercharge=0)
+    tensor = Vector(label, [l], latex=latex, hypercharge=0, is_self_conj=True)
     tensor.is_self_conj = True
     return tensor
 
@@ -288,7 +288,7 @@ def VB1(l) -> Vector:
 def VW(l, I) -> Vector:
     label = "Granada" + "VW"
     latex = r"\mathcal{W}"
-    tensor = Vector(label, [l, I], latex=latex, hypercharge=0)
+    tensor = Vector(label, [l, I], latex=latex, hypercharge=0, is_self_conj=True)
     return tensor
 
 def VW1(l, I) -> Vector:
@@ -300,7 +300,7 @@ def VW1(l, I) -> Vector:
 def VG(l, C) -> Vector:
     label = "Granada" + "VG"
     latex = r"\mathcal{G}"
-    tensor = Vector(label, [l, C], latex=latex, hypercharge=0)
+    tensor = Vector(label, [l, C], latex=latex, hypercharge=0, is_self_conj=True)
     return tensor
 
 def VG1(l, C) -> Vector:
@@ -312,7 +312,7 @@ def VG1(l, C) -> Vector:
 def VH(l, C, I) -> Vector:
     label = "Granada" + "VH"
     latex = r"\mathcal{H}"
-    tensor = Vector(label, [l, C, I], latex=latex, hypercharge=0)
+    tensor = Vector(label, [l, C, I], latex=latex, hypercharge=0, is_self_conj=True)
     return tensor
 
 def VL1(l, i) -> Vector:
@@ -1497,9 +1497,10 @@ g_phi_VW1_term = (
         latex="[g_{\\mathcal{W_{1}}}^{\\phi}]",
     )
     * VW1("l0", "-I0").C
-    * H("i0").C
-    * DH("l0", "i1")
-    * sigma("I0", "i0", "-i1")
+    * DH("l0", "i0")
+    * H("i2")
+    * eps("-i0", "-i1")
+    * sigma("I0", "i1", "-i2")
 )
 TERMS.append(g_phi_VW1_term)
 
@@ -1508,7 +1509,6 @@ g_q_VG_term = (
     Coupling(
         "gqVG",
         "-g0 -g1",
-        factor=Rational("1/2"),
         is_complex=False,
         latex="[g_{\\mathcal{G}}^{q}]",
     )
@@ -1525,7 +1525,6 @@ g_u_VG_term = (
     Coupling(
         "guVG",
         "-g0 -g1",
-        factor=Rational("1/2"),
         is_complex=False,
         latex="[g_{\\mathcal{G}}^{u}]",
     )
@@ -1542,7 +1541,6 @@ g_d_VG_term = (
     Coupling(
         "gdVG",
         "-g0 -g1",
-        factor=Rational("1/2"),
         is_complex=False,
         latex="[g_{\\mathcal{G}}^{d}]",
     )
@@ -1559,11 +1557,10 @@ g_VG1_term = (
     Coupling(
         "gVG1",
         "-g0 -g1",
-        factor=Rational("1/2"),
         is_complex=True,
         latex="[g_{\\mathcal{G}_{1}}]",
     )
-    * VG("l0", "-C0").C
+    * VG1("l0", "-C0").C
     * dR("s0", "c0", "g0").bar
     * Ga("l0", "s0", "-s1")
     * uR("s1", "c1", "g1")

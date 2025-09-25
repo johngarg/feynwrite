@@ -531,7 +531,7 @@ class Vector(Field):
 
         # Adjust factors for real scalars
         if self.is_self_conj:
-            kinetic = "1/2 " + kinetic
+            kinetic = "1/2 (" + kinetic + ")"
             mass = "1/2 " + mass
 
         expr = f"{kinetic} - {mass}"
