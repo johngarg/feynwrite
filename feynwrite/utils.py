@@ -30,7 +30,7 @@ EXTRA_PARAMS = r"""EpsSU3 ==
   }
 , LorEps ==
   { ParameterType -> Internal
-  , ComplexParameter -> False
+  , ComplexParameter -> True
   , Indices -> {Index[Lorentz], Index[Lorentz], Index[Lorentz], Index[Lorentz]}
   , Description -> "Totally antisymmetric 4-index Lorentz epsilon symbol."
   }

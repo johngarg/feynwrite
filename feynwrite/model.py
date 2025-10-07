@@ -154,6 +154,6 @@ class Model:
             if term.is_complex:
                 wolfram_term_names[f"HC[{term_name}]"] = 0
 
-        l_tot = f"Ltot := LSM + {' + '.join(wolfram_term_names.keys())};"
+        l_tot = f"Ltot := (LSM + {' + '.join(wolfram_term_names.keys())}) /. gotoBFM;"
 
         return self.preamble() + param_block + classes_block + lagrangian + l_tot
