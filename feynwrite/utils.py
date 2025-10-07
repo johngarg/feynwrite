@@ -28,6 +28,12 @@ EXTRA_PARAMS = r"""EpsSU3 ==
   , Indices -> {Index[SU24], Index[SU24]}
   , Description -> "SU(2) product for two quadruplets. Defined in 1711.10391."
   }
+, LorEps ==
+  { ParameterType -> Internal
+  , ComplexParameter -> False
+  , Indices -> {Index[Lorentz], Index[Lorentz], Index[Lorentz], Index[Lorentz]}
+  , Description -> "Totally antisymmetric 4-index Lorentz epsilon symbol."
+  }
 , T2244 ==
   { ParameterType -> Internal
   , ComplexParameter -> False
@@ -75,7 +81,7 @@ def raise_lower_index(idx: str) -> str:
 def wolfram_block(indices: List[str], expr: str, repl: str = "") -> str:
     lines = [
         "Block[",
-        "  " + f"{{{','.join(indices)}}}",
+        "  " + f"{{{','.join(i for i in indices if i not in {'B', 'Wi', 'G'})}}}",
         "  ,",
         "  " + expr,
         f"]{repl};",

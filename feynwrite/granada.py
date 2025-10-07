@@ -1593,6 +1593,7 @@ gamma_VL1_term = (
         [],
         is_complex=True,
         latex="[\\gamma_{\\mathcal{L}_1}]",
+        factor=-I,
     )
     * VL1("-l0", "i0").C
     * DH("l0", "i0")
