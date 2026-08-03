@@ -1146,6 +1146,22 @@ lambda_hat_prime_varphi_term = (
 TERMS.append(lambda_hat_prime_varphi_term)
 
 
+# lambda_hat_prime_prime_varphi
+lambda_hat_prime_prime_varphi_term = (
+    Coupling(
+        "lambdaHatPrimePrimevarphi",
+        [],
+        is_complex=True,
+        latex="\\hat{\\lambda}^{\\prime\\prime}_{\\varphi}",
+    )
+    * H("i0").C
+    * varphi("i0")
+    * H("i1").C
+    * varphi("i1")
+)
+TERMS.append(lambda_hat_prime_prime_varphi_term)
+
+
 # lambda_hat_prime_Theta1
 lambda_hat_prime_Theta1_term = (
     Coupling(

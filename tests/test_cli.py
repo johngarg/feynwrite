@@ -44,3 +44,23 @@ def test_bfm_replacement_includes_vector_interactions(runner):
     assert "LgBVL1" in interaction_terms
     assert "LgWVL1" in interaction_terms
     assert interaction_terms.endswith(") /. gotoBFM);")
+
+
+def test_varphi_prime_prime_interaction(runner):
+    result = runner.invoke(cli.main, ["Granadavarphi"])
+
+    assert result.exit_code == 0
+    assert "LlambdaHatPrimePrimevarphi :=" in result.output
+    assert (
+        "lambdaHatPrimePrimevarphi anti[Phi][i0] Granadavarphi[i0] "
+        "anti[Phi][i1] Granadavarphi[i1]" in result.output
+    )
+    assert "HC[LlambdaHatPrimePrimevarphi]" in result.output
+
+
+def test_varphi_prime_prime_mmp_config(runner):
+    result = runner.invoke(cli.main, ["Granadavarphi", "--mmp-config"])
+
+    assert result.exit_code == 0
+    assert "lambdaHatPrimePrimevarphi" in result.output
+    assert "lambdaHatPrimePrimevarphibar" in result.output
