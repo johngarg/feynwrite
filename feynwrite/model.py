@@ -139,21 +139,24 @@ class Model:
         lagrangian = "(********************* The Lagrangian *********************)\n\n"
         lagrangian += "gotoBFM =\n{ G[a__] -> G[a] + GQuantum[a]\n, Wi[a__] -> Wi[a] + WiQuantum[a]\n, B[a__] -> B[a] + BQuantum[a] \n};\n\n"
 
-        # Use dictionary keys as ordered set
-        wolfram_term_names = {}
+        # Use dictionary keys as ordered sets
+        free_term_names = {}
         for field in self.exotics:
             lagrangian += field.feynrules_free_terms()
             lagrangian += "\n\n"
-            wolfram_term_names[field.wolfram_term_name] = 0
+            free_term_names[field.wolfram_term_name] = 0
 
+        interaction_term_names = {}
         for term in self.terms:
             lagrangian += term.wolfram()
             lagrangian += "\n\n"
             term_name = term.wolfram_term_name
-            wolfram_term_names[term_name] = 0
+            interaction_term_names[term_name] = 0
             if term.is_complex:
-                wolfram_term_names[f"HC[{term_name}]"] = 0
+                interaction_term_names[f"HC[{term_name}]"] = 0
 
-        l_tot = f"Ltot := (LSM + {' + '.join(wolfram_term_names.keys())}) /. gotoBFM;"
+        free_terms = " + ".join(free_term_names.keys())
+        interaction_terms = " + ".join(interaction_term_names.keys())
+        l_tot = f"Ltot := LSM + {free_terms} + (({interaction_terms}) /. gotoBFM);"
 
         return self.preamble() + param_block + classes_block + lagrangian + l_tot
